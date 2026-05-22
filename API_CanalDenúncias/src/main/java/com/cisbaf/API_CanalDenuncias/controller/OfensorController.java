@@ -1,7 +1,7 @@
 package com.cisbaf.API_CanalDenuncias.controller;
 
 import java.util.List;
-
+import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ public class OfensorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ofensor> getOfensorById(@PathVariable Long id) {
+    public ResponseEntity<Ofensor> getOfensorById(@PathVariable UUID id) {
         return ofensorService.getOfensorById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

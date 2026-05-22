@@ -1,6 +1,7 @@
 package com.cisbaf.API_CanalDenuncias.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class VitimaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vitima> getVitimaById(@PathVariable Long id) {
+    public ResponseEntity<Vitima> getVitimaById(@PathVariable UUID id) {
         return vitimaService.getVitimaById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

@@ -1,7 +1,7 @@
 package com.cisbaf.API_CanalDenuncias.controller;
 
 import java.util.List;
-
+import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class RelatoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Relato> getRelatoById(@PathVariable Long id) {
+    public ResponseEntity<Relato> getRelatoById(@PathVariable UUID id) {
         return relatoService.getRelatoById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

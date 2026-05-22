@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cisbaf.API_CanalDenuncias.model.Terceiro;
 import com.cisbaf.API_CanalDenuncias.repository.TerceiroRepository;
+import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +21,7 @@ public class TerceiroService {
         return terceiroRepository.findAll();
     }
 
-    public Optional<Terceiro> getTerceiroById(Long id) {
+    public Optional<Terceiro> getTerceiroById(UUID id) {
         return terceiroRepository.findById(id);
     }
 

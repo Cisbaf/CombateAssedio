@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -23,9 +24,9 @@ import lombok.Data;
 public class Denuncia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     // id personalizado
-    private Long id;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String protocolo = gerarProtocolo();

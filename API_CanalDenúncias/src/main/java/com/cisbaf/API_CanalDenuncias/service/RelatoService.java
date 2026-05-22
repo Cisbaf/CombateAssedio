@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cisbaf.API_CanalDenuncias.model.Relato;
 import com.cisbaf.API_CanalDenuncias.repository.RelatoRepository;
-
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,7 +20,7 @@ public class RelatoService {
         return relatoRepository.findAll();
     }
 
-    public Optional<Relato> getRelatoById(Long id) {
+    public Optional<Relato> getRelatoById(UUID id) {
         return relatoRepository.findById(id);
     }
 

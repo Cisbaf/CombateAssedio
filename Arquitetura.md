@@ -9,274 +9,133 @@
 * **Tailwind CSS** - Styling
 
 ### Backend
-* **Spring Boot** - Framework Java
-* **Spring Security** - Autenticação e autorização
+* **Spring Boot** - Framework Java (REST API)
 * **Spring Data JPA** - ORM
-* **JWT** - Autenticação via tokens
-
-### Banco de Dados
-* **MySQL** - Principal
+* **Lombok** - Redução de boilerplate
+* **MySQL** - Banco de dados principal
 
 ---
 
 ## 2. Arquitetura de Camadas
 
 ### Backend (Spring Boot)
+As camadas do backend estão estruturadas sob o pacote base `com.cisbaf.API_CanalDenuncias`:
 ```
-src/main/java/br/cisbaf/denuncias/
+src/main/java/com/cisbaf/API_CanalDenuncias/
 ├── controller/
-│   ├── DenunciaController
-│   ├── UsuarioController
-│   ├── AdminController
-│   └── AuthController
+│   ├── DenunciaController.java
+│   ├── OfensorController.java
+│   ├── RelatoController.java
+│   ├── TerceiroController.java
+│   └── VitimaController.java
 ├── service/
-│   ├── DenunciaService
-│   ├── UsuarioService
-│   ├── AdminService
-│   ├── EncriptacaoService
-│   ├── ValidacaoService
-│   ├── NotificacaoService
-│   └── RelatorioService
+│   ├── DenunciaService.java
+│   ├── OfensorService.java
+│   ├── RelatoService.java
+│   ├── TerceiroService.java
+│   └── VitimaService.java
 ├── repository/
-│   ├── DenunciaRepository
-│   ├── UsuarioRepository
-│   ├── AuditoriaRepository
-│   └── ComunicacaoRepository
-├── entity/
-│   ├── Usuario
-│   ├── Denuncia
-│   ├── Ofensor
-│   ├── Comunicacao
-│   ├── Auditoria
-│   └── Notificacao
+│   ├── DenunciaRepository.java
+│   ├── OfensorRepository.java
+│   ├── RelatoRepository.java
+│   ├── TerceiroRepository.java
+│   └── VitimaRepository.java
+├── model/
+│   ├── Denuncia.java
+│   ├── Ofensor.java
+│   ├── Relato.java
+│   ├── Terceiro.java
+│   └── Vitima.java
 ├── dto/
-│   ├── DenunciaDTO
-│   ├── UsuarioDTO
-│   └── RelatorioDTO
-├── security/
-│   ├── JwtTokenProvider
-│   ├── SecurityConfig
-│   ├── CustomUserDetailsService
-│   └── RoleBasedAccessControl
-├── util/
-│   ├── EncriptacaoUtil
-│   ├── ValidacaoCPFUtil
-│   ├── GeracaoCodigo
-│   └── ConversaoPDF
-├── exception/
-│   ├── DenunciaException
-│   ├── UsuarioException
-│   └── SecurityException
-└── config/
-    ├── SecurityConfig
-    ├── DatabaseConfig
-    └── EmailConfig
+│   ├── DenunciaDto.java
+│   ├── OfesorDto.java
+│   ├── RelatoDto.java
+│   ├── TerceiroDto.java
+│   └── VitimaDto.java
+├── config/ (vazio, preparado para futuras configurações globais)
+└── infra/ (vazio, preparado para interceptadores ou segurança avançada)
 ```
 
 ### Frontend (Next.js)
 ```
-app/
-├── (auth)/
-│   ├── login/
-│   ├── recuperar-senha/
-│   └── logout/
-├── (user)/
-│   ├── formulario/
-│   │   ├── etapa-a/          # Identificação
-│   │   ├── etapa-b/          # Dados do ofensor
-│   │   ├── etapa-c/          # Data/Local
-│   │   ├── etapa-d/          # Descrição
-│   │   └── confirmacao/      # Protocolo
-│   ├── acompanhamento/       # Rastrear denúncia
-│   └── minha-conta/
-├── (admin)/
-│   ├── dashboard/
-│   ├── denuncias/
-│   │   ├── lista/
-│   │   ├── [id]/
-│   │   └── [id]/comunicacao/
-│   ├── relatorios/
-│   ├── usuarios-admin/
-│   ├── auditoria/
-│   └── configuracoes/
-├── api/
-│   └── (rotas backend proxy)
-├── components/
-│   ├── formulario/
-│   ├── admin/
-│   ├── common/
-│   └── charts/
-└── lib/
-    ├── api.ts
-    ├── auth.ts
-    └── utils.ts
+src/app/
+├── globals.css
+├── layout.tsx
+└── page.tsx           # Formulário simples de integração e listagem
+src/components/
+└── types.ts           # Definição de tipos TypeScript unificados (DTOs de Envio/Resposta)
 ```
 
 ---
 
-## 3. Dependências Maven (Backend)
+## 3. Estrutura de Identificação (UUID)
 
-### Core
-* `spring-boot-starter-web` - REST APIs
-* `spring-boot-starter-data-jpa` - ORM
-* `spring-boot-starter-security` - Autenticação
-* `spring-boot-starter-mail` - Envio de emails
+Todas as entidades no banco de dados e APIs utilizam identificadores únicos globais (**UUID**) em vez de IDs numéricos sequenciais (`Long`). Isso aumenta a segurança ao impossibilitar a adivinhação de URLs ou chaves de registros por terceiros.
 
-### Segurança
-* `jjwt` - JWT tokens
-* `spring-security-crypto` - Hashing de senhas (bcrypt)
-* `jasypt-spring-boot-starter` - Encriptação de propriedades
+* **Estratégia de Geração:** `@GeneratedValue(strategy = GenerationType.UUID)`
+* **Tipo Java:** `java.util.UUID`
+* **Campos Chave afetados:**
+  - `Denuncia.id`
+  - `Ofensor.id`
+  - `Relato.id`
+  - `Terceiro.id`
+  - `Vitima.id`
+
+---
+
+## 4. Dependências Maven (Backend)
+
+### Core & Web
+* `spring-boot-starter-web` - Criação de REST APIs e integração CORS (`@CrossOrigin`)
+* `spring-boot-starter-data-jpa` - Camada ORM integrada com o Hibernate
 
 ### Database
-* `mysql-connector-java` - Driver MySQL
-* `lombok` - Reduz boilerplate
-* `mapstruct` - Conversão DTO/Entity
+* `mysql-connector-j` - Driver oficial de conexão com o MySQL
+* `lombok` - Anotações para autogeração de getters, setters, construtores e padrões builder (`@Data`, `@RequiredArgsConstructor`)
 
-### Validação & Utilitários
-* `spring-boot-starter-validation` - Bean validation
-* `commons-validator` - Validação de CPF/email
-* `apache-commons-lang3` - Utilitários
-
-### Relatórios
-* `jasperreports` - Geração de PDFs
-* `poi` - Exportação Excel
-
-### Observabilidade
-* `spring-boot-starter-actuator` - Métricas
-* `spring-boot-starter-logging` - Logs
+### Validação
+* `spring-boot-starter-validation` - Validações baseadas em anotações (ex: `@CPF` na entidade vítima)
 
 ---
 
-## 4. Dependências npm (Frontend)
+## 5. Rotas de API Ativas (REST)
 
-### Core
-* `next` - Framework
-* `react` - UI
-* `typescript` - Type safety
+### Denúncias
+* `GET /api/denuncias` - Retorna a lista completa de denúncias
+* `POST /api/denuncias` - Cadastra uma nova denúncia (com relato e ofensor acoplados)
 
-### Formulários & Validação
-* `react-hook-form` - Gerenciamento de formulários
-* `zod` - Schema validation
-* `axios` - HTTP client
+### Ofensores
+* `GET /api/ofensores` - Retorna todos os ofensores
+* `GET /api/ofensores/{id}` - Retorna um ofensor específico por UUID
+* `POST /api/ofensores` - Cria um novo registro de ofensor
 
-### Estado & Dados
-* `zustand` - State management
-* `@tanstack/react-query` - Data fetching
-* `swr` - Data fetching alternativa
+### Vítimas
+* `GET /api/vitimas` - Retorna todas as vítimas cadastradas
+* `GET /api/vitimas/{id}` - Retorna uma vítima específica por UUID
+* `POST /api/vitimas` - Cria um novo registro de vítima
 
-### UI & Styling
-* `tailwindcss` - CSS framework
-* `framer-motion` - Animações
-* `recharts` - Gráficos
-* `react-hot-toast` - Notificações
+### Relatos
+* `GET /api/relatos` - Retorna a lista de relatos
+* `GET /api/relatos/{id}` - Detalhes de um relato por UUID
 
-### Utilitários
-* `date-fns` - Manipulação de datas
-* `js-cookie` - Gestão de cookies
-* `crypto-js` - Encriptação cliente-side
-
-### Dev Tools
-* `eslint` - Linting
-* `prettier` - Code formatting
-* `jest` - Testes unitários
-* `testing-library` - Testes de componentes
+### Terceiros
+* `GET /api/terceiros` - Retorna terceiros/testemunhas
+* `GET /api/terceiros/{id}` - Detalhes de terceiros por UUID
 
 ---
 
-## 5. Camadas de Segurança
-
-### Nível 1: Transmissão
-- ✅ SSL/TLS obrigatório (HTTPS)
-- ✅ HSTS (HTTP Strict Transport Security)
-- ✅ Rate limiting (API Gateway)
-
-### Nível 2: Autenticação
-- ✅ JWT com expiração
-- ✅ Refresh tokens
-- ✅ 2FA para admin (TOTP)
-- ✅ Bcrypt/Argon2 para senhas
-
-### Nível 3: Dados
-- ✅ Encriptação AES-256 para CPF/PII
-- ✅ Hashing de emails sensíveis
-- ✅ Mascaramento de dados em logs
-
-### Nível 4: Aplicação
-- ✅ CORS configurado
-- ✅ CSRF tokens
-- ✅ SQL Injection prevention (prepared statements)
-- ✅ XSS protection (sanitização)
-- ✅ Input validation (backend)
-
-### Nível 5: Auditoria
-- ✅ Logs de todas as ações
-- ✅ Rastreamento de quem acessou qual denúncia
-- ✅ Trilha de auditoria imutável
-- ✅ Alertas de atividades suspeitas
-
----
-
-## 6. Fluxo de Dados
+## 6. Fluxo de Dados e Integração
 
 ```
-USUARIO
+USUÁRIO (Frontend)
    ↓
-[Frontend - Next.js]
-   ↓ (HTTPS + JWT)
-[Gateway/Load Balancer]
+[page.tsx] (Formulário React / useState)
+   ↓ (Fetch API POST/GET com JSON)
+[Spring Boot Controller] (com CORS liberado via @CrossOrigin)
    ↓
-[Backend - Spring Boot]
-   ├→ Controller (validação)
-   ├→ Service (lógica)
-   ├→ Security (autorização)
-   └→ Repository (dados)
+[Spring Boot Service] (Regras de negócio e geração automática de protocolo)
    ↓
-[MySQL Database]
-   ├→ Tabela: usuarios
-   ├→ Tabela: denuncias
-   ├→ Tabela: ofensores
-   ├→ Tabela: comunicacoes
-   ├→ Tabela: auditoria
-   └→ Tabela: notificacoes
+[Spring Data JPA Repository] (Tipado com UUID)
    ↓
-[Cache - Redis (opcional)]
-   ↓
-[Fila de Mensagens - RabbitMQ/Kafka (opcional)]
-   ├→ Email Queue
-   ├→ SMS Queue
-   └→ Notificações Queue
+[MySQL Database] (Tabelas: denuncias, ofensores, relatos, terceiros, vitimas)
 ```
-
----
-
-## 7. Deploy & Infra
-
-### Recomendado
-* **Docker** - Containerização
-* **Docker Compose** - Ambiente local
-* **Kubernetes** - Orquestração (produção)
-* **AWS/Azure/GCP** - Cloud provider
-
-### CI/CD
-* GitHub Actions / GitLab CI
-* Testes automáticos
-* Análise de código (SonarQube)
-* Deploy automático
-
-### Monitoramento
-* **Prometheus** - Métricas
-* **Grafana** - Dashboards
-* **ELK Stack** - Logs centralizados
-* **Sentry** - Error tracking
-
----
-
-## 8. Padrões de Design
-
-* **MVC** - Separação de responsabilidades
-* **Injeção de Dependência** - Spring IoC
-* **Repository Pattern** - Abstração de dados
-* **Service Layer** - Lógica de negócio
-* **DTO** - Transferência de dados
-* **Middleware** - Autenticação/Autorização
-

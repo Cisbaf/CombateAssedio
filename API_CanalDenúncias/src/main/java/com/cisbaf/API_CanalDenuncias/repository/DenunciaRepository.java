@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.cisbaf.API_CanalDenuncias.model.Denuncia;
+import java.util.UUID;
 
 @Repository
-public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
+public interface DenunciaRepository extends JpaRepository<Denuncia, UUID> {
     
     Optional<Denuncia> findByProtocolo(String protocolo);
 

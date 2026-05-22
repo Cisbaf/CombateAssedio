@@ -9,6 +9,7 @@ import com.cisbaf.API_CanalDenuncias.model.Vitima;
 import com.cisbaf.API_CanalDenuncias.repository.VitimaRepository;
 
 import lombok.RequiredArgsConstructor;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class VitimaService {
         return vitimaRepository.findAll();
     }
 
-    public Optional<Vitima> getVitimaById(Long id) {
+    public Optional<Vitima> getVitimaById(UUID id) {
         return vitimaRepository.findById(id);
     }
 
