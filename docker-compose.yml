@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: canal-denuncias-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: canal_denuncias
+    volumes:
+      - canal-denuncias-db-data:/var/lib/mysql
+  
+volumes:
+  canal-denuncias-db-data:

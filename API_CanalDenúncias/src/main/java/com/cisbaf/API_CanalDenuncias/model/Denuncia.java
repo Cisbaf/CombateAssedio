@@ -1,6 +1,8 @@
 package com.cisbaf.API_CanalDenuncias.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -26,7 +28,7 @@ public class Denuncia {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String protocolo;
+    private String protocolo = gerarProtocolo();
 
     @Column(nullable = false)
     private String tipo_Denunciante;
@@ -56,5 +58,9 @@ public class Denuncia {
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
+
+    private String gerarProtocolo() {
+    return "PROT-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    }
 
 }
