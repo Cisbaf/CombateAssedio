@@ -1,0 +1,362 @@
+"use client";
+
+import { useState, type ChangeEvent } from "react";
+import {
+  Alert,
+  Box,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  Typography,
+  Stack,
+  TextField,
+  Collapse,
+  Divider,
+  Button
+} from "@mui/material";
+
+export default function StepA() {
+
+  const [opcaoIdentificacao, setOpcaoIdentificacao] = useState('');
+  const [opcaoAnonimato, setOpcaoAnonimato] = useState('');
+
+  const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setOpcaoIdentificacao(event.target.value);
+    console.log(opcaoIdentificacao);
+  };
+
+  const handleAnonimatoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setOpcaoAnonimato(event.target.value);
+    console.log(opcaoAnonimato);
+  };
+
+
+  return (
+    <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+
+
+        <Box sx={{ padding: '1rem', width: "100%", height: "100%", backgroundColor: "var(--primary)", borderRadius: '8px 8px 0 0', color: 'white' }}>
+          <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: '8px' }}>
+            📋 Etapa A - Identificação Inicial
+          </Typography>
+          <Typography variant="body1">
+            Determine como deseja prosseguir com sua denúncia
+          </Typography>
+        </Box>
+
+        <Box sx={{ width: "100%", height: "100%", backgroundColor: "white", padding: '1rem' }}>
+          <Alert variant="outlined" severity="info" sx={{ border: '1px solid var(--primary)', borderRadius: '8px', backgroundColor: '#DBEAFE', color: 'var(--primary-dark)' }}>
+            <strong>Sua segurança é nossa prioridade</strong>
+            <br></br>
+            Todas as informações são protegidas por criptografia e tratadas conforme a LGPD.
+          </Alert>
+
+
+          {/*Form Tipo Identificação*/}
+          <FormControl component="fieldset" fullWidth sx={{ maxWidth: 800, p: 2, paddingTop: '2rem' }}>
+            <FormLabel
+              sx={{
+                color: 'black', fontWeight: 700, mb: 3,
+                '&.Mui-focused': { color: 'black' }
+              }}
+            >
+              👤 Como você se identifica?
+            </FormLabel>
+
+            <RadioGroup name="identificacao-grupo" onChange={handleIdentificacaoChange}>
+              <Stack spacing={2}>
+
+                <FormControlLabel
+                  value="vitima"
+                  control={<Radio sx={{ '&.Mui-checked': { color: '#3b82f6' } }} />}
+                  label={
+                    <Stack sx={{ ml: 1 }}>
+                      <Typography sx={{ fontWeight: 700, color: '#374151' }}>
+                        Sou a vítima do assédio/discriminação
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                        O incidente aconteceu diretamente comigo
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '12px 16px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '12px',
+                    alignItems: 'flex-start',
+                    transition: 'all 0.2s ease',
+                    '&:has(input:checked)': {
+                      borderColor: '#3b82f6',
+                      backgroundColor: '#eff6ff',
+                    }
+                  }}
+                />
+
+                <FormControlLabel
+                  value="terceiro"
+                  control={<Radio sx={{ '&.Mui-checked': { color: '#3b82f6' } }} />}
+                  label={
+                    <Stack sx={{ ml: 1 }}>
+                      <Typography sx={{ fontWeight: 700, color: '#374151' }}>
+                        Sou testemunha/terceiro
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                        Presenciei ou tomei conhecimento do incidente
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '12px 16px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '12px',
+                    alignItems: 'flex-start',
+                    transition: 'all 0.2s ease',
+                    '&:has(input:checked)': {
+                      borderColor: '#3b82f6',
+                      backgroundColor: '#eff6ff',
+                    }
+                  }}
+                />
+
+              </Stack>
+            </RadioGroup>
+          </FormControl>
+
+
+
+
+
+          {/*Form anonimato*/}
+          <FormControl component="fieldset" fullWidth sx={{ maxWidth: 800, p: 2, paddingTop: '2rem' }}>
+            <FormLabel
+              sx={{
+                color: 'black', fontWeight: 700, mb: 3,
+                '&.Mui-focused': { color: 'black' }
+              }}
+            >
+              🔐 Deseja manter anonimato?
+            </FormLabel>
+
+            <RadioGroup name="anonimato-grupo" onChange={handleAnonimatoChange}>
+              <Stack spacing={2}>
+
+                <FormControlLabel
+                  value="true"
+                  control={<Radio sx={{ '&.Mui-checked': { color: '#3b82f6' } }} />}
+                  label={
+                    <Stack sx={{ ml: 1 }}>
+                      <Typography sx={{ fontWeight: 700, color: '#374151' }}>
+                        Me manter em anonimato
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                        Sua identidade não será revelada em nenhum momento
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '12px 16px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '12px',
+                    alignItems: 'flex-start',
+                    transition: 'all 0.2s ease',
+                    '&:has(input:checked)': {
+                      borderColor: '#3b82f6',
+                      backgroundColor: '#eff6ff',
+                    }
+                  }}
+                />
+
+                <FormControlLabel
+                  value="false"
+                  control={<Radio sx={{ '&.Mui-checked': { color: '#3b82f6' } }} />}
+                  label={
+                    <Stack sx={{ ml: 1 }}>
+                      <Typography sx={{ fontWeight: 700, color: '#374151' }}>
+                        Desejo me identificar
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#6b7280' }}>
+                        Seus dados serão mantidos em sigilo e serão usados somente para acompanhar o processo.
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{
+                    margin: 0,
+                    padding: '12px 16px',
+                    border: '2px solid #e5e7eb',
+                    borderRadius: '12px',
+                    alignItems: 'flex-start',
+                    transition: 'all 0.2s ease',
+                    '&:has(input:checked)': {
+                      borderColor: '#3b82f6',
+                      backgroundColor: '#eff6ff',
+                    }
+                  }}
+                />
+
+              </Stack>
+            </RadioGroup>
+          </FormControl>
+        </Box>
+
+        <Collapse in={opcaoAnonimato === "false"} timeout="auto" unmountOnExit sx={{
+          maxWidth: 800,
+          p: 2,
+          paddingTop: '2rem',
+          border: '1px solid #1d4ed8',
+          backgroundColor: '#e2eaf3ff',
+          borderRadius: '8px',
+          padding: '16px',
+          mt: 2,
+          mb: 2
+        }}>
+          <Typography variant="subtitle2" sx={{ color: '#1e40af', fontWeight: 600 }}>
+            Por favor, informe seus dados de identificação:
+          </Typography>
+          <Box
+            sx={{
+              mt: 2,
+              pt: 2,
+              borderTop: '1px solid #dbeafe',
+              display: 'flex',
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 2
+            }}
+          >
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+            <TextField
+              label="Seu Setor / Departamento"
+              variant="outlined"
+              size="small"
+              required
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+
+
+          </Box>
+        </Collapse>
+
+        <Divider variant="middle" sx={{ margin: '0 auto', width: '75%', mb: 2, mt: 2 }} />
+
+        <Collapse
+          in={opcaoIdentificacao === 'terceiro'}
+          timeout="auto"
+          unmountOnExit
+          sx={{
+            maxWidth: 800,
+            p: 2,
+            paddingTop: '2rem',
+            border: '1px solid #1d4ed8',
+            backgroundColor: '#e2eaf3ff',
+            borderRadius: '8px',
+            padding: '16px',
+            mt: 2,
+            mb: 2
+          }}>
+
+          <Typography variant="subtitle2" sx={{ color: '#1e40af', fontWeight: 600 }}>
+            Por favor, informe os dados da <u>VÍTIMA</u>:
+          </Typography>
+
+          <Box
+            sx={{
+              mt: 2,
+              pt: 2,
+              borderTop: '1px solid #dbeafe',
+              display: 'flex',
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: 2
+            }}
+          >
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+            <TextField
+              label="Seu Setor / Departamento"
+              variant="outlined"
+              size="small"
+              required
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+
+            />
+
+            <TextField
+              label="Seu Nome Completo"
+              variant="outlined"
+              size="small"
+              required
+            />
+          </Box>
+        </Collapse>
+
+
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', maxWidth: 800, margin: "0 auto" }}>
+        <Button variant="contained" sx={{ mt: 5, mb: 5, backgroundColor: 'gray', '&hover': { color: 'white' } }} >
+          <Typography variant="subtitle2" sx={{ color: 'white', fontWeight: 600 }}>
+            Preencher Novamente
+          </Typography>
+        </Button>
+
+        <Button variant="contained" sx={{ mt: 5, mb: 5 }} >
+          <Typography variant="subtitle2" sx={{ color: 'white', fontWeight: 600 }}>
+            Prosseguir
+          </Typography>
+        </Button>
+      </Box>
+    </Box>
+  );
+}

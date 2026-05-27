@@ -1,6 +1,8 @@
 package com.cisbaf.API_CanalDenuncias.service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -21,5 +23,9 @@ public class DenunciaService {
 
     public List<Denuncia> getAllDenuncias() {
         return denunciaRepository.findAll();
+    }
+
+    public Optional<Denuncia> getDenunciaByCodigo(UUID id) {
+        return denunciaRepository.findById(id);
     }
 }
