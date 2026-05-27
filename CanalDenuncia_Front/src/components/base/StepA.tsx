@@ -14,29 +14,43 @@ import {
   TextField,
   Collapse,
   Divider,
-  Button
+  Button,
+  Snackbar,
+  AlertColor
 } from "@mui/material";
+
 
 export default function StepA() {
 
   const [opcaoIdentificacao, setOpcaoIdentificacao] = useState('');
   const [opcaoAnonimato, setOpcaoAnonimato] = useState('');
+  const [openSnack, setOpenSnack] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertType, setAlertType] = useState<AlertColor>("success");
 
   const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOpcaoIdentificacao(event.target.value);
-    console.log(opcaoIdentificacao);
   };
 
   const handleAnonimatoChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOpcaoAnonimato(event.target.value);
-    console.log(opcaoAnonimato);
   };
 
+  const handleSubmit = () => {
+    if (opcaoIdentificacao === '' || opcaoAnonimato === '') {
+      setOpenSnack(true);
+      setAlertMessage('Por favor, os campos de identificação e anonimato são obrigatórios.');
+      setAlertType("error");
+      return;
+    }
+  }
+  const handleCloseSnack = () => {
+    setOpenSnack(false);
+  };
 
   return (
     <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-
 
         <Box sx={{ padding: '1rem', width: "100%", height: "100%", backgroundColor: "var(--primary)", borderRadius: '8px 8px 0 0', color: 'white' }}>
           <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: '8px' }}>
@@ -126,8 +140,6 @@ export default function StepA() {
               </Stack>
             </RadioGroup>
           </FormControl>
-
-
 
 
 
@@ -232,41 +244,49 @@ export default function StepA() {
             }}
           >
             <TextField
-              label="Seu Nome Completo"
+              helperText="Digite seu nome completo"
+              label="Nome Completo"
               variant="outlined"
               size="small"
+              error={true}
+              //value={nomeIdentificacao}
+              //onChange={(e) => setNomeIdentificacao(e.target.value)}
               required
             />
             <TextField
-              label="Seu Setor / Departamento"
+              helperText="Digite sua idade"
+              label="Idade"
+              variant="outlined"
+              size="small"
+              type='number'
+              sx={{ maxWidth: 150 }}
+              required
+              
+            />
+
+            <TextField
+              helperText="Digite seu CPF"
+              label="CPF"
               variant="outlined"
               size="small"
               required
             />
 
             <TextField
-              label="Seu Nome Completo"
+              helperText="Digite seu telefone"
+              label="Telefone"
               variant="outlined"
               size="small"
               required
             />
 
             <TextField
-              label="Seu Nome Completo"
-              variant="outlined"
-              size="small"
-              required
-
-            />
-
-            <TextField
-              label="Seu Nome Completo"
+              helperText="Digite seu e-mail"
+              label="E-mail"
               variant="outlined"
               size="small"
               required
             />
-
-
           </Box>
         </Collapse>
 
@@ -351,12 +371,24 @@ export default function StepA() {
           </Typography>
         </Button>
 
-        <Button variant="contained" sx={{ mt: 5, mb: 5 }} >
+        <Button variant="contained" sx={{ mt: 5, mb: 5 }} onClick={handleSubmit} >
           <Typography variant="subtitle2" sx={{ color: 'white', fontWeight: 600 }}>
             Prosseguir
           </Typography>
         </Button>
+        <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+          <Alert
+            onClose={handleCloseSnack}
+            severity={alertType}
+            variant="filled"
+            sx={{ width: '100%' }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+
       </Box>
+
     </Box>
   );
 }

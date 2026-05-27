@@ -9,6 +9,32 @@ services:
       MYSQL_DATABASE: canal_denuncias
     volumes:
       - canal-denuncias-db-data:/var/lib/mysql
-  
+
+  backend:
+    build:
+      context: ./CanalDenuncia_Back
+      dockerfile: Dockerfile
+    container_name: canal-denuncias-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=mysql
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - mysql
+      
+  frontend:
+    build:
+      context: ./CanalDenuncia_Front
+      dockerfile: Dockerfile
+    container_name: canal-denuncias-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
 volumes:
   canal-denuncias-db-data:
+
+
