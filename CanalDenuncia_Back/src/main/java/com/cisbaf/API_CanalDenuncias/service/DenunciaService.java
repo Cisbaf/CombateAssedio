@@ -28,4 +28,9 @@ public class DenunciaService {
     public Optional<Denuncia> getDenunciaByCodigo(UUID id) {
         return denunciaRepository.findById(id);
     }
+
+    public void deleteDenuncia(UUID id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteDenuncia'");
+    }
 }

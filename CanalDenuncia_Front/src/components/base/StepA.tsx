@@ -19,6 +19,22 @@ import {
   AlertColor
 } from "@mui/material";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+
+const createSchema = z.object({
+  name: z.string().min(1, 'NomeID é obrigatório'),
+  idade: z.string().min(1, 'Idade é obrigatória'),
+  cpf: z.string().length(11, 'CPF inválido'),
+  email: z.string().email('Email inválido'),
+  telefone: z.string().min(1, 'Telefone é obrigatório'),
+
+})
+
+type CreateSchemaType = z.infer<typeof createSchema>;
+
 
 export default function StepA() {
 
@@ -28,6 +44,10 @@ export default function StepA() {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState<AlertColor>("success");
 
+  const { register, formState: { errors } } = useForm<CreateSchemaType>({
+    resolver: zodResolver(createSchema)
+  });
+
   const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOpcaoIdentificacao(event.target.value);
   };
@@ -35,13 +55,17 @@ export default function StepA() {
   const handleAnonimatoChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOpcaoAnonimato(event.target.value);
   };
-
+  
   const handleSubmit = () => {
     if (opcaoIdentificacao === '' || opcaoAnonimato === '') {
       setOpenSnack(true);
       setAlertMessage('Por favor, os campos de identificação e anonimato são obrigatórios.');
       setAlertType("error");
       return;
+    } else {
+      setOpenSnack(true);
+      setAlertMessage('Dados enviados com sucesso.');
+      setAlertType("success");
     }
   }
   const handleCloseSnack = () => {
@@ -386,9 +410,7 @@ export default function StepA() {
             {alertMessage}
           </Alert>
         </Snackbar>
-
       </Box>
-
     </Box>
   );
 }

@@ -4,9 +4,18 @@ services:
     container_name: canal-denuncias-db
     ports:
       - "3306:3306"
+    env_file:
+      - .env
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: canal_denuncias
+      - MYSQL_ROOT_HOST=%
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - canalDenuncia-network
     volumes:
       - canal-denuncias-db-data:/var/lib/mysql
 
@@ -17,13 +26,23 @@ services:
     container_name: canal-denuncias-backend
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
-      - DB_HOST=mysql
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
+      - DB_URL=jdbc:mysql://mysql:3306/canal_denuncias
     depends_on:
-      - mysql
-      
+      mysql:
+        condition: service_healthy
+    networks:
+      - canalDenuncia-network
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./CanalDenuncia_Back/src
+          target: /app/src
+        - action: rebuild
+          path: ./CanalDenuncia_Back/pom.xml
+
   frontend:
     build:
       context: ./CanalDenuncia_Front
@@ -31,10 +50,29 @@ services:
     container_name: canal-denuncias-frontend
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     depends_on:
       - backend
+    networks:
+      - canalDenuncia-network
+    develop:
+      watch:
+        - action: sync
+          path: ./CanalDenuncia_Front/src
+          target: /app/src
+        - action: sync
+          path: ./CanalDenuncia_Front/public
+          target: /app/public
+        - action: sync+restart
+          path: ./CanalDenuncia_Front/next.config.ts
+          target: /app/next.config.ts
+        - action: rebuild
+          path: ./CanalDenuncia_Front/package.json
 
 volumes:
   canal-denuncias-db-data:
 
-
+networks:
+  canalDenuncia-network:
+    driver: bridge
