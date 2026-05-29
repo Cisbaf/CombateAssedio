@@ -13,6 +13,7 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import DescriptionIcon from '@mui/icons-material/Description';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { Box } from "@mui/material";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -107,12 +108,23 @@ const steps = [
 
 export default function ProgressionBar({ activeStep = 0 }: { activeStep?: number }) {
     return (
-        <Stepper activeStep={activeStep} alternativeLabel connector={<ColorlibConnector />}>
-            {steps.map((label) => (
-                <Step key={label}>
-                    <StepLabel slots={{ stepIcon: ColorlibStepIcon }}>{label}</StepLabel>
-                </Step>
-            ))}
-        </Stepper>
+        <Box sx={{
+            background: 'white',
+            maxWidth: '900px',
+            margin: '0 auto',
+            boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)',
+            borderRadius: '15px',
+            mb: 3,
+            p: 2,
+            pt: 3,
+        }}>
+            <Stepper activeStep={activeStep} alternativeLabel connector={<ColorlibConnector />}>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel slots={{ stepIcon: ColorlibStepIcon }}>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+        </Box>
     );
 }

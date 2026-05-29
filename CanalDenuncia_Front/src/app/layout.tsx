@@ -11,7 +11,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body>
+      <body suppressHydrationWarning>
         <AppRouterCacheProvider>
           <Header />
 

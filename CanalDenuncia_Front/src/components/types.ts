@@ -38,7 +38,7 @@ export type RequestTerceiro = {
     cpf: string;
     telefone: string;
     email: string;
-}; 
+};
 
 export type ResponseTerceiro = {
     id: string;
@@ -55,7 +55,7 @@ export type RequestRelato = {
     tipoRelato: string;
     relato: string;
     data: string;
-}; 
+};
 
 export type ResponseRelato = {
     id: string;
@@ -69,7 +69,7 @@ export type ResponseRelato = {
     ocorrencia_local: string;
     evidencias: boolean;
     tipo_evidencias?: string;
-}; 
+};
 
 // --- DENUNCIA ---
 export type RequestDenuncia = {

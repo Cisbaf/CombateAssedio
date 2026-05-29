@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import StepA from "@/components/base/StepA";
+import StepB from "@/components/base/StepB";
 
 
 export type formFluxoCompleto = {
@@ -38,25 +39,47 @@ const onFinalSubmit = async (data: formFluxoCompleto) => {
 
 
 
-export default function FormularioFluxo() {
-    const [step, setStep] = useState<number>(1);
+export default function FormularioFluxo({ StepFormulario }: { StepFormulario: (step: number) => void }) {
+    const [step, setStep] = useState<number>(0);
 
-    const proximaEtapa = () => setStep((prev) => prev + 1);
-    const etapaAnterior = () => setStep((prev) => prev - 1);
+    const proximaEtapa = () => {
+        const novoStep = step + 1
+        setStep(novoStep);
+        StepFormulario(novoStep);
+    }
+    const etapaAnterior = () => {
+        const novoStep = step - 1
+        setStep(novoStep);
+        StepFormulario(novoStep);
+    };
 
     const methods = useForm<formFluxoCompleto>({
     });
 
+
     return (
-        <FormProvider {...methods}>
-            <Box sx={{ p: 4 }}>
+        <Box sx={{
+            background: 'white',
+            maxWidth: '900px',
+            margin: '0 auto',
+            boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)',
+            borderRadius: '15px',
+        }}>
+            <FormProvider {...methods}>
+                <Box>
 
-                {step === 1 && (
-                    <StepA onAvançar={proximaEtapa}  onVoltar={etapaAnterior}/>
-                )}
+                    {step === 0 && (
+                        
+                        <StepA onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+                    )}
+                    {
+                        step === 1 && (
+                            <StepB onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+                        )
+                    }
 
-                
-            </Box>
-        </FormProvider>
+                </Box>
+            </FormProvider>
+        </Box>
     );
 }
