@@ -23,7 +23,7 @@ import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { formFluxoCompleto } from "./FormularioFluxo";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from "@mui/icons-material/Assignment";
 type CreateSchemaType = {
   name?: string;
   idade?: string;
@@ -34,7 +34,7 @@ type CreateSchemaType = {
 };
 
 interface StepAProps {
-  onAvançar: () => void;
+  onAvançar: (dados: CreateSchemaType) => void;
   onVoltar: () => void;
 }
 
@@ -108,7 +108,9 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
       return;
     }
 
+    
     const dataFinal: CreateSchemaType = {};
+
     if (opcaoAnonimato === "false") {
       dataFinal.name = data.name;
       dataFinal.idade = data.idade;
@@ -126,7 +128,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
     setAlertMessage("Dados validados e enviados com sucesso.");
     setAlertType("success");
 
-    onAvançar();
+    onAvançar(dataFinal);
   };
 
   const handleCloseSnack = () => {
@@ -157,7 +159,10 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
             variant="h5"
             sx={{ fontWeight: 600, marginBottom: "8px" }}
           >
-            <AssignmentIcon sx={{ fontSize: 32, color: "#fff", marginRight: "8px" }} /> Etapa A - Identificação Inicial
+            <AssignmentIcon
+              sx={{ fontSize: 32, color: "#fff", marginRight: "8px" }}
+            />{" "}
+            Etapa A - Identificação Inicial
           </Typography>
           <Typography variant="body1">
             Determine como deseja prosseguir com sua denúncia
@@ -397,6 +402,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
               required
             />
             <TextField
+              
               label="Idade"
               variant="outlined"
               size="small"

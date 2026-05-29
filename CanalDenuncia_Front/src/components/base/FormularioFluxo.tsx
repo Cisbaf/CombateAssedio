@@ -8,6 +8,7 @@ import StepB from "@/components/base/StepB";
 
 
 export type formFluxoCompleto = {
+
     nomeVitima?: string;
     idadeVitima?: string;
     cpfVitima?: string;
@@ -35,12 +36,20 @@ const onFinalSubmit = async (data: formFluxoCompleto) => {
         idadeVitima: data.idadeVitima ? parseInt(data.idadeVitima, 10) : null,
         idadeIdentificador: data.idadeIdentificador ? parseInt(data.idadeIdentificador, 10) : null,
     };
+    console.log("Dados prontos para o envio final:", dadosFormatados);
 };
+
+
 
 
 
 export default function FormularioFluxo({ StepFormulario }: { StepFormulario: (step: number) => void }) {
     const [step, setStep] = useState<number>(0);
+    const [dadosFormulario, setDadosFormulario] = useState({});
+
+    const methods = useForm<formFluxoCompleto>({
+    mode: 'onSubmit',
+  });
 
     const proximaEtapa = () => {
         const novoStep = step + 1
@@ -53,8 +62,6 @@ export default function FormularioFluxo({ StepFormulario }: { StepFormulario: (s
         StepFormulario(novoStep);
     };
 
-    const methods = useForm<formFluxoCompleto>({
-    });
 
 
     return (
