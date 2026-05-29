@@ -19,33 +19,65 @@ import {
   AlertColor
 } from "@mui/material";
 
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { formFluxoCompleto } from "./FormularioFluxo";
 
+type CreateSchemaType = {
+  name?: string;
+  idade?: string;
+  cpf?: string;
+  email?: string;
+  telefone?: string;
+  local_trabalho?: string;
+};
 
-const createSchema = z.object({
-  name: z.string().min(1, 'NomeID é obrigatório'),
-  idade: z.string().min(1, 'Idade é obrigatória'),
-  cpf: z.string().length(11, 'CPF inválido'),
-  email: z.string().email('Email inválido'),
-  telefone: z.string().min(1, 'Telefone é obrigatório'),
+interface StepAProps {
+  onAvançar: () => void;
+  onVoltar: () => void;
+}
 
-})
-
-type CreateSchemaType = z.infer<typeof createSchema>;
-
-
-export default function StepA() {
-
+export default function StepA({ onAvançar, onVoltar }: StepAProps) {
   const [opcaoIdentificacao, setOpcaoIdentificacao] = useState('');
   const [opcaoAnonimato, setOpcaoAnonimato] = useState('');
   const [openSnack, setOpenSnack] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertType, setAlertType] = useState<AlertColor>("success");
 
-  const { register, formState: { errors } } = useForm<CreateSchemaType>({
-    resolver: zodResolver(createSchema)
+  //const { control } = useFormContext<formFluxoCompleto>();
+
+  const dynamicSchema = z.object({
+    name: opcaoAnonimato === "false"
+      ? z.string().min(3, 'Nome é obrigatório')
+      : opcaoIdentificacao === "terceiro"
+      ? z.string().min(3, 'Nome é obrigatório')
+      : z.string().optional(),
+
+    idade: opcaoAnonimato === "false"
+      ? z.string().min(1, 'Idade é obrigatória')
+      : z.string().optional(),
+
+    cpf: opcaoAnonimato === "false"
+      ? z.string().length(11, 'CPF deve ter 11 dígitos')
+      : z.string().optional(),
+
+    email: opcaoAnonimato === "false"
+      ? z.string().email('Email inválido')
+      : z.string().optional(),
+
+    telefone: opcaoAnonimato === "false"
+      ? z.string().min(11, 'Telefone deve conter 11 dígitos')
+      : z.string().optional(),
+
+    local_trabalho: opcaoIdentificacao === 'terceiro'
+      ? z.string().min(3, 'Local de trabalho é obrigatório')
+      : z.string().optional(),
+  });
+
+
+  const { register, handleSubmit, formState: { errors } } = useForm<CreateSchemaType>({
+    resolver: zodResolver(dynamicSchema as any)
   });
 
   const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,19 +87,35 @@ export default function StepA() {
   const handleAnonimatoChange = (event: ChangeEvent<HTMLInputElement>) => {
     setOpcaoAnonimato(event.target.value);
   };
-  
-  const handleSubmit = () => {
+
+  const onSubmit = (data: CreateSchemaType) => {
+
     if (opcaoIdentificacao === '' || opcaoAnonimato === '') {
       setOpenSnack(true);
       setAlertMessage('Por favor, os campos de identificação e anonimato são obrigatórios.');
       setAlertType("error");
       return;
-    } else {
-      setOpenSnack(true);
-      setAlertMessage('Dados enviados com sucesso.');
-      setAlertType("success");
     }
+
+    const dataFinal: CreateSchemaType = {};
+    if (opcaoAnonimato === "false") {
+      dataFinal.name = data.name;
+      dataFinal.idade = data.idade;
+      dataFinal.cpf = data.cpf;
+      dataFinal.email = data.email;
+      dataFinal.telefone = data.telefone;
+    }
+    if (opcaoIdentificacao === "terceiro") {
+      dataFinal.local_trabalho = data.local_trabalho;
+      dataFinal.name = data.name;
+      dataFinal.idade = data.idade;
+      dataFinal.cpf = data.cpf;
+    }
+    setOpenSnack(true);
+    setAlertMessage('Dados validados e enviados com sucesso.');
+    setAlertType("success");
   }
+
   const handleCloseSnack = () => {
     setOpenSnack(false);
   };
@@ -268,47 +316,52 @@ export default function StepA() {
             }}
           >
             <TextField
-              helperText="Digite seu nome completo"
               label="Nome Completo"
               variant="outlined"
               size="small"
-              error={true}
-              //value={nomeIdentificacao}
-              //onChange={(e) => setNomeIdentificacao(e.target.value)}
+              {...register("name")}
+              error={!!errors.name}
+              helperText={errors.name?.message || "Digite seu nome completo"}
               required
             />
             <TextField
-              helperText="Digite sua idade"
               label="Idade"
               variant="outlined"
               size="small"
-              type='number'
               sx={{ maxWidth: 150 }}
+              {...register("idade")}
+              error={!!errors.idade}
+              helperText={errors.idade?.message || "Digite sua idade"}
               required
-              
             />
 
             <TextField
-              helperText="Digite seu CPF"
               label="CPF"
               variant="outlined"
               size="small"
+              {...register("cpf")}
+              error={!!errors.cpf}
+              helperText={errors.cpf?.message || "Digite seu CPF"}
               required
             />
 
             <TextField
-              helperText="Digite seu telefone"
               label="Telefone"
               variant="outlined"
               size="small"
+              {...register("telefone")}
+              error={!!errors.telefone}
+              helperText={errors.telefone?.message || "Digite seu telefone"}
               required
             />
 
             <TextField
-              helperText="Digite seu e-mail"
               label="E-mail"
               variant="outlined"
               size="small"
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors.email?.message || "Digite seu e-mail"}
               required
             />
           </Box>
@@ -350,37 +403,40 @@ export default function StepA() {
             }}
           >
             <TextField
-              label="Seu Nome Completo"
+              label="Nome"
               variant="outlined"
               size="small"
+              {...register("name")}
+              error={!!errors.name}
+              helperText={errors.name?.message || "Digite o nome completo ou primeiro nome"}
               required
             />
             <TextField
-              label="Seu Setor / Departamento"
+              label="Idade"
               variant="outlined"
               size="small"
-              required
+              sx={{ maxWidth: 200 }}
+              {...register("idade")}
+              error={!!errors.idade}
+              helperText={errors.idade?.message || "Digite a idade aproximada"}
             />
 
             <TextField
-              label="Seu Nome Completo"
+              label="CPF"
               variant="outlined"
               size="small"
-              required
+              {...register("cpf")}
+              error={!!errors.cpf}
+              helperText={errors.cpf?.message || "Digite o CPF"}
             />
 
             <TextField
-              label="Seu Nome Completo"
+              label="Local de Trabalho"
               variant="outlined"
               size="small"
-              required
-
-            />
-
-            <TextField
-              label="Seu Nome Completo"
-              variant="outlined"
-              size="small"
+              {...register("local_trabalho")}
+              error={!!errors.local_trabalho}
+              helperText={errors.local_trabalho?.message || "Digite o local de trabalho da vítima"}
               required
             />
           </Box>
@@ -395,7 +451,7 @@ export default function StepA() {
           </Typography>
         </Button>
 
-        <Button variant="contained" sx={{ mt: 5, mb: 5 }} onClick={handleSubmit} >
+        <Button variant="contained" sx={{ mt: 5, mb: 5 }} onClick={handleSubmit(onSubmit)} >
           <Typography variant="subtitle2" sx={{ color: 'white', fontWeight: 600 }}>
             Prosseguir
           </Typography>
