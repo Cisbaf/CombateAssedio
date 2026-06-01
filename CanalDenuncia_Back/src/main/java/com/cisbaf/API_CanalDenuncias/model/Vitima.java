@@ -34,6 +34,6 @@ public class Vitima {
     @Column(nullable = true)
     private String telefone;
 
-    @Column(nullable = true)
-    private String local_Trabalho;
+    @Column(nullable = true, name = "local_trabalho")
+    private String localTrabalho;
 }

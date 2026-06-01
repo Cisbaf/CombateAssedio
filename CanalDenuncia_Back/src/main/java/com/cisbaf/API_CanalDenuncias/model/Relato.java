@@ -1,6 +1,7 @@
 package com.cisbaf.API_CanalDenuncias.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -26,29 +27,23 @@ public class Relato {
     @Column(nullable = true)
     private String descricao;
 
-    @Column(nullable = false)
-    private String estado_emocional;
+    @Column(nullable = false, name = "estado_emocional")
+    private String estadoEmocional;
 
-    @Column(nullable = false)
-    private Boolean testemunhas;
+    @Column(nullable = false, name = "data_ocorrido")
+    private LocalDate dataOcorrido;
 
-    @Column(nullable = true)
-    private Integer numero_testemunhas;
+    @Column(nullable = false, name = "horario_ocorrido")
+    private LocalTime horarioOcorrido;
 
-    @Column(nullable = true)
-    private String nomes_testemunha;
-
-    @Column(nullable = false)
-    private LocalDate data_ocorrido;
-
-    @Column(nullable = false)
-    private String ocorrencia_local;
+    @Column(nullable = false, name = "ocorrencia_local")
+    private String ocorrenciaLocal;
 
     @Column(nullable = false)
     private Boolean evidencias;
 
-    @Column(nullable = true)
-    private String tipo_evidencias;
+    @Column(nullable = true, name = "tipo_evidencias")
+    private String tipoEvidencias;
 
 
 

@@ -17,20 +17,30 @@ import {
   Button,
   Snackbar,
   AlertColor,
+  InputAdornment,
 } from "@mui/material";
 
-import { useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { formFluxoCompleto } from "./FormularioFluxo";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import PersonIcon from "@mui/icons-material/Person";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import BadgeIcon from "@mui/icons-material/Badge";
+import PhoneIcon from "@mui/icons-material/Phone";
+import EmailIcon from "@mui/icons-material/Email";
+import WorkIcon from "@mui/icons-material/Work";
+
 type CreateSchemaType = {
   name?: string;
   idade?: string;
   cpf?: string;
   email?: string;
   telefone?: string;
-  local_trabalho?: string;
+  vitima_name?: string;
+  vitima_idade?: string;
+  vitima_cpf?: string;
+  vitima_local_trabalho?: string;
 };
 
 interface StepAProps {
@@ -45,15 +55,11 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<AlertColor>("success");
 
-  //const { control } = useFormContext<formFluxoCompleto>();
-
   const dynamicSchema = z.object({
     name:
       opcaoAnonimato === "false"
-        ? z.string().min(3, "Nome é obrigatório")
-        : opcaoIdentificacao === "terceiro"
-          ? z.string().min(3, "Nome é obrigatório")
-          : z.string().optional(),
+        ? z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres")
+        : z.string().optional(),
 
     idade:
       opcaoAnonimato === "false"
@@ -62,22 +68,31 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
 
     cpf:
       opcaoAnonimato === "false"
-        ? z.string().length(11, "CPF deve ter 11 dígitos")
+        ? z.string().length(11, "CPF deve ter exatamente 11 dígitos")
         : z.string().optional(),
 
     email:
       opcaoAnonimato === "false"
-        ? z.string().email("Email inválido")
+        ? z.string().email("Insira um e-mail válido")
         : z.string().optional(),
 
     telefone:
       opcaoAnonimato === "false"
-        ? z.string().min(11, "Telefone deve conter 11 dígitos")
+        ? z.string().min(11, "Telefone deve conter no mínimo 11 dígitos")
         : z.string().optional(),
 
-    local_trabalho:
+    vitima_name:
       opcaoIdentificacao === "terceiro"
-        ? z.string().min(3, "Local de trabalho é obrigatório")
+        ? z.string().min(3, "Nome da vítima deve ter pelo menos 3 caracteres")
+        : z.string().optional(),
+
+    vitima_idade: z.string().optional(),
+
+    vitima_cpf: z.string().optional(),
+
+    vitima_local_trabalho:
+      opcaoIdentificacao === "terceiro"
+        ? z.string().min(3, "Local de trabalho da vítima é obrigatório")
         : z.string().optional(),
   });
 
@@ -100,15 +115,11 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
   const onSubmit = (data: CreateSchemaType) => {
     if (opcaoIdentificacao === "" || opcaoAnonimato === "") {
       setOpenSnack(true);
-      setAlertMessage(
-        "Por favor, os campos de identificação e anonimato são obrigatórios.",
-      );
+      setAlertMessage("Por favor, os campos de identificação e anonimato são obrigatórios.");
       setAlertType("error");
-
       return;
     }
 
-    
     const dataFinal: CreateSchemaType = {};
 
     if (opcaoAnonimato === "false") {
@@ -119,13 +130,14 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
       dataFinal.telefone = data.telefone;
     }
     if (opcaoIdentificacao === "terceiro") {
-      dataFinal.local_trabalho = data.local_trabalho;
-      dataFinal.name = data.name;
-      dataFinal.idade = data.idade;
-      dataFinal.cpf = data.cpf;
+      dataFinal.vitima_name = data.vitima_name;
+      dataFinal.vitima_idade = data.vitima_idade;
+      dataFinal.vitima_cpf = data.vitima_cpf;
+      dataFinal.vitima_local_trabalho = data.vitima_local_trabalho;
     }
+
     setOpenSnack(true);
-    setAlertMessage("Dados validados e enviados com sucesso.");
+    setAlertMessage("Dados validados com sucesso.");
     setAlertType("success");
 
     onAvançar(dataFinal);
@@ -145,6 +157,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
           alignItems: "center",
         }}
       >
+        {/* Cabeçalho */}
         <Box
           sx={{
             padding: "1rem",
@@ -157,7 +170,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
         >
           <Typography
             variant="h5"
-            sx={{ fontWeight: 600, marginBottom: "8px" }}
+            sx={{ fontWeight: 600, marginBottom: "8px", display: "flex", alignItems: "center" }}
           >
             <AssignmentIcon
               sx={{ fontSize: 32, color: "#fff", marginRight: "8px" }}
@@ -169,12 +182,13 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
           </Typography>
         </Box>
 
+        {/* Corpo do Formulário */}
         <Box
           sx={{
             width: "100%",
             height: "100%",
             backgroundColor: "white",
-            padding: "1rem",
+            padding: "1.5rem",
           }}
         >
           <Alert
@@ -185,25 +199,26 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
               borderRadius: "8px",
               backgroundColor: "#DBEAFE",
               color: "var(--primary-dark)",
+              mb: 4,
             }}
           >
             <strong>Sua segurança é nossa prioridade</strong>
-            <br></br>
-            Todas as informações são protegidas por criptografia e tratadas
-            conforme a LGPD.
+            <br />
+            Todas as informações são protegidas por criptografia e tratadas conforme a LGPD.
           </Alert>
 
-          {/*Form Tipo Identificação*/}
+          {/* Form Tipo Identificação */}
           <FormControl
             component="fieldset"
             fullWidth
-            sx={{ maxWidth: 800, p: 2, paddingTop: "2rem" }}
+            sx={{ maxWidth: 800, mb: 3 }}
           >
             <FormLabel
               sx={{
                 color: "black",
                 fontWeight: 700,
                 mb: 3,
+                fontSize: "1.1rem",
                 "&.Mui-focused": { color: "black" },
               }}
             >
@@ -237,6 +252,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                     borderRadius: "12px",
                     alignItems: "flex-start",
                     transition: "all 0.2s ease",
+                    "&:hover": { borderColor: "#3b82f6" },
                     "&:has(input:checked)": {
                       borderColor: "#3b82f6",
                       backgroundColor: "#eff6ff",
@@ -266,6 +282,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                     borderRadius: "12px",
                     alignItems: "flex-start",
                     transition: "all 0.2s ease",
+                    "&:hover": { borderColor: "#3b82f6" },
                     "&:has(input:checked)": {
                       borderColor: "#3b82f6",
                       backgroundColor: "#eff6ff",
@@ -276,17 +293,18 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
             </RadioGroup>
           </FormControl>
 
-          {/*Form anonimato*/}
+          {/* Form anonimato */}
           <FormControl
             component="fieldset"
             fullWidth
-            sx={{ maxWidth: 800, p: 2, paddingTop: "2rem" }}
+            sx={{ maxWidth: 800, mb: 3 }}
           >
             <FormLabel
               sx={{
                 color: "black",
                 fontWeight: 700,
                 mb: 3,
+                fontSize: "1.1rem",
                 "&.Mui-focused": { color: "black" },
               }}
             >
@@ -317,6 +335,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                     borderRadius: "12px",
                     alignItems: "flex-start",
                     transition: "all 0.2s ease",
+                    "&:hover": { borderColor: "#3b82f6" },
                     "&:has(input:checked)": {
                       borderColor: "#3b82f6",
                       backgroundColor: "#eff6ff",
@@ -335,8 +354,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                         Desejo me identificar
                       </Typography>
                       <Typography variant="body2" sx={{ color: "#6b7280" }}>
-                        Seus dados serão mantidos em sigilo e serão usados
-                        somente para acompanhar o processo.
+                        Seus dados serão mantidos em sigilo e serão usados somente para acompanhar o processo.
                       </Typography>
                     </Stack>
                   }
@@ -347,6 +365,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                     borderRadius: "12px",
                     alignItems: "flex-start",
                     transition: "all 0.2s ease",
+                    "&:hover": { borderColor: "#3b82f6" },
                     "&:has(input:checked)": {
                       borderColor: "#3b82f6",
                       backgroundColor: "#eff6ff",
@@ -356,182 +375,368 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
               </Stack>
             </RadioGroup>
           </FormControl>
+
+          {/* Dados do denunciante se identificado */}
+          <Collapse
+            in={opcaoAnonimato === "false"}
+            timeout="auto"
+            unmountOnExit
+          >
+            <Box
+              sx={{
+                maxWidth: 800,
+                p: 3,
+                border: "1px solid #3b82f6",
+                backgroundColor: "#f0f7ff",
+                borderRadius: "12px",
+                mt: 3,
+                mb: 4,
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "#1e3a8a", fontWeight: 700, mb: 3 }}
+              >
+                Por favor, informe seus dados de identificação:
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                  gap: "1.25rem",
+                  width: "100%",
+                }}
+              >
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Nome Completo *</FormLabel>
+                  <TextField
+                    placeholder="Seu nome completo"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PersonIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("name")}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                    required
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Idade *</FormLabel>
+                  <TextField
+                    placeholder="Digite sua idade"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <CalendarTodayIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("idade")}
+                    error={!!errors.idade}
+                    helperText={errors.idade?.message}
+                    required
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>CPF *</FormLabel>
+                  <TextField
+                    placeholder="Apenas números (11 dígitos)"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <BadgeIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("cpf")}
+                    error={!!errors.cpf}
+                    helperText={errors.cpf?.message}
+                    required
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Telefone *</FormLabel>
+                  <TextField
+                    placeholder="DDD + Número (ex: 11999999999)"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PhoneIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("telefone")}
+                    error={!!errors.telefone}
+                    helperText={errors.telefone?.message}
+                    required
+                  />
+                </Stack>
+
+                <Stack sx={{ gridColumn: { md: "span 2" } }}>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>E-mail *</FormLabel>
+                  <TextField
+                    placeholder="exemplo@email.com"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("email")}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                    required
+                  />
+                </Stack>
+              </Box>
+            </Box>
+          </Collapse>
+
+          <Divider sx={{ my: 3, maxWidth: 800 }} />
+
+          {/* Dados da vítima se whistleblower for testemunha */}
+          <Collapse
+            in={opcaoIdentificacao === "terceiro"}
+            timeout="auto"
+            unmountOnExit
+          >
+            <Box
+              sx={{
+                maxWidth: 800,
+                p: 3,
+                border: "1px solid #e2e8f0",
+                backgroundColor: "#f8fafc",
+                borderRadius: "12px",
+                mt: 3,
+                mb: 4,
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "#334155", fontWeight: 700, mb: 3 }}
+              >
+                Por favor, informe os dados da <u>VÍTIMA</u>:
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+                  gap: "1.25rem",
+                  width: "100%",
+                }}
+              >
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Nome da Vítima *</FormLabel>
+                  <TextField
+                    placeholder="Nome completo ou primeiro nome"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <PersonIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("vitima_name")}
+                    error={!!errors.vitima_name}
+                    helperText={errors.vitima_name?.message}
+                    required
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Idade da Vítima (Opcional)</FormLabel>
+                  <TextField
+                    placeholder="Idade aproximada"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <CalendarTodayIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("vitima_idade")}
+                    error={!!errors.vitima_idade}
+                    helperText={errors.vitima_idade?.message}
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>CPF da Vítima (Opcional)</FormLabel>
+                  <TextField
+                    placeholder="Digite o CPF da vítima"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <BadgeIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("vitima_cpf")}
+                    error={!!errors.vitima_cpf}
+                    helperText={errors.vitima_cpf?.message}
+                  />
+                </Stack>
+
+                <Stack>
+                  <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>Local de Trabalho da Vítima *</FormLabel>
+                  <TextField
+                    placeholder="Ex: Recursos Humanos, TI, Recepção"
+                    variant="outlined"
+                    size="small"
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <WorkIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{
+                      width: "100%",
+                      "& .MuiOutlinedInput-root": {
+                        borderRadius: "10px",
+                        backgroundColor: "white",
+                        transition: "all 0.2s",
+                        "&:hover fieldset": { borderColor: "#3b82f6" },
+                        "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                      },
+                    }}
+                    {...register("vitima_local_trabalho")}
+                    error={!!errors.vitima_local_trabalho}
+                    helperText={errors.vitima_local_trabalho?.message}
+                    required
+                  />
+                </Stack>
+              </Box>
+            </Box>
+          </Collapse>
         </Box>
-        <Collapse
-          in={opcaoAnonimato === "false"}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            maxWidth: 800,
-            p: 2,
-            paddingTop: "2rem",
-            border: "1px solid #1d4ed8",
-            backgroundColor: "#e2eaf3ff",
-            borderRadius: "8px",
-            padding: "16px",
-            mt: 2,
-            mb: 2,
-          }}
-        >
-          <Typography
-            variant="subtitle2"
-            sx={{ color: "#1e40af", fontWeight: 600 }}
-          >
-            Por favor, informe seus dados de identificação:
-          </Typography>
-          <Box
-            sx={{
-              mt: 2,
-              pt: 2,
-              borderTop: "1px solid #dbeafe",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 2,
-            }}
-          >
-            <TextField
-              label="Nome Completo"
-              variant="outlined"
-              size="small"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name?.message || "Digite seu nome completo"}
-              required
-            />
-            <TextField
-              
-              label="Idade"
-              variant="outlined"
-              size="small"
-              sx={{ maxWidth: 150 }}
-              {...register("idade")}
-              error={!!errors.idade}
-              helperText={errors.idade?.message || "Digite sua idade"}
-              required
-            />
-
-            <TextField
-              label="CPF"
-              variant="outlined"
-              size="small"
-              {...register("cpf")}
-              error={!!errors.cpf}
-              helperText={errors.cpf?.message || "Digite seu CPF"}
-              required
-            />
-
-            <TextField
-              label="Telefone"
-              variant="outlined"
-              size="small"
-              {...register("telefone")}
-              error={!!errors.telefone}
-              helperText={errors.telefone?.message || "Digite seu telefone"}
-              required
-            />
-
-            <TextField
-              label="E-mail"
-              variant="outlined"
-              size="small"
-              {...register("email")}
-              error={!!errors.email}
-              helperText={errors.email?.message || "Digite seu e-mail"}
-              required
-            />
-          </Box>
-        </Collapse>
-
-        <Divider
-          variant="middle"
-          sx={{ margin: "0 auto", width: "75%", mb: 2, mt: 2 }}
-        />
-
-        <Collapse
-          in={opcaoIdentificacao === "terceiro"}
-          timeout="auto"
-          unmountOnExit
-          sx={{
-            maxWidth: 800,
-            p: 2,
-            paddingTop: "2rem",
-            border: "1px solid #1d4ed8",
-            backgroundColor: "#e2eaf3ff",
-            borderRadius: "8px",
-            padding: "16px",
-            mt: 2,
-            mb: 2,
-          }}
-        >
-          <Typography
-            variant="subtitle2"
-            sx={{ color: "#1e40af", fontWeight: 600 }}
-          >
-            Por favor, informe os dados da <u>VÍTIMA</u>:
-          </Typography>
-
-          <Box
-            sx={{
-              mt: 2,
-              pt: 2,
-              borderTop: "1px solid #dbeafe",
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: 2,
-            }}
-          >
-            <TextField
-              label="Nome"
-              variant="outlined"
-              size="small"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={
-                errors.name?.message ||
-                "Digite o nome completo ou primeiro nome"
-              }
-              required
-            />
-            <TextField
-              label="Idade"
-              variant="outlined"
-              size="small"
-              sx={{ maxWidth: 200 }}
-              {...register("idade")}
-              error={!!errors.idade}
-              helperText={errors.idade?.message || "Digite a idade aproximada"}
-            />
-
-            <TextField
-              label="CPF"
-              variant="outlined"
-              size="small"
-              {...register("cpf")}
-              error={!!errors.cpf}
-              helperText={errors.cpf?.message || "Digite o CPF"}
-            />
-
-            <TextField
-              label="Local de Trabalho"
-              variant="outlined"
-              size="small"
-              {...register("local_trabalho")}
-              error={!!errors.local_trabalho}
-              helperText={
-                errors.local_trabalho?.message ||
-                "Digite o local de trabalho da vítima"
-              }
-              required
-            />
-          </Box>
-        </Collapse>
       </Box>
+
+      {/* Botões de Ação */}
       <Box
         sx={{
           display: "flex",
@@ -540,6 +745,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
           flexWrap: "wrap",
           maxWidth: 800,
           margin: "0 auto",
+          px: 2,
         }}
       >
         <Button
@@ -548,7 +754,9 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
             mt: 5,
             mb: 5,
             backgroundColor: "gray",
-            "&hover": { color: "white" },
+            "&:hover": { backgroundColor: "darkgray" },
+            borderRadius: "8px",
+            textTransform: "none",
           }}
         >
           <Typography
@@ -561,7 +769,12 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
 
         <Button
           variant="contained"
-          sx={{ mt: 5, mb: 5 }}
+          sx={{
+            mt: 5,
+            mb: 5,
+            borderRadius: "8px",
+            textTransform: "none",
+          }}
           onClick={handleSubmit(onSubmit)}
         >
           <Typography
@@ -571,22 +784,23 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
             Prosseguir
           </Typography>
         </Button>
-        <Snackbar
-          open={openSnack}
-          autoHideDuration={6000}
-          onClose={handleCloseSnack}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        >
-          <Alert
-            onClose={handleCloseSnack}
-            severity={alertType}
-            variant="filled"
-            sx={{ width: "100%" }}
-          >
-            {alertMessage}
-          </Alert>
-        </Snackbar>
       </Box>
+
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert
+          onClose={handleCloseSnack}
+          severity={alertType}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

@@ -31,15 +31,15 @@ public class Denuncia {
     @Column(nullable = false, unique = true)
     private String protocolo = gerarProtocolo();
 
-    @Column(nullable = false)
-    private String tipo_Denunciante;
+    @Column(nullable = false, name = "tipo_denunciante")
+    private String tipoDenunciante;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_anonimo")
     private Boolean isAnonimo;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDate data_Registro;
+    @Column(nullable = false, updatable = false, name = "data_registro")
+    private LocalDate dataRegistro;
 
     @Column(nullable = false)
     private String status; // Pendente, Em investigação ou Resolvida

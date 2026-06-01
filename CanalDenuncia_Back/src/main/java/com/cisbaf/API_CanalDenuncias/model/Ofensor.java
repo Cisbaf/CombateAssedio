@@ -21,6 +21,6 @@ public class Ofensor {
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
-    private String local_trabalho;
+    @Column(nullable = false, name = "local_trabalho")
+    private String localTrabalho;
 }

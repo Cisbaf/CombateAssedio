@@ -1,60 +1,59 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   Alert,
   Box,
   FormControl,
   FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
   Typography,
   Stack,
   TextField,
+  Collapse,
+  Divider,
   Button,
   Snackbar,
   AlertColor,
   InputAdornment,
 } from "@mui/material";
-import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
-import PersonIcon from "@mui/icons-material/Person";
-import WorkIcon from "@mui/icons-material/Work";
+
+import InfoBox from "../toolTips/infoBox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 
-const stepBSchema = z.object({
-  name: z.string().min(3, "O nome do ofensor deve ter pelo menos 3 caracteres"),
-  local_trabalho: z.string().min(3, "O local de trabalho do ofensor deve ter pelo menos 3 caracteres"),
+const stepCSchema = z.object({
+  data_ocorrido: z.string().length(10, "Insira uma data válida"),
+  horario_ocorrido: z.string().min(5, "Horário inválido"),
+  local_ocorrido: z.string().min(1, "Local do ocorrido é obrigatório"),
 });
 
-type StepFormData = z.infer<typeof stepBSchema>;
+type StepFormData = z.infer<typeof stepCSchema>;
 
-interface StepBProps {
+interface StepCProps {
   onAvançar: (dados: StepFormData) => void;
   onVoltar: () => void;
 }
 
-export default function StepB({ onAvançar, onVoltar }: StepBProps) {
-  const [openSnack, setOpenSnack] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertType, setAlertType] = useState<AlertColor>("success");
-
+export default function StepC({ onAvançar, onVoltar }: StepCProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<StepFormData>({
-    resolver: zodResolver(stepBSchema),
+    resolver: zodResolver(stepCSchema),
   });
 
   const onSubmit = (data: StepFormData) => {
-    setOpenSnack(true);
-    setAlertMessage("Dados validados com sucesso.");
-    setAlertType("success");
     onAvançar(data);
-  };
-
-  const handleCloseSnack = () => {
-    setOpenSnack(false);
+    console.log("Dados da Etapa C:", data);
   };
 
   return (
@@ -82,13 +81,13 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
             variant="h5"
             sx={{ fontWeight: 600, marginBottom: "8px", display: "flex", alignItems: "center" }}
           >
-            <CrisisAlertIcon
+            <AssignmentIcon
               sx={{ fontSize: 32, color: "#fff", marginRight: "8px" }}
             />{" "}
-            Etapa B - Informações do Ofensor
+            Etapa C - Data e Local
           </Typography>
           <Typography variant="body1">
-            Identifique quem está sendo denunciado
+            Contextualize quando e onde o incidente ocorreu
           </Typography>
         </Box>
 
@@ -101,57 +100,38 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
             padding: "1.5rem",
           }}
         >
-          <Alert
-            variant="outlined"
-            severity="warning"
-            sx={{
-              border: "1px solid var(--warning)",
-              borderRadius: "8px",
-              backgroundColor: "#FEF3C7",
-              color: "var(--primary-dark)",
-              mb: 4,
-            }}
-          >
-            <strong>IMPORTANTE</strong>
-            <br />
-            Forneça informações precisas para garantir que a investigação seja
-            conduzida corretamente.
-          </Alert>
-
-          {/* Formulário do Ofensor */}
-          <FormControl
-            component="fieldset"
-            fullWidth
-            sx={{ maxWidth: 800 }}
-          >
+          {/* Seção: Quando Aconteceu */}
+          <Box sx={{ mb: 4 }}>
             <Typography
-              variant="subtitle1"
-              sx={{ color: "#374151", fontWeight: 700, mb: 3 }}
+              variant="body1"
+              sx={{ fontWeight: 700, marginBottom: "16px", color: "#374151", display: 'flex', alignItems: 'center', gap: '8px' }}
             >
-              👤 Quem cometeu o incidente?
+              📅 Quando aconteceu?
             </Typography>
-            
+
             <Box
               sx={{
                 display: "flex",
                 flexDirection: { xs: "column", sm: "row" },
                 gap: "1.5rem",
-                width: "100%",
+                maxWidth: 800,
               }}
             >
               <Stack sx={{ flex: 1 }}>
-                <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                  Nome do Ofensor *
+                <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1, display: "flex", alignItems: "center" }}>
+                  Data do Ocorrido *
+                  <InfoBox texto="Digite a data em que o incidente ocorreu." />
                 </FormLabel>
                 <TextField
-                  placeholder="Nome completo ou primeiro nome"
-                  variant="outlined"
+                  required
                   size="small"
+                  type="date"
                   slotProps={{
+                    inputLabel: { shrink: true },
                     input: {
                       startAdornment: (
                         <InputAdornment position="start">
-                          <PersonIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          <CalendarTodayIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
                         </InputAdornment>
                       ),
                     },
@@ -165,26 +145,27 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
                       "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
                     },
                   }}
-                  {...register("name")}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
-                  required
+                  {...register("data_ocorrido")}
+                  error={!!errors.data_ocorrido}
+                  helperText={errors.data_ocorrido?.message}
                 />
               </Stack>
 
               <Stack sx={{ flex: 1 }}>
-                <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                  Local / Setor de Trabalho *
+                <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1, display: "flex", alignItems: "center" }}>
+                  Horário Aproximado *
+                  <InfoBox texto="Digite o horário aproximado em que o incidente ocorreu." />
                 </FormLabel>
                 <TextField
-                  placeholder="Ex: Recursos Humanos, TI, Recepção"
-                  variant="outlined"
+                  required
                   size="small"
+                  type="time"
                   slotProps={{
+                    inputLabel: { shrink: true },
                     input: {
                       startAdornment: (
                         <InputAdornment position="start">
-                          <WorkIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                          <AccessTimeIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
                         </InputAdornment>
                       ),
                     },
@@ -198,14 +179,61 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
                       "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
                     },
                   }}
-                  {...register("local_trabalho")}
-                  error={!!errors.local_trabalho}
-                  helperText={errors.local_trabalho?.message}
-                  required
+                  {...register("horario_ocorrido")}
+                  error={!!errors.horario_ocorrido}
+                  helperText={errors.horario_ocorrido?.message}
                 />
               </Stack>
             </Box>
-          </FormControl>
+          </Box>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Seção: Onde Aconteceu */}
+          <Box sx={{ mb: 2 }}>
+            <Typography
+              variant="body1"
+              sx={{ fontWeight: 700, marginBottom: "16px", color: "#374151", display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              📍 Onde aconteceu?
+            </Typography>
+
+            <Box sx={{ maxWidth: 800 }}>
+              <Stack sx={{ width: "100%" }}>
+                <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1, display: "flex", alignItems: "center" }}>
+                  Local do Incidente *
+                  <InfoBox texto="Digite o local ou setor em que o incidente ocorreu." />
+                </FormLabel>
+                <TextField
+                  required
+                  placeholder="Ex: Escritório 101, Sala de Reunião 5, Almoxarifado, etc."
+                  size="small"
+                  type="text"
+                  slotProps={{
+                    input: {
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LocationOnIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                  sx={{
+                    width: "100%",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "10px",
+                      transition: "all 0.2s",
+                      "&:hover fieldset": { borderColor: "#3b82f6" },
+                      "&.Mui-focused fieldset": { borderColor: "#3b82f6" },
+                    },
+                  }}
+                  {...register("local_ocorrido")}
+                  error={!!errors.local_ocorrido}
+                  helperText={errors.local_ocorrido?.message}
+                />
+              </Stack>
+            </Box>
+          </Box>
         </Box>
       </Box>
 
@@ -259,22 +287,6 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
           </Typography>
         </Button>
       </Box>
-
-      <Snackbar
-        open={openSnack}
-        autoHideDuration={6000}
-        onClose={handleCloseSnack}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnack}
-          severity={alertType}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 }

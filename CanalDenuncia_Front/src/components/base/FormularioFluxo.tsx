@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import StepA from "@/components/base/StepA";
 import StepB from "@/components/base/StepB";
-
-
+import StepC from "@/components/base/StepC";
+import StepD from "@/components/base/StepD";
 export type formFluxoCompleto = {
 
     nomeVitima?: string;
@@ -28,6 +28,16 @@ export type formFluxoCompleto = {
     setorOfensor?: string;
     cargoOfensor?: string;
 
+    data_ocorrido?: string;
+    horario_ocorrido?: string;
+    local_ocorrido?: string;
+
+    descricao?: string;
+    categoria?: string;
+    estadoEmocional?: string;
+    evidencias?: boolean;
+    tipoEvidencias?: string;
+
 }
 
 const onFinalSubmit = async (data: formFluxoCompleto) => {
@@ -38,8 +48,6 @@ const onFinalSubmit = async (data: formFluxoCompleto) => {
     };
     console.log("Dados prontos para o envio final:", dadosFormatados);
 };
-
-
 
 
 
@@ -74,17 +82,20 @@ export default function FormularioFluxo({ StepFormulario }: { StepFormulario: (s
         }}>
             <FormProvider {...methods}>
                 <Box>
-
                     {step === 0 && (
                         
                         <StepA onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
                     )}
-                    {
-                        step === 1 && (
-                            <StepB onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
-                        )
-                    }
-
+                    {step === 0 && (
+                        <StepB onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+                    )}
+                    {step === 0 && (
+                        <StepC onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+                    )}
+                    {step === 0 && (
+                        <StepD onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+                    )}
+ 
                 </Box>
             </FormProvider>
         </Box>
