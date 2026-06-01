@@ -22,7 +22,6 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PersonIcon from "@mui/icons-material/Person";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
@@ -30,18 +29,7 @@ import BadgeIcon from "@mui/icons-material/Badge";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import WorkIcon from "@mui/icons-material/Work";
-
-type CreateSchemaType = {
-  name?: string;
-  idade?: string;
-  cpf?: string;
-  email?: string;
-  telefone?: string;
-  vitima_name?: string;
-  vitima_idade?: string;
-  vitima_cpf?: string;
-  vitima_local_trabalho?: string;
-};
+import { getStepASchema, type StepAFormData as CreateSchemaType } from "./validationSchemas";
 
 interface StepAProps {
   onAvançar: (dados: CreateSchemaType) => void;
@@ -55,46 +43,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<AlertColor>("success");
 
-  const dynamicSchema = z.object({
-    name:
-      opcaoAnonimato === "false"
-        ? z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres")
-        : z.string().optional(),
-
-    idade:
-      opcaoAnonimato === "false"
-        ? z.string().min(1, "Idade é obrigatória")
-        : z.string().optional(),
-
-    cpf:
-      opcaoAnonimato === "false"
-        ? z.string().length(11, "CPF deve ter exatamente 11 dígitos")
-        : z.string().optional(),
-
-    email:
-      opcaoAnonimato === "false"
-        ? z.string().email("Insira um e-mail válido")
-        : z.string().optional(),
-
-    telefone:
-      opcaoAnonimato === "false"
-        ? z.string().min(11, "Telefone deve conter no mínimo 11 dígitos")
-        : z.string().optional(),
-
-    vitima_name:
-      opcaoIdentificacao === "terceiro"
-        ? z.string().min(3, "Nome da vítima deve ter pelo menos 3 caracteres")
-        : z.string().optional(),
-
-    vitima_idade: z.string().optional(),
-
-    vitima_cpf: z.string().optional(),
-
-    vitima_local_trabalho:
-      opcaoIdentificacao === "terceiro"
-        ? z.string().min(3, "Local de trabalho da vítima é obrigatório")
-        : z.string().optional(),
-  });
+  const dynamicSchema = getStepASchema(opcaoAnonimato, opcaoIdentificacao);
 
   const {
     register,

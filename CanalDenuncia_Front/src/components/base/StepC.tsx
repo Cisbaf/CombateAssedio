@@ -23,19 +23,11 @@ import {
 import InfoBox from "../toolTips/infoBox";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
-const stepCSchema = z.object({
-  data_ocorrido: z.string().length(10, "Insira uma data válida"),
-  horario_ocorrido: z.string().min(5, "Horário inválido"),
-  local_ocorrido: z.string().min(1, "Local do ocorrido é obrigatório"),
-});
-
-type StepFormData = z.infer<typeof stepCSchema>;
+import { stepCSchema, type StepCFormData as StepFormData } from "./validationSchemas";
 
 interface StepCProps {
   onAvançar: (dados: StepFormData) => void;
@@ -81,10 +73,7 @@ export default function StepC({ onAvançar, onVoltar }: StepCProps) {
             variant="h5"
             sx={{ fontWeight: 600, marginBottom: "8px", display: "flex", alignItems: "center" }}
           >
-            <AssignmentIcon
-              sx={{ fontSize: 32, color: "#fff", marginRight: "8px" }}
-            />{" "}
-            Etapa C - Data e Local
+           📍 Etapa C - Data e Local
           </Typography>
           <Typography variant="body1">
             Contextualize quando e onde o incidente ocorreu

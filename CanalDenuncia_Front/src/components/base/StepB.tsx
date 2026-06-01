@@ -19,14 +19,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-
-const stepBSchema = z.object({
-  name: z.string().min(3, "O nome do ofensor deve ter pelo menos 3 caracteres"),
-  local_trabalho: z.string().min(3, "O local de trabalho do ofensor deve ter pelo menos 3 caracteres"),
-});
-
-type StepFormData = z.infer<typeof stepBSchema>;
+import { stepBSchema, type StepBFormData as StepFormData } from "./validationSchemas";
 
 interface StepBProps {
   onAvançar: (dados: StepFormData) => void;
