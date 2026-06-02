@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/terceiros")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class TerceiroController {
 
@@ -29,11 +28,5 @@ public class TerceiroController {
         return terceiroService.getTerceiroById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Terceiro> criarTerceiro(@RequestBody Terceiro terceiro) {
-        Terceiro savedTerceiro = terceiroService.criarTerceiro(terceiro);
-        return ResponseEntity.ok(savedTerceiro);
     }
 }

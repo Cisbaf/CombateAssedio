@@ -3,7 +3,7 @@ package com.cisbaf.API_CanalDenuncias.dto;
 import lombok.Builder;
 
 @Builder
-public record OfesorDto(
+public record OfensorDto(
         String nome,
         String email,
         String setor,

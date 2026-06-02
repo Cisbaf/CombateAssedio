@@ -14,6 +14,8 @@ export type StepAFormData = {
   vitima_idade?: string;
   vitima_cpf?: string;
   vitima_local_trabalho?: string;
+  isAnonimo?: boolean;
+  tipoDenunciante?: string;
 };
 
 export const getStepASchema = (opcaoAnonimato: string, opcaoIdentificacao: string) => {

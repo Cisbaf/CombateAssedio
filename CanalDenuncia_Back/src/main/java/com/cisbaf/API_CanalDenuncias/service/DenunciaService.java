@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import com.cisbaf.API_CanalDenuncias.model.enums.Status;
 import com.cisbaf.API_CanalDenuncias.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.repository.DenunciaRepository;
 
@@ -18,6 +19,8 @@ public class DenunciaService {
     private final DenunciaRepository denunciaRepository;
 
     public Denuncia criarDenuncia(Denuncia denuncia) {
+        denuncia.setProtocolo("PROT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        denuncia.setStatus(Status.PENDENTE);
         return denunciaRepository.save(denuncia);
     }
 
@@ -27,10 +30,5 @@ public class DenunciaService {
 
     public Optional<Denuncia> getDenunciaByCodigo(UUID id) {
         return denunciaRepository.findById(id);
-    }
-
-    public void deleteDenuncia(UUID id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteDenuncia'");
     }
 }

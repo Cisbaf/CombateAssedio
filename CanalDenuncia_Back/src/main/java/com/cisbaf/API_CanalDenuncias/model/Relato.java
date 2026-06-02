@@ -36,14 +36,12 @@ public class Relato {
     @Column(nullable = false, name = "horario_ocorrido")
     private LocalTime horarioOcorrido;
 
-    @Column(nullable = false, name = "ocorrencia_local")
-    private String ocorrenciaLocal;
+    @Column(nullable = false, name = "local_ocorrido")
+    private String localOcorrido;
 
-    @Column(nullable = false)
-    private Boolean evidencias;
+    
 
-    @Column(nullable = true, name = "tipo_evidencias")
-    private String tipoEvidencias;
+    
 
 
 

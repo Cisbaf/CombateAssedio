@@ -30,6 +30,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import WorkIcon from "@mui/icons-material/Work";
 import { getStepASchema, type StepAFormData as CreateSchemaType } from "./validationSchemas";
+import InfoBox from "../toolTips/infoBox";
 
 interface StepAProps {
   onAvançar: (dados: CreateSchemaType) => void;
@@ -69,7 +70,10 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
       return;
     }
 
-    const dataFinal: CreateSchemaType = {};
+    const dataFinal: CreateSchemaType = {
+      isAnonimo: opcaoAnonimato === "true",
+      tipoDenunciante: opcaoIdentificacao === "vitima" ? "VITIMA" : "TERCEIRO",
+    };
 
     if (opcaoAnonimato === "false") {
       dataFinal.name = data.name;
@@ -171,7 +175,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 "&.Mui-focused": { color: "black" },
               }}
             >
-              👤 Como você se identifica?
+              👤 Como você se identifica? <InfoBox texto="Marque uma das opções abaixo para identificar-se."/>
             </FormLabel>
 
             <RadioGroup

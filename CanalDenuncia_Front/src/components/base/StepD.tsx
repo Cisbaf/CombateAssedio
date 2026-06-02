@@ -2,21 +2,15 @@
 
 import { useState, type ChangeEvent, useEffect, useRef } from "react";
 import {
-  Alert,
   Box,
   FormControl,
   FormLabel,
-  RadioGroup,
   FormControlLabel,
-  Radio,
   Typography,
   Stack,
   TextField,
-  Collapse,
   Divider,
   Button,
-  Snackbar,
-  AlertColor,
   FormGroup,
   Checkbox,
   FormHelperText,
@@ -585,7 +579,7 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
               variant="body1"
               sx={{ fontWeight: 700, marginBottom: "16px", color: "#374151", display: "flex", alignItems: "center", gap: "8px" }}
             >
-              <ShieldIcon sx={{ color: "var(--primary)" }} /> Consentimento *
+              ✅ Consentimento *
             </Typography>
 
             <Box

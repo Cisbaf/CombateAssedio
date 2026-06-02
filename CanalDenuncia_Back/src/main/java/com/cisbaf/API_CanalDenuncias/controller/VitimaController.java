@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/vitimas")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class VitimaController {
 
@@ -30,11 +29,5 @@ public class VitimaController {
         return vitimaService.getVitimaById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<Vitima> criarVitima(@RequestBody Vitima vitima) {
-        Vitima savedVitima = vitimaService.criarVitima(vitima);
-        return ResponseEntity.ok(savedVitima);
     }
 }

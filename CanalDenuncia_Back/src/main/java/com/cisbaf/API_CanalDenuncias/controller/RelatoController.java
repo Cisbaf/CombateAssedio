@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/relatos")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class RelatoController {
 
@@ -31,9 +30,4 @@ public class RelatoController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Relato> criarRelato(@RequestBody Relato relato) {
-        Relato savedRelato = relatoService.criarRelato(relato);
-        return ResponseEntity.ok(savedRelato);
-    }
 }

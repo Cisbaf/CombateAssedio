@@ -20,6 +20,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { stepBSchema, type StepBFormData as StepFormData } from "./validationSchemas";
+import InfoBox from "../toolTips/infoBox";
 
 interface StepBProps {
   onAvançar: (dados: StepFormData) => void;
@@ -134,7 +135,7 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
             >
               <Stack sx={{ flex: 1 }}>
                 <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                  Nome do Ofensor *
+                  Nome do Ofensor * <InfoBox texto="Descreva o nome completo ou primeiro nome do ofensor."/>
                 </FormLabel>
                 <TextField
                   placeholder="Nome completo ou primeiro nome"
@@ -167,10 +168,10 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
 
               <Stack sx={{ flex: 1 }}>
                 <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                  Local / Setor de Trabalho *
+                  Local / Setor de Trabalho * <InfoBox texto="Descreva o local de trabalho do ofensor."/>
                 </FormLabel>
                 <TextField
-                  placeholder="Ex: Recursos Humanos, TI, Recepção"
+                  placeholder="Ex: Base SAMU - Nova Iguaçu / Recursos Humanos, TI, Recepção"
                   variant="outlined"
                   size="small"
                   slotProps={{

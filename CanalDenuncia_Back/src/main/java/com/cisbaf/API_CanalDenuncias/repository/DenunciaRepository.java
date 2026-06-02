@@ -14,5 +14,5 @@ public interface DenunciaRepository extends JpaRepository<Denuncia, UUID> {
     
     Optional<Denuncia> findByProtocolo(String protocolo);
 
-    Optional<List<Denuncia>> findByStatus(String status);
+    List<Denuncia> findByStatus(String status);
 }

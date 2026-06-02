@@ -1,14 +1,17 @@
 package com.cisbaf.API_CanalDenuncias.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.cisbaf.API_CanalDenuncias.model.enums.TipoDenunciante;
+
+import com.cisbaf.API_CanalDenuncias.model.enums.Status;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,14 +28,14 @@ public class Denuncia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    // id personalizado
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private String protocolo = gerarProtocolo();
+    private String protocolo;
 
     @Column(nullable = false, name = "tipo_denunciante")
-    private String tipoDenunciante;
+    @Enumerated(EnumType.STRING)
+    private TipoDenunciante tipoDenunciante;
 
     @Column(nullable = false, name = "is_anonimo")
     private Boolean isAnonimo;
@@ -42,7 +45,8 @@ public class Denuncia {
     private LocalDate dataRegistro;
 
     @Column(nullable = false)
-    private String status; // Pendente, Em investigação ou Resolvida
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "id_vitima", nullable = true)
@@ -59,9 +63,5 @@ public class Denuncia {
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
-
-    private String gerarProtocolo() {
-    return "PROT-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-    }
 
 }
