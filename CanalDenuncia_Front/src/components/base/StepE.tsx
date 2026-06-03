@@ -131,7 +131,7 @@ export default function StepE({ dadosFormulario, onAvançar, onVoltar }: StepEPr
     console.log("Enviando denúncia para o backend:", payload);
 
     try {
-      const response = await fetch("http://localhost:8080/api/denuncias", {
+      const response = await fetch("http://localhost:8080/form/denuncias", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
