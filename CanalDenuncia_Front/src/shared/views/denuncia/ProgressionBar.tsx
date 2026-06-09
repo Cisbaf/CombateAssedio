@@ -16,19 +16,15 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box } from "@mui/material";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
-    [`&.${stepConnectorClasses.alternativeLabel}`]: {
-        top: 22,
-    },
+    [`&.${stepConnectorClasses.alternativeLabel}`]: { top: 22 },
     [`&.${stepConnectorClasses.active}`]: {
         [`& .${stepConnectorClasses.line}`]: {
-            backgroundImage:
-                'linear-gradient( 95deg,rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
+            backgroundImage: 'linear-gradient( 95deg,rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
         },
     },
     [`&.${stepConnectorClasses.completed}`]: {
         [`& .${stepConnectorClasses.line}`]: {
-            backgroundImage:
-                'linear-gradient( 95deg,rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
+            backgroundImage: 'linear-gradient( 95deg,rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
         },
     },
     [`& .${stepConnectorClasses.line}`]: {
@@ -36,9 +32,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
         border: 0,
         backgroundColor: '#eaeaf0',
         borderRadius: 1,
-        ...theme.applyStyles('dark', {
-            backgroundColor: theme.palette.grey[800],
-        }),
+        ...theme.applyStyles('dark', { backgroundColor: theme.palette.grey[800] }),
     },
 }));
 
@@ -54,25 +48,19 @@ const ColorlibStepIconRoot = styled('div')<{
     borderRadius: '50%',
     justifyContent: 'center',
     alignItems: 'center',
-    ...theme.applyStyles('dark', {
-        backgroundColor: theme.palette.grey[700],
-    }),
+    ...theme.applyStyles('dark', { backgroundColor: theme.palette.grey[700] }),
     variants: [
         {
-            props: ({ ownerState }: { ownerState: { active?: boolean; completed?: boolean } }) =>
-                ownerState.active,
+            props: ({ ownerState }: { ownerState: { active?: boolean; completed?: boolean } }) => ownerState.active,
             style: {
-                backgroundImage:
-                    'linear-gradient( 136deg, rgba(33, 228, 242, 1) 0%, rgba(67, 64, 233, 1) 50%, rgba(7, 20, 75, 1) 100%)',
+                backgroundImage: 'linear-gradient( 136deg, rgba(33, 228, 242, 1) 0%, rgba(67, 64, 233, 1) 50%, rgba(7, 20, 75, 1) 100%)',
                 boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
             },
         },
         {
-            props: ({ ownerState }: { ownerState: { active?: boolean; completed?: boolean } }) =>
-                ownerState.completed,
+            props: ({ ownerState }: { ownerState: { active?: boolean; completed?: boolean } }) => ownerState.completed,
             style: {
-                backgroundImage:
-                    'linear-gradient( 136deg, rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
+                backgroundImage: 'linear-gradient( 136deg, rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%)',
             },
         },
     ],
@@ -80,7 +68,6 @@ const ColorlibStepIconRoot = styled('div')<{
 
 function ColorlibStepIcon(props: StepIconProps) {
     const { active, completed, className } = props;
-
     const icons: { [index: string]: React.ReactElement<unknown> } = {
         1: <AssignmentIndIcon />,
         2: <PersonOffIcon />,
@@ -89,7 +76,6 @@ function ColorlibStepIcon(props: StepIconProps) {
         5: <RateReviewIcon />,
         6: <CheckCircleIcon />,
     };
-
     return (
         <ColorlibStepIconRoot ownerState={{ completed, active }} className={className}>
             {icons[String(props.icon)]}
@@ -97,27 +83,11 @@ function ColorlibStepIcon(props: StepIconProps) {
     );
 }
 
-const steps = [
-    'Identificação',
-    'Ofensor',
-    'Contexto',
-    'Descrição',
-    'Revisão',
-    'Concluído',
-];
+const steps = ['Identificação', 'Ofensor', 'Contexto', 'Descrição', 'Revisão', 'Concluído'];
 
 export default function ProgressionBar({ activeStep = 0 }: { activeStep?: number }) {
     return (
-        <Box sx={{
-            background: 'white',
-            maxWidth: '900px',
-            margin: '0 auto',
-            boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)',
-            borderRadius: '15px',
-            mb: 3,
-            p: 2,
-            pt: 3,
-        }}>
+        <Box sx={{ background: 'white', maxWidth: '900px', margin: '0 auto', boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)', borderRadius: '15px', mb: 3, p: 2, pt: 3 }}>
             <Stepper activeStep={activeStep} alternativeLabel connector={<ColorlibConnector />}>
                 {steps.map((label) => (
                     <Step key={label}>
