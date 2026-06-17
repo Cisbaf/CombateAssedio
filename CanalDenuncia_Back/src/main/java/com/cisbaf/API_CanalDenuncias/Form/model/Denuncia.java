@@ -63,5 +63,4 @@ public class Denuncia {
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
-
 }

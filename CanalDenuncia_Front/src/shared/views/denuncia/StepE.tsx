@@ -134,8 +134,8 @@ export default function StepE({
                   </Typography>
                   <Typography variant="body2" sx={{ fontWeight: 600 }}>
                     {tipoDenunciante === "VITIMA"
-                      ? "🎯 Sou a vítima"
-                      : "👁️ Sou testemunha/terceiro"}
+                      ? "Sou a vítima"
+                      : "Sou testemunha/terceiro"}
                   </Typography>
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -144,8 +144,8 @@ export default function StepE({
                   </Typography>
                   <Typography variant="body2" sx={{ fontWeight: 600 }}>
                     {isAnonimo
-                      ? "🕵️ Sim, prefiro permanecer anônimo"
-                      : "✋ Não, quero me identificar"}
+                      ? "Prefiro permanecer anônimo"
+                      : "Quero me identificar"}
                   </Typography>
                 </Grid>
                 {!isAnonimo && (

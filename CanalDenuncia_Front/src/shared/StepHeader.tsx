@@ -4,11 +4,9 @@ import { Box, Typography } from "@mui/material";
 import type { SvgIconComponent } from "@mui/icons-material";
 
 interface StepHeaderProps {
-  /** Ícone MUI (ex: AssignmentIcon) */
   Icon: SvgIconComponent;
   title: string;
   subtitle: string;
-  /** Cor de fundo (padrão: var(--primary)) */
   bgColor?: string;
 }
 

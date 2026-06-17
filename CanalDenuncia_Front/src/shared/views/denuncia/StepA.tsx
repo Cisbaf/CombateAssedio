@@ -129,7 +129,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 "&.Mui-focused": { color: "black" },
               }}
             >
-              👤 Como você se identifica?{" "}
+              Como você se identifica?{" "}
               <InfoBox texto="Marque uma das opções abaixo para identificar-se." />
             </FormLabel>
             <RadioGroup
@@ -190,7 +190,8 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 "&.Mui-focused": { color: "black" },
               }}
             >
-              🔐 Deseja manter anonimato?
+              Deseja manter anonimato? {" "}
+              <InfoBox texto="Ao opta por permanecer anonimo, seus dados não serão informados na denuncia." />
             </FormLabel>
             <RadioGroup name="anonimato-grupo" onChange={handleAnonimatoChange}>
               <Stack spacing={2}>
@@ -492,7 +493,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                     Local de Trabalho da Vítima *
                   </FormLabel>
                   <TextField
-                    placeholder="Ex: Recursos Humanos, TI, Recepção"
+                    placeholder="Ex: Base SAMU - Nova Iguaçu / Recursos Humanos, TI, Recepção"
                     variant="outlined"
                     size="small"
                     slotProps={{
@@ -518,7 +519,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
       </Box>
 
       <ActionButtons
-        onVoltar={onVoltar}
+        onVoltar={() => window.location.href = "/"}
         onProsseguir={handleSubmit(onSubmit)}
         labelVoltar="Preencher Novamente"
       />

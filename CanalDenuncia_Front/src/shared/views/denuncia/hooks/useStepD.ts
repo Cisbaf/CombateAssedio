@@ -35,7 +35,6 @@ export function useStepD({ onAvançar }: UseStepDProps) {
       descricao: "",
       estado_emocional: "",
       aceitoPrivacidade: false,
-      aceitoTermos: false,
       autorizoLgpd: false,
       entendoSigilo: false,
     },

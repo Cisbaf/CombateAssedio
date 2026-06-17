@@ -16,7 +16,6 @@ interface ActionButtonsProps {
 
 /**
  * Par de botões "Voltar / Prosseguir" padronizado para todos os Steps.
- * Elimina a duplicação dos botões de ação em StepA–E.
  */
 export default function ActionButtons({
   onVoltar,

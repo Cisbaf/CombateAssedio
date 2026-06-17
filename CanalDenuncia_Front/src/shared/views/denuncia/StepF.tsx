@@ -57,7 +57,7 @@ export default function StepF({ protocolo }: StepFProps) {
       </Box>
 
       <Box sx={{ backgroundColor: "white", padding: "2rem", textAlign: "center" }}>
-        <Stack spacing={4} sx={{ maxWidth: 700, margin: "0 auto" }}>
+        <Stack spacing={4} sx={{ maxWidth: 700, margin: "0 auto", alignItems: "center", justifyContent: "center" }}>
           <Typography variant="body1" sx={{ color: "#4b5563", fontSize: "1.1rem" }}>
             Sua denúncia foi registrada e será analisada pela equipe responsável com total sigilo e confidencialidade.
           </Typography>
@@ -66,7 +66,7 @@ export default function StepF({ protocolo }: StepFProps) {
             <Typography variant="caption" sx={{ textTransform: "uppercase", color: "#065f46", fontWeight: 700, letterSpacing: 1 }}>Seu Número de Protocolo</Typography>
             <Typography variant="h4" sx={{ fontFamily: "monospace", fontWeight: 700, color: "#047857", my: 1.5, letterSpacing: 2 }}>{protocolo || "DEN-2026-XXXXXX"}</Typography>
             <Alert severity="warning" icon={false} sx={{ backgroundColor: "#fffbeb", color: "#92400e", border: "1px solid #fde68a", borderRadius: "8px", textAlign: "left", fontSize: "0.85rem" }}>
-              ⚠️ <strong>Guardee este número!</strong> Você precisará dele para acompanhar o andamento de sua denúncia.
+              ⚠️ <strong>Guarde este número!</strong> Você precisará dele para acompanhar o andamento de sua denúncia.
             </Alert>
           </Paper>
 

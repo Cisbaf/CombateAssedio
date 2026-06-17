@@ -1,10 +1,6 @@
-import React from 'react';
+import React from "react";
+import LoginPage from "@/shared/views/login/LoginPage";
 
-export default function LoginPage() {
-  return (
-    <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'sans-serif' }}>
-      <h2>Área de Login</h2>
-      <p>Página em desenvolvimento.</p>
-    </div>
-  );
+export default function Login() {
+  return <LoginPage />;
 }

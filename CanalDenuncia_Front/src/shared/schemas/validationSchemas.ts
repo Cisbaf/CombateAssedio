@@ -95,8 +95,7 @@ export const stepDSchema = z.object({
     .min(2, "Descreva detalhadamente a denúncia")
     .max(500, "Descrição máxima de 500 caracteres"),
   estado_emocional: z.string().min(1, "Selecione pelo menos um impacto emocional"),
-  aceitoPrivacidade: z.boolean().refine((val) => val === true, "Você deve aceitar a Política de Privacidade"),
-  aceitoTermos: z.boolean().refine((val) => val === true, "Você deve aceitar os Termos de Uso"),
+  aceitoPrivacidade: z.boolean().refine((val) => val === true, "Você deve aceitar a Política de Privacidade e os Termos de Uso"),
   autorizoLgpd: z.boolean().refine((val) => val === true, "Você deve autorizar o tratamento de dados conforme a LGPD"),
   entendoSigilo: z.boolean().refine((val) => val === true, "Você deve confirmar que entende o sigilo da denúncia"),
 });

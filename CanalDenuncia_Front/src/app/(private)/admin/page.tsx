@@ -1,7 +1,7 @@
 "use client";
 
-import AdminPage from "@/shared/components/admin/page";
+import AdminPage from "@/shared/views/admin/page";
 
-export default function Page() {
+export default function Admin() {
   return <AdminPage />;
 }

@@ -409,113 +409,6 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
             </FormControl>
           </Box>
 
-          {/* Evidências */}
-          <Box sx={{ pt: "2rem" }}>
-            <Divider sx={{ color: "var(--primary)", fontWeight: 600, mb: 3 }} />
-            <Typography
-              variant="body1"
-              sx={{
-                fontWeight: 700,
-                marginBottom: "8px",
-                color: "#374151",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              Evidências/Anexos (opcional)
-            </Typography>
-            <Box
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              onClick={triggerFileInput}
-              sx={{
-                width: "100%",
-                maxWidth: 800,
-                border: "2px dashed #cbd5e1",
-                borderRadius: "15px",
-                p: 4,
-                textAlign: "center",
-                cursor: "pointer",
-                backgroundColor: "#f8fafc",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  borderColor: "#3b82f6",
-                  backgroundColor: "#f0f7ff",
-                },
-              }}
-            >
-              <input
-                type="file"
-                ref={fileInputRef}
-                multiple
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                accept="image/*,application/pdf,audio/*,video/*"
-              />
-              <FolderOpenIcon
-                sx={{ fontSize: 48, color: "#fbbf24", mb: 1.5 }}
-              />
-              <Typography sx={{ fontWeight: 700, color: "#374151" }}>
-                Clique para enviar{" "}
-                <span style={{ fontWeight: 400, color: "#6b7280" }}>
-                  ou arraste arquivos
-                </span>
-              </Typography>
-              <Typography variant="body2" sx={{ color: "#9ca3af", mt: 0.5 }}>
-                Até 5 arquivos • Máx. 10MB cada • Imagens, PDFs, áudios, vídeos
-              </Typography>
-            </Box>
-            {arquivos.length > 0 && (
-              <Stack spacing={1} sx={{ mt: 2, maxWidth: 800 }}>
-                {arquivos.map((file, idx) => (
-                  <Box
-                    key={idx}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      p: 1.5,
-                      border: "1px solid #e2e8f0",
-                      borderRadius: "8px",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      {getFileIcon(file.type)}
-                      <Typography
-                        variant="body2"
-                        sx={{ fontWeight: 600, color: "#374151" }}
-                      >
-                        {file.name}{" "}
-                        <span
-                          style={{
-                            fontWeight: 400,
-                            color: "#9ca3af",
-                            marginLeft: "8px",
-                          }}
-                        >
-                          ({(file.size / (1024 * 1024)).toFixed(2)} MB)
-                        </span>
-                      </Typography>
-                    </Box>
-                    <Button
-                      size="small"
-                      color="error"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        removerArquivo(idx);
-                      }}
-                      sx={{ minWidth: "auto", p: 0.5 }}
-                    >
-                      <DeleteIcon sx={{ fontSize: 18 }} />
-                    </Button>
-                  </Box>
-                ))}
-              </Stack>
-            )}
-          </Box>
-
           {/* Consentimento */}
           <Box sx={{ pt: "2rem" }}>
             <Divider sx={{ color: "var(--primary)", fontWeight: 600, mb: 3 }} />
@@ -557,15 +450,7 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                           }}
                         >
                           Política de Privacidade
-                        </span>
-                      </>
-                    ),
-                  },
-                  {
-                    field: "aceitoTermos" as const,
-                    label: (
-                      <>
-                        Li e concordo com os{" "}
+                        </span> e os {" "}
                         <span
                           style={{
                             color: "#3b82f6",
@@ -611,7 +496,6 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                 ))}
               </Stack>
               {(errors.aceitoPrivacidade ||
-                errors.aceitoTermos ||
                 errors.autorizoLgpd ||
                 errors.entendoSigilo) && (
                 <FormHelperText

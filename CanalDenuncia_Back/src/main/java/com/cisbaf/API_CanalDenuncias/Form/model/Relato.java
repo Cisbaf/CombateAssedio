@@ -38,5 +38,4 @@ public class Relato {
 
     @Column(nullable = false, name = "local_ocorrido")
     private String localOcorrido;
-    
 }
