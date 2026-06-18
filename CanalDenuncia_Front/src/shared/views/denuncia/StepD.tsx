@@ -17,8 +17,6 @@ import {
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import FolderOpenIcon from "@mui/icons-material/FolderOpen";
-import DeleteIcon from "@mui/icons-material/Delete";
 import LabelIcon from "@mui/icons-material/Label";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ShieldIcon from "@mui/icons-material/Shield";

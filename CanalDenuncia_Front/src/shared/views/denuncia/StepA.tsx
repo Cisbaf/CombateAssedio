@@ -190,7 +190,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 "&.Mui-focused": { color: "black" },
               }}
             >
-              Deseja manter anonimato? {" "}
+              Deseja manter anonimato?{" "}
               <InfoBox texto="Ao opta por permanecer anonimo, seus dados não serão informados na denuncia." />
             </FormLabel>
             <RadioGroup name="anonimato-grupo" onChange={handleAnonimatoChange}>
@@ -397,10 +397,10 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
             timeout="auto"
             unmountOnExit
           >
-            <StyledFormCard variant="neutral">
+            <StyledFormCard variant="blue">
               <Typography
                 variant="subtitle1"
-                sx={{ color: "#334155", fontWeight: 700, mb: 3 }}
+                sx={{ color: "#1e3a8a", fontWeight: 700, mb: 3 }}
               >
                 Por favor, informe os dados da <u>VÍTIMA</u>:
               </Typography>
@@ -440,27 +440,26 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 </Stack>
                 <Stack>
                   <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                    Idade da Vítima (Opcional)
+                    Local de Trabalho da Vítima *
                   </FormLabel>
                   <TextField
-                    placeholder="Idade aproximada"
+                    placeholder="Ex: Base SAMU - Nova Iguaçu / Recursos Humanos, TI, Recepção"
                     variant="outlined"
                     size="small"
                     slotProps={{
                       input: {
                         startAdornment: (
                           <InputAdornment position="start">
-                            <CalendarTodayIcon
-                              sx={{ color: "#9CA3AF", fontSize: 20 }}
-                            />
+                            <WorkIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
                           </InputAdornment>
                         ),
                       },
                     }}
                     sx={textFieldSx}
-                    {...register("vitima_idade")}
-                    error={!!errors.vitima_idade}
-                    helperText={errors.vitima_idade?.message}
+                    {...register("vitima_local_trabalho")}
+                    error={!!errors.vitima_local_trabalho}
+                    helperText={errors.vitima_local_trabalho?.message}
+                    required
                   />
                 </Stack>
                 <Stack>
@@ -490,26 +489,27 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
                 </Stack>
                 <Stack>
                   <FormLabel sx={{ fontWeight: 600, color: "#4B5563", mb: 1 }}>
-                    Local de Trabalho da Vítima *
+                    Idade da Vítima (Opcional)
                   </FormLabel>
                   <TextField
-                    placeholder="Ex: Base SAMU - Nova Iguaçu / Recursos Humanos, TI, Recepção"
+                    placeholder="Idade aproximada"
                     variant="outlined"
                     size="small"
                     slotProps={{
                       input: {
                         startAdornment: (
                           <InputAdornment position="start">
-                            <WorkIcon sx={{ color: "#9CA3AF", fontSize: 20 }} />
+                            <CalendarTodayIcon
+                              sx={{ color: "#9CA3AF", fontSize: 20 }}
+                            />
                           </InputAdornment>
                         ),
                       },
                     }}
                     sx={textFieldSx}
-                    {...register("vitima_local_trabalho")}
-                    error={!!errors.vitima_local_trabalho}
-                    helperText={errors.vitima_local_trabalho?.message}
-                    required
+                    {...register("vitima_idade")}
+                    error={!!errors.vitima_idade}
+                    helperText={errors.vitima_idade?.message}
                   />
                 </Stack>
               </Box>
@@ -519,7 +519,7 @@ export default function StepA({ onAvançar, onVoltar }: StepAProps) {
       </Box>
 
       <ActionButtons
-        onVoltar={() => window.location.href = "/"}
+        onVoltar={() => (window.location.href = "/")}
         onProsseguir={handleSubmit(onSubmit)}
         labelVoltar="Preencher Novamente"
       />

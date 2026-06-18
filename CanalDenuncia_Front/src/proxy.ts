@@ -3,17 +3,34 @@ import { NextRequest, NextResponse, ProxyConfig } from "next/server";
 const publicRoutes = [
   { path: '/', whenAuthenticated: 'next' },
   { path: '/login', whenAuthenticated: 'redirect' },
-  { path: '/admin', whenAuthenticated: 'redirect' },
   { path: '/protocolo', whenAuthenticated: 'next' }
 ];
 
 const adminRoutes = [
-  //{path: '/admin', whenAuthenticated: 'redirect'},
-
-]
-
+  { path: '/admin', whenAuthenticated: 'next' }
+];
 
 const REDIRECT_WHEN_NOT_AUTHENTICATED = "/login";
+
+function isTokenExpired(token: string): boolean {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return true;
+
+    const payload = parts[1];
+    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+    const decoded = atob(base64);
+    const data = JSON.parse(decoded);
+
+    if (data.exp) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      return data.exp < currentTime;
+    }
+    return false;
+  } catch (err) {
+    return true;
+  }
+}
 
 export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -24,29 +41,51 @@ export function proxy(request: NextRequest) {
   }
 
   const publicRoute = publicRoutes.find(route => route.path === path);
-  //const adminRoute = adminRoutes.find(route => route.path === path);
-  const authToken = request.cookies.get('token');
+  const adminRoute = adminRoutes.find(route => route.path === path);
+  const authCookie = request.cookies.get('loginToken');
+  const token = authCookie?.value;
 
-    if(!authToken && publicRoute) {
+  const isExpired = token ? isTokenExpired(token) : false;
+  const isAuthenticated = !!token && !isExpired;
+
+  // Se o token estiver expirado, limpa o cookie
+  if (token && isExpired) {
+    if (!publicRoute) {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
+      const response = NextResponse.redirect(redirectUrl);
+      response.cookies.delete('loginToken');
+      return response;
+    } else {
+      const response = NextResponse.next();
+      response.cookies.delete('loginToken');
+      return response;
+    }
+  }
+
+  // Se não estiver autenticado
+  if (!isAuthenticated) {
+    if (publicRoute) {
       return NextResponse.next();
     }
-    if(!authToken && !publicRoute){
+    if (adminRoute || (!publicRoute && !adminRoute)) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = REDIRECT_WHEN_NOT_AUTHENTICATED;
       return NextResponse.redirect(redirectUrl);
     }
+  }
 
-    if(authToken && publicRoute && publicRoute.whenAuthenticated === 'redirect'){
+  // Se estiver autenticado
+  if (isAuthenticated) {
+    if (publicRoute && publicRoute.whenAuthenticated === 'redirect') {
       const redirectUrl = request.nextUrl.clone();
-      redirectUrl.pathname = "/";
+      redirectUrl.pathname = "/admin";
       return NextResponse.redirect(redirectUrl);
     }
+    // Rota admin ou qualquer outra rota privada
+    return NextResponse.next();
+  }
 
-    if(authToken && !publicRoute){
-      //checar se o token esta expirado
-      //se sim, remover o cookie e redirecionar o usuario para o login
-     return NextResponse.next();
-    }
   return NextResponse.next();
 }
 

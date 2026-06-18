@@ -13,19 +13,30 @@ export default function RootLayout({
     <html lang="pt">
       <body suppressHydrationWarning>
         <AppRouterCacheProvider>
-          <Header />
-
           <Box
             sx={{
-              maxWidth: "900px",
-              margin: "0 auto",
-              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              minHeight: "100vh",
             }}
           >
-            {children}
-          </Box>
+            <Header />
 
-          <Footer />
+            <Box
+              component="main"
+              sx={{
+                flex: 1,
+                width: "100%",
+                maxWidth: "900px",
+                margin: "0 auto",
+                padding: "2rem",
+              }}
+            >
+              {children}
+            </Box>
+
+            <Footer />
+          </Box>
         </AppRouterCacheProvider>
       </body>
     </html>

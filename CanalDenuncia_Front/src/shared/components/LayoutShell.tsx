@@ -73,13 +73,14 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer>
       <Box
+        component="footer"
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           padding: "12px 24px",
+          mt: 'auto',
         }}
       >
         <Typography
@@ -90,6 +91,5 @@ export function Footer() {
           Discriminação | Todos os direitos reservados.
         </Typography>
       </Box>
-    </footer>
   );
 }
