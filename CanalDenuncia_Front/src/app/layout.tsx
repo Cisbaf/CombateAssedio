@@ -27,7 +27,7 @@ export default function RootLayout({
               sx={{
                 flex: 1,
                 width: "100%",
-                maxWidth: "900px",
+                maxWidth: "1200px",
                 margin: "0 auto",
                 padding: "2rem",
               }}

@@ -36,10 +36,8 @@ public class DenunciaController {
     @PostMapping
     @Operation(summary = "Cria uma nova denúncia", description = "Registra uma denúncia no sistema e gera um protocolo.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Denúncia criada com sucesso", 
-                     content = @Content(schema = @Schema(implementation = Denuncia.class))),
-        @ApiResponse(responseCode = "400", description = "Dados da denúncia inválidos",
-                     content = @Content(schema = @Schema(implementation = com.cisbaf.API_CanalDenuncias.Form.infra.GlobalExceptionHandler.ValidationErrorResponse.class)))
+            @ApiResponse(responseCode = "201", description = "Denúncia criada com sucesso", content = @Content(schema = @Schema(implementation = Denuncia.class))),
+            @ApiResponse(responseCode = "400", description = "Dados da denúncia inválidos", content = @Content(schema = @Schema(implementation = com.cisbaf.API_CanalDenuncias.Form.infra.GlobalExceptionHandler.ValidationErrorResponse.class)))
     })
     public ResponseEntity<Denuncia> criarDenuncia(@RequestBody @Valid Denuncia denuncia) {
         Denuncia savedDenuncia = denunciaService.criarDenuncia(denuncia);
@@ -53,8 +51,8 @@ public class DenunciaController {
     @GetMapping
     @Operation(summary = "Lista todas as denúncias", description = "Retorna uma lista com todas as denúncias cadastradas (requer autenticação).")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Não autorizado")
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "401", description = "Não autorizado")
     })
     public ResponseEntity<List<Denuncia>> getAllDenuncias() {
         List<Denuncia> denuncias = denunciaService.getAllDenuncias();
@@ -64,9 +62,8 @@ public class DenunciaController {
     @GetMapping("/protocolo/{protocolo}")
     @Operation(summary = "Busca uma denúncia por protocolo", description = "Busca os detalhes de uma denúncia específica pelo número de protocolo.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Denúncia encontrada", 
-                     content = @Content(schema = @Schema(implementation = Denuncia.class))),
-        @ApiResponse(responseCode = "404", description = "Denúncia não encontrada com o protocolo fornecido")
+            @ApiResponse(responseCode = "200", description = "Denúncia encontrada", content = @Content(schema = @Schema(implementation = Denuncia.class))),
+            @ApiResponse(responseCode = "404", description = "Denúncia não encontrada com o protocolo fornecido")
     })
     public ResponseEntity<Denuncia> getDenunciaByProtocolo(@PathVariable String protocolo) {
         return denunciaService.getDenunciaByProtocolo(protocolo)
@@ -77,8 +74,7 @@ public class DenunciaController {
     @GetMapping("/{id}")
     @Operation(summary = "Busca uma denúncia por ID", description = "Busca os detalhes de uma denúncia específica pelo seu ID (requer autenticação).")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Denúncia encontrada", 
-                     content = @Content(schema = @Schema(implementation = Denuncia.class))),
+        @ApiResponse(responseCode = "200", description = "Denúncia encontrada", content = @Content(schema = @Schema(implementation = Denuncia.class))),
         @ApiResponse(responseCode = "401", description = "Não autorizado"),
         @ApiResponse(responseCode = "404", description = "Denúncia não encontrada com o ID fornecido")
     })
@@ -88,4 +84,3 @@ public class DenunciaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 }
-
