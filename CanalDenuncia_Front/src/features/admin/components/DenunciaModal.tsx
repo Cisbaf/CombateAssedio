@@ -44,7 +44,7 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
   return (
     <Dialog open={true} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle sx={{ m: 0, p: 2, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
           Detalhes da Denúncia
         </Typography>
         <IconButton

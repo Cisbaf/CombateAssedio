@@ -15,7 +15,7 @@ import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
 import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState } from "react";
-import { FormatDataHora, FormatDate,FormatCPF,FormatPhone } from "@/shared/components/formatters";
+import { FormatDate } from "@/shared/components/formatters";
 
 interface props {
   data: Denuncia[];
@@ -82,7 +82,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
               <TableCell sx={{ fontWeight: "bold" }}>Data</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>Tipo Denunciante</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>Anonimato</TableCell>
-              <TableCell align="center" sx={{ fontWeight: "bold" }}>Ações</TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>Detalhes</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
