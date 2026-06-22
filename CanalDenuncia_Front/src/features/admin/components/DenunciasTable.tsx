@@ -49,7 +49,7 @@ const getStatusLabel = (status: StatusDenuncia) => {
 
 export default function DenunciasTable({ data, onViewDetails }: props) {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -80,13 +80,16 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
               <TableCell sx={{ fontWeight: "bold" }}>Protocolo</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>Data</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Tipo Denunciante</TableCell>
               <TableCell sx={{ fontWeight: "bold" }}>Anonimato</TableCell>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {currentData.length > 0 ? (
-              currentData.map((denuncia) => (
+              [...currentData] 
+              .sort((a, b) => new Date(b.dataRegistro).getTime() - new Date(a.dataRegistro).getTime())
+              .map((denuncia) => (
                 <TableRow 
                   key={denuncia.id}
                   hover
@@ -109,6 +112,14 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
                     <Typography variant="body2" color="text.secondary">
                       {FormatDate(denuncia.dataRegistro) }
                     </Typography>
+                  </TableCell>
+                   <TableCell>
+                    <Chip 
+                      label={denuncia.tipoDenunciante == "VITIMA" ? "VITIMA" : "TERCEIRO"} 
+                      variant="outlined"
+                      size="small"
+                      color={denuncia.tipoDenunciante == "VITIMA" ? "error" : "secondary"}
+                    />
                   </TableCell>
                   <TableCell>
                     <Chip 
@@ -143,7 +154,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
         </Table>
       </Box>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[20, 40, 60]}
         component="div"
         count={data.length}
         rowsPerPage={rowsPerPage}
