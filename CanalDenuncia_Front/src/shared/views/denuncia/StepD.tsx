@@ -26,7 +26,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 import { useStepD } from "@/shared/views/denuncia/hooks/useStepD";
 import type { StepDFormData } from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/toolTips/infoBox";
+import InfoBox from "@/shared/components/infoBox";
 import StepHeader from "@/shared/StepHeader";
 import ActionButtons from "@/shared/ActionButtons";
 
@@ -448,7 +448,8 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                           }}
                         >
                           Política de Privacidade
-                        </span> e os {" "}
+                        </span>{" "}
+                        e os{" "}
                         <span
                           style={{
                             color: "#3b82f6",

@@ -17,7 +17,6 @@ async function getDenuncias(): Promise<Denuncia[]> {
   });
 
   if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
-
   return await response.json();
 }
 
@@ -34,7 +33,6 @@ export default async function AdminPage() {
       </div>
     );
   }
-
 }
 
 //Esse é um Server Component inteligente que busca as denúncias e

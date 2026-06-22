@@ -21,7 +21,7 @@ import {
   stepCSchema,
   type StepCFormData,
 } from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/toolTips/infoBox";
+import InfoBox from "@/shared/components/infoBox";
 import StepHeader from "@/shared/StepHeader";
 import ActionButtons from "@/shared/ActionButtons";
 
