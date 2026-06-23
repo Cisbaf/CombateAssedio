@@ -5,7 +5,7 @@ import DenunciaModal from "@/features/admin/components/DenunciaModal";
 import DenunciasCards from "@/features/admin/components/DenunciasCards";
 import DenunciasTable from "@/features/admin/components/DenunciasTable";
 import { useDenunciasFilter } from "../hooks/useDenunciasFilter";
-import { Container, Box, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import DenunciaBusca from "./DenunciaBusca";
 
 interface props {

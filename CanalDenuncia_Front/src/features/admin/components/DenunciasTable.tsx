@@ -123,7 +123,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
                   </TableCell>
                   <TableCell>
                     <Chip 
-                      label={denuncia.isAnonimo ? "Sim" : "Não"} 
+                      label={denuncia.isAnonimo ? "Anônimo" : "Identificado"} 
                       variant="outlined"
                       size="small"
                       color={denuncia.isAnonimo ? "default" : "primary"}

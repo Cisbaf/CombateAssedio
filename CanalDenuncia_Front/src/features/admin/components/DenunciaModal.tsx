@@ -117,7 +117,7 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+            //gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
             gap: 4,
           }}
         >
@@ -164,6 +164,14 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
                 </Typography>
                 <Typography variant="body1">
                   {denuncia.relato?.categoria || "Não informado"}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="body2" color="text.secondary">
+                  Descrição
+                </Typography>
+                <Typography variant="body1">
+                  {denuncia.relato?.descricao || "Não informado"}
                 </Typography>
               </Box>
             </Box>
@@ -312,6 +320,11 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
               </Box>
             </Box>
           </Box>
+
+          {/* Chat de conversa */}
+
+          {/* Botões de ação - status da denuncia */}
+          
         </Box>
       </DialogContent>
 
@@ -320,6 +333,7 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
           Fechar
         </Button>
       </DialogActions>
+
     </Dialog>
   );
 }
