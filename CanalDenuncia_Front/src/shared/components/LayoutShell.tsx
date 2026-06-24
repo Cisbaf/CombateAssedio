@@ -1,6 +1,4 @@
-import React from "react";
 import { Box, Typography, Divider, Button } from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
 import Image from "next/image";
 
 export function Header() {

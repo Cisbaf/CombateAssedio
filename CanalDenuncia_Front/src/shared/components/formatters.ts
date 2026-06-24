@@ -13,12 +13,12 @@ export function FormatPhone(phone: string){
 
 export function FormatDate(date: string){
 
-    const data = new Date(date);
+    const hasZ = date.toUpperCase().endsWith('Z');
+    const data = new Date(hasZ ? date : date + 'Z');
     return data.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric',
-        timeZone: 'UTC'
+        year: 'numeric'
     });
 }
 
@@ -36,13 +36,13 @@ export function FormatCPF(cpf: string){
 export function FormatDataHora(dataHora: string): string{
     if (!dataHora) return "--";
 
-    const data = new Date(dataHora);
+    const hasZ = dataHora.toUpperCase().endsWith('Z');
+    const data = new Date(hasZ ? dataHora : dataHora + 'Z');
     return data.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'UTC'
+      minute: '2-digit'
     });
 }

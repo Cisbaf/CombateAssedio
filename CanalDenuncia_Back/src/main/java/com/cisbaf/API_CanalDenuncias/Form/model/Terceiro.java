@@ -1,7 +1,5 @@
 package com.cisbaf.API_CanalDenuncias.Form.model;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +25,6 @@ public class Terceiro {
     private Integer idade;
 
     @Column(nullable = true)
-    @CPF
     private String cpf;
 
     @Column(nullable = true)

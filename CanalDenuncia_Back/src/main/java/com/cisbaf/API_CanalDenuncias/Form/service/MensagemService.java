@@ -9,7 +9,6 @@ import com.cisbaf.API_CanalDenuncias.Form.dto.MensagemDto;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.model.Mensagem;
 import com.cisbaf.API_CanalDenuncias.Form.repository.DenunciaRepository;
-import com.cisbaf.API_CanalDenuncias.Form.repository.MensagemRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MensagemService {
 
-    private final MensagemRepository mensagemRepository;
     private final DenunciaRepository denunciaRepository;
 
     public List<Mensagem> listarMensagensPorDenuncia(UUID denunciaId) {
-        return mensagemRepository.findByDenunciaIdOrderByDataEnvioAsc(denunciaId);
+        Denuncia denuncia = denunciaRepository.findById(denunciaId)
+                .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
+        return denuncia.getMensagens();
     }
 
     @Transactional
@@ -30,12 +30,13 @@ public class MensagemService {
         Denuncia denuncia = denunciaRepository.findById(denunciaId)
                             .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-        Mensagem novaMensagem = Mensagem.builder()
-                .conteudo(dto.conteudo())
-                .is_admin(dto.is_admin())
-                .denuncia(denuncia)
-                .build();
+        Mensagem novaMensagem = new Mensagem();
+        novaMensagem.setConteudo(dto.conteudo());
+        
+        denuncia.getMensagens().add(novaMensagem);
+        Denuncia savedDenuncia = denunciaRepository.saveAndFlush(denuncia);
 
-        return mensagemRepository.save(novaMensagem);
+        // Pega a mensagem gerenciada pelo JPA, que já contém o ID gerado pelo banco
+        return savedDenuncia.getMensagens().get(savedDenuncia.getMensagens().size() - 1);
     }
 }

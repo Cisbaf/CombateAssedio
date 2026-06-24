@@ -109,7 +109,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
                     />
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" suppressHydrationWarning>
                       {FormatDate(denuncia.dataRegistro) }
                     </Typography>
                   </TableCell>

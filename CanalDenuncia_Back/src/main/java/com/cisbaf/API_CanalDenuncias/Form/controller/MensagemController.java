@@ -37,7 +37,7 @@ public class MensagemController {
         return ResponseEntity.ok(mensagens);
     }
 
-    @PostMapping
+    @PostMapping("/{denunciaId}")
     @Operation(summary = "Envia uma nova mensagem", description = "Envia uma nova mensagem para uma denúncia.")
     public ResponseEntity<Mensagem> enviarMensagem(@PathVariable UUID denunciaId, @RequestBody @Valid MensagemDto mensagemDto) {
         Mensagem savedMensagem = mensagemService.enviar(denunciaId, mensagemDto);

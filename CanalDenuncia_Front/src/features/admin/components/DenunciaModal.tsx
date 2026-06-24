@@ -10,6 +10,7 @@ import {
   Chip,
   IconButton,
   Paper,
+  TextField,
 } from "@mui/material";
 import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,6 +20,7 @@ import {
   FormatCPF,
   FormatPhone,
 } from "@/shared/components/formatters";
+import DenunciaMensagem from "./DenunciaMensagem";
 
 interface props {
   denuncia: Denuncia;
@@ -54,6 +56,8 @@ const getStatusLabel = (status: StatusDenuncia) => {
       return status;
   }
 };
+
+
 
 export default function DenunciaModal({ denuncia, onClose }: props) {
   return (
@@ -117,7 +121,6 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
         <Box
           sx={{
             display: "grid",
-            //gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
             gap: 4,
           }}
         >
@@ -322,9 +325,10 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
           </Box>
 
           {/* Chat de conversa */}
+          <DenunciaMensagem denuncia={denuncia}  />
 
           {/* Botões de ação - status da denuncia */}
-          
+            
         </Box>
       </DialogContent>
 

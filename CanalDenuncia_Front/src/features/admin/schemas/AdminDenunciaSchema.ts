@@ -20,6 +20,12 @@ export interface Relato {
   descricao?: string;
 }
 
+export interface Mensagem {
+  id: string;
+  conteudo: string;
+  dataEnvio: string;
+}
+
 export interface Denuncia {
   id: string;
   protocolo: string;
@@ -31,4 +37,6 @@ export interface Denuncia {
   terceiro?: Pessoa;
   ofensor?: Pessoa;
   relato?: Relato;
+  mensagens?: Mensagem[];
 }
+

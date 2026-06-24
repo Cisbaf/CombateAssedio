@@ -16,9 +16,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -63,4 +66,9 @@ public class Denuncia {
     @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "denuncia_id", nullable = true)
+    @jakarta.persistence.OrderBy("dataEnvio ASC")
+    private List<Mensagem> mensagens = new java.util.ArrayList<>();
 }

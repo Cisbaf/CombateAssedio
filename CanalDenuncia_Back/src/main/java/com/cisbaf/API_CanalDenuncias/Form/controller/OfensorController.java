@@ -12,10 +12,6 @@ import com.cisbaf.API_CanalDenuncias.Form.model.Ofensor;
 import com.cisbaf.API_CanalDenuncias.Form.service.OfensorService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -29,10 +25,6 @@ public class OfensorController {
 
     @GetMapping
     @Operation(summary = "Lista todos os ofensores", description = "Retorna uma lista com todos os ofensores mapeados (requer autenticação).")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-        @ApiResponse(responseCode = "401", description = "Não autorizado")
-    })
     public ResponseEntity<List<Ofensor>> getAllOfensores() {
         List<Ofensor> ofensores = ofensorService.getAllOfensores();
         return ResponseEntity.ok(ofensores);
@@ -40,12 +32,7 @@ public class OfensorController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Busca ofensor por ID", description = "Retorna os detalhes de um ofensor específico pelo seu ID (requer autenticação).")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Ofensor encontrado", 
-                     content = @Content(schema = @Schema(implementation = Ofensor.class))),
-        @ApiResponse(responseCode = "401", description = "Não autorizado"),
-        @ApiResponse(responseCode = "404", description = "Ofensor não encontrado")
-    })
+    
     public ResponseEntity<Ofensor> getOfensorById(@PathVariable UUID id) {
         return ofensorService.getOfensorById(id)
                 .map(ResponseEntity::ok)

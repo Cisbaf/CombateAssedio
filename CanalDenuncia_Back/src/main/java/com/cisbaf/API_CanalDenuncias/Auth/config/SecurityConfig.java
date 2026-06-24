@@ -75,7 +75,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/form/mensagens/{denunciaId}").authenticated()
                         
-                        .requestMatchers(HttpMethod.POST, "/form/mensagens").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/form/mensagens/{denunciaId}").authenticated()
 
 
                         // ==========================

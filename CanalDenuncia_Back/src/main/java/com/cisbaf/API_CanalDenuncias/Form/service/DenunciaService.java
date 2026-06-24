@@ -41,4 +41,11 @@ public class DenunciaService {
     public Optional<Denuncia> getDenunciaByProtocolo(String protocolo) {
         return denunciaRepository.findByProtocolo(protocolo);
     }
+
+    @Transactional
+    public Denuncia atualizarStatus(UUID denunciaId, String newStatus){
+        Denuncia denuncia = getDenunciaByCodigo(denunciaId).get();
+        denuncia.setStatus(Status.valueOf(newStatus));
+        return denunciaRepository.save(denuncia);
+    }
 }

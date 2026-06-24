@@ -1,13 +1,8 @@
 package com.cisbaf.API_CanalDenuncias.Form.dto;
 
-import java.util.UUID;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 
 public record MensagemDto (
-    @NotBlank String conteudo,
-    @NotNull Boolean is_admin,
-    @NotNull UUID denuncia_id
+    @NotBlank String conteudo
 ) {}
