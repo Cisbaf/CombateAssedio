@@ -12,6 +12,8 @@ interface props {
   initialData: Denuncia[];
 }
 
+ 
+
 export default function AdminDashBoard({ initialData }: props) {
   //Hook separando toda a complexidade de filtragem da UI
   const {
@@ -23,10 +25,9 @@ export default function AdminDashBoard({ initialData }: props) {
     stats,
   } = useDenunciasFilter(initialData);
 
-  //Estado local da denuncia selecionada para o modal
-  const [selectedDenuncia, setSelectedDenuncia] = useState<Denuncia | null>(
-    null,
-  );
+  //Estado local da denuncia selecionada (guarda apenas o ID para sempre refletir o initialData atualizado)
+  const [selectedDenunciaId, setSelectedDenunciaId] = useState<string | null>(null);
+  const selectedDenuncia = initialData.find(d => d.id === selectedDenunciaId) || null;
 
   return (
     <Container
@@ -47,14 +48,14 @@ export default function AdminDashBoard({ initialData }: props) {
       {/* Tabela de exibição (Componente Burro) */}
       <DenunciasTable
         data={filteredDenuncias}
-        onViewDetails={(denuncia) => setSelectedDenuncia(denuncia)}
+        onViewDetails={(denuncia) => setSelectedDenunciaId(denuncia.id)}
       />
 
       {/* Modal só renderiza se existir uma denúncia selecionada */}
       {selectedDenuncia && (
         <DenunciaModal
           denuncia={selectedDenuncia}
-          onClose={() => setSelectedDenuncia(null)}
+          onClose={() => setSelectedDenunciaId(null)}
         />
       )}
     </Container>

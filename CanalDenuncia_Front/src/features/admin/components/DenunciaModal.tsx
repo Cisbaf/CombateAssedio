@@ -9,18 +9,17 @@ import {
   Divider,
   Chip,
   IconButton,
-  Paper,
-  TextField,
 } from "@mui/material";
 import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  FormatDataHora,
   FormatDate,
   FormatCPF,
   FormatPhone,
 } from "@/shared/components/formatters";
 import DenunciaMensagem from "./DenunciaMensagem";
+import DenunciaPutStatus from "./DenunciaPutStatus";
+import DenunciaDetalhamento from "./DenunciaDetalhamento";
 
 interface props {
   denuncia: Denuncia;
@@ -50,8 +49,6 @@ const getStatusLabel = (status: StatusDenuncia) => {
       return "Em Investigação";
     case "RESOLVIDA":
       return "Resolvida";
-    case "ARQUIVADA":
-      return "Arquivada";
     default:
       return status;
   }
@@ -90,245 +87,19 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
       <DialogContent dividers sx={{ p: 3 }}>
         <Box
           sx={{
-            mb: 4,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
+            flexDirection: "column",
             gap: 2,
           }}
         >
-          <Box>
-            <Typography variant="subtitle2" color="text.secondary">
-              Protocolo
-            </Typography>
-            <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-              {denuncia.protocolo}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-            <Chip
-              label={getStatusLabel(denuncia.status)}
-              color={getStatusColor(denuncia.status) as any}
-              sx={{ fontWeight: "medium" }}
-            />
-            <Chip
-              label={denuncia.isAnonimo ? "Anônima" : "Identificada"}
-              variant="outlined"
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "grid",
-            gap: 4,
-          }}
-        >
-          {/* INFORMAÇÕES DO RELATO */}
-          <Box>
-            <Typography
-              variant="h6"
-              gutterBottom
-              color="primary.main"
-              sx={{ fontWeight: "bold" }}
-            >
-              Informações do Relato
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Data do Ocorrido
-                </Typography>
-                <Typography variant="body1">
-                  {denuncia.relato?.dataOcorrido
-                    ? FormatDate(denuncia.relato.dataOcorrido)
-                    : "Não informado"}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Horário
-                </Typography>
-                <Typography variant="body1">
-                  {denuncia.relato?.horarioOcorrido || "Não informado"}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Local
-                </Typography>
-                <Typography variant="body1">
-                  {denuncia.relato?.localOcorrido || "Não informado"}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Categoria
-                </Typography>
-                <Typography variant="body1">
-                  {denuncia.relato?.categoria || "Não informado"}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">
-                  Descrição
-                </Typography>
-                <Typography variant="body1">
-                  {denuncia.relato?.descricao || "Não informado"}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-
-          {/* INFORMAÇÕES DO TERCEIRO */}
-          {!denuncia.isAnonimo && denuncia.tipoDenunciante === "TERCEIRO" && (
-            <Box>
-              <Typography
-                variant="h6"
-                gutterBottom
-                color="primary.main"
-                sx={{ fontWeight: "bold" }}
-              >
-                Informações do Terceiro
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Nome
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.terceiro?.nome || "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Idade
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.terceiro?.idade || "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    CPF
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.terceiro?.cpf
-                      ? FormatCPF(denuncia.terceiro.cpf)
-                      : "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Telefone
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.terceiro?.telefone
-                      ? FormatPhone(denuncia.terceiro.telefone)
-                      : "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    E-mail
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.terceiro?.email || "Não informado"}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          )}
-
-          {/* INFORMAÇÕES DO VÍTIMA */}
-          {!denuncia.isAnonimo && denuncia.tipoDenunciante === "VITIMA" && (
-            <Box>
-              <Typography
-                variant="h6"
-                gutterBottom
-                color="primary.main"
-                sx={{ fontWeight: "bold" }}
-              >
-                Informações da Vítima
-              </Typography>
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Nome
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.nome || "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Idade
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.idade || "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    CPF
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.cpf
-                      ? FormatCPF(denuncia.vitima.cpf)
-                      : "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Telefone
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.telefone
-                      ? FormatPhone(denuncia.vitima.telefone)
-                      : "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    E-mail
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.email || "Não informado"}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Local de Trabalho
-                  </Typography>
-                  <Typography variant="body1">
-                    {denuncia.vitima?.localTrabalho || "Não informado"}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
-          )}
-          {/* INFORMAÇÕES DO OFENSOR */}
-          <Box>
-            <Typography variant="h6" gutterBottom color="primary.main" sx={{ fontWeight: "bold" }}>
-              Informações do ofensor
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              <Box>
-                <Typography variant="body2" color="text.secondary">Nome</Typography>
-                <Typography variant="body1">{denuncia.ofensor?.nome || "Não informado"}</Typography>
-              </Box>
-              <Box>
-                <Typography variant="body2" color="text.secondary">Idade</Typography>
-                <Typography variant="body1">{denuncia.ofensor?.localTrabalho || "Não informado"}</Typography>
-              </Box>
-            </Box>
-          </Box>
+        <DenunciaDetalhamento denuncia={denuncia} />
 
           {/* Chat de conversa */}
           <DenunciaMensagem denuncia={denuncia}  />
 
           {/* Botões de ação - status da denuncia */}
-            
+          <DenunciaPutStatus denuncia={denuncia}/>
+
         </Box>
       </DialogContent>
 

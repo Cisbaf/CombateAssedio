@@ -5,7 +5,7 @@ import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 export type FiltroStatusType = "TODAS" | "ATIVAS" | "ARQUIVADAS";
 
 export function useDenunciasFilter(initialData: Denuncia[]) {
-  const [filtroStatus, setFiltroStatus] = useState<FiltroStatusType>("ATIVAS");
+  const [filtroStatus, setFiltroStatus] = useState<FiltroStatusType>("TODAS");
   const [busca, setBusca] = useState("");
 
   const filteredDenuncias = useMemo(() => {

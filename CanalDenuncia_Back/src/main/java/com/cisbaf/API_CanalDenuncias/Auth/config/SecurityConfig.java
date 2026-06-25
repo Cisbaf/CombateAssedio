@@ -77,7 +77,7 @@ public class SecurityConfig {
                         
                         .requestMatchers(HttpMethod.POST, "/form/mensagens/{denunciaId}").authenticated()
 
-
+                        .requestMatchers(HttpMethod.PUT, "/form/denuncias/atualizarStatus/{id}").authenticated()
                         // ==========================
 
                         // SWAGGER UI

@@ -94,3 +94,8 @@ export type ResponseDenuncia = {
     relato: ResponseRelato;
     terceiro?: ResponseTerceiro;
 };
+
+
+export type RequestStatus = {
+    status: string;
+};

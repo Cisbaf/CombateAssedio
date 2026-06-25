@@ -5,20 +5,10 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
 import { FormatDataHora } from "@/shared/components/formatters";
 import InfoBox from "@/shared/components/infoBox";
+import { postMsg } from "@/api/denunciaApi";
 
 interface props {
   denuncia: Denuncia;
-}
-
-async function postMsg(denuncia: Denuncia, mensagem: string) {
-  return await fetch(`http://localhost:8080/form/mensagens/${denuncia.id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ conteudo: mensagem }),
-  });
 }
 
 export default function DenunciaMensagem({ denuncia }: props) {
@@ -64,7 +54,7 @@ export default function DenunciaMensagem({ denuncia }: props) {
         color="primary.main"
         sx={{ fontWeight: "bold" }}
       >
-        Chat de conversa {" "}
+        Chat de conversa{" "}
         <InfoBox
           texto="Nesta área, o administrador pode enviar mensagens para o denunciante. 
         Todas as mensagens são registradas e arquivadas junto com a denúncia para garantir transparência e controle.
@@ -80,12 +70,8 @@ export default function DenunciaMensagem({ denuncia }: props) {
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: 2,
-          p: 2,
-          bgcolor: "grey.50",
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
+          gap: 3,
+          p: 1,
           maxHeight: "400px",
           overflowY: "auto",
         }}
@@ -94,28 +80,41 @@ export default function DenunciaMensagem({ denuncia }: props) {
           <Box
             key={mensagem.id}
             sx={{
-              alignSelf: "flex-start",
-              maxWidth: "85%",
-              bgcolor: "white",
-              p: 1.5,
-              borderRadius: 2,
-              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.05)",
-              borderLeft: "4px solid",
+              display: "flex",
+              flexDirection: "column",
+              gap: 0.5,
+              position: "relative",
+              pl: 2,
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: "4px",
+                bgcolor: "error.main",
+                borderRadius: 4,
+                opacity: 0.8,
+              }
             }}
           >
             <Typography
-              variant="body1"
-              color="text.primary"
-              sx={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
+              variant="body2"
+              color="error.main"
+              sx={{ fontWeight: "medium", opacity: 0.9 }}
             >
-              {mensagem.conteudo}
+              Comentário adicionado às {FormatDataHora(mensagem.dataEnvio)}
             </Typography>
             <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ display: "block", mt: 1, textAlign: "right" }}
+              variant="body1"
+              color="text.primary"
+              sx={{ 
+                fontWeight: "bold", 
+                whiteSpace: "pre-wrap", 
+                wordBreak: "break-word" 
+              }}
             >
-              {FormatDataHora(mensagem.dataEnvio)}
+              {mensagem.conteudo}
             </Typography>
           </Box>
         ))}

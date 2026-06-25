@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cisbaf.API_CanalDenuncias.Form.dto.StatusRequest;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.service.DenunciaService;
 
@@ -66,8 +67,9 @@ public class DenunciaController {
 
     @PutMapping("/atualizarStatus/{id}")
     @Operation(summary = "Atualiza o status de uma denúncia", description = "Atualiza o status de uma denúncia específica pelo seu ID (requer autenticação).")
-    public ResponseEntity<Denuncia> atualizarStatus(@PathVariable UUID denunciaId, @RequestBody String status) {
-        Denuncia denuncia = denunciaService.atualizarStatus(denunciaId, status);
+    public ResponseEntity<Denuncia> atualizarStatus(@PathVariable("id") UUID denunciaId,
+            @RequestBody StatusRequest status) {
+        Denuncia denuncia = denunciaService.atualizarStatus(denunciaId, status.status());
         return ResponseEntity.ok(denuncia);
     }
 

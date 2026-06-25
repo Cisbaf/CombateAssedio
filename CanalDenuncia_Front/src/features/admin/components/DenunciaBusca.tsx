@@ -39,7 +39,7 @@ export default function DenunciaBusca({ filtroStatus, setFiltroStatus, busca, se
         >
           <Tab label="Todas" value="TODAS" />
           <Tab label="Ativas" value="ATIVAS" />
-          <Tab label="Arquivadas" value="ARQUIVADAS" />
+          <Tab label="Resolvida" value="RESOLVIDA" />
         </Tabs>
 
         <TextField

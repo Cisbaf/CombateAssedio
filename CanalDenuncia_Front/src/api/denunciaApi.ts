@@ -1,4 +1,6 @@
+import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 import type { DadosFormulario } from "@/shared/types/denuncia";
+import type { RequestStatus } from "@/shared/components/types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -97,3 +99,27 @@ export async function enviarDenuncia(
 
   return result as { protocolo: string };
 }
+
+
+export async function postMsg(denuncia: Denuncia, mensagem: string) {
+  return await fetch(`${API_BASE_URL}/form/mensagens/${denuncia.id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({ conteudo: mensagem }),
+  });
+}
+
+export async function putStatus(denuncia: Denuncia, status: RequestStatus) {
+  return await fetch(`${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`,{
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    credentials: "include",
+    body: JSON.stringify(status)
+  });
+}
+  
