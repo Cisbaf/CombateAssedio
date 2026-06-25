@@ -12,8 +12,6 @@ interface props {
   initialData: Denuncia[];
 }
 
- 
-
 export default function AdminDashBoard({ initialData }: props) {
   //Hook separando toda a complexidade de filtragem da UI
   const {

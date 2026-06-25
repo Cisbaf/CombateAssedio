@@ -68,17 +68,17 @@ export default function StepE({
   const handleEnviar = async () => {
     setLoading(true);
     setErrorMessage("");
-    try {
-      const { protocolo } = await enviarDenuncia(dadosFormulario);
-      onAvançar(protocolo);
-    } catch (err: any) {
-      setErrorMessage(
-        err.message || "Não foi possível conectar com o servidor da API.",
-      );
+
+    const result = await enviarDenuncia(dadosFormulario);
+
+    if (result && result.protocolo) {
+      onAvançar(result.protocolo);
+    } else {
+      setErrorMessage("Não foi possível conectar com o servidor da API.");
       setOpenSnack(true);
-    } finally {
-      setLoading(false);
     }
+    
+    setLoading(false);
   };
 
   return (

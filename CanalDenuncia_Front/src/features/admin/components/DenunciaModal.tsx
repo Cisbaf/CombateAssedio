@@ -7,16 +7,11 @@ import {
   Typography,
   Box,
   Divider,
-  Chip,
   IconButton,
 } from "@mui/material";
-import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
+import { Denuncia } from "../schemas/AdminDenunciaSchema";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  FormatDate,
-  FormatCPF,
-  FormatPhone,
-} from "@/shared/components/formatters";
+
 import DenunciaMensagem from "./DenunciaMensagem";
 import DenunciaPutStatus from "./DenunciaPutStatus";
 import DenunciaDetalhamento from "./DenunciaDetalhamento";
@@ -25,35 +20,6 @@ interface props {
   denuncia: Denuncia;
   onClose: () => void;
 }
-
-const getStatusColor = (status: StatusDenuncia) => {
-  switch (status) {
-    case "PENDENTE":
-      return "warning";
-    case "EM_INVESTIGACAO":
-      return "info";
-    case "RESOLVIDA":
-      return "success";
-    case "ARQUIVADA":
-      return "default";
-    default:
-      return "default";
-  }
-};
-
-const getStatusLabel = (status: StatusDenuncia) => {
-  switch (status) {
-    case "PENDENTE":
-      return "Pendente";
-    case "EM_INVESTIGACAO":
-      return "Em Investigação";
-    case "RESOLVIDA":
-      return "Resolvida";
-    default:
-      return status;
-  }
-};
-
 
 
 export default function DenunciaModal({ denuncia, onClose }: props) {

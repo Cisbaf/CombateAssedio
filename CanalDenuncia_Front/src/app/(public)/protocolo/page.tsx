@@ -1,5 +1,5 @@
-import ProtocoloPage from "@/shared/views/protocolo/ProtocoloPage";
+import ProtocoloBusca from "@/features/protocolo/components/ProtocoloBusca";
 
-export default function Protocolo() {
-  return <ProtocoloPage />;
+export default async function ProtocoloPage() {
+  return <ProtocoloBusca />;
 }

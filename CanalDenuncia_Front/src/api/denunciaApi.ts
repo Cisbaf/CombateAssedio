@@ -78,48 +78,91 @@ export function mapFormToBackend(dadosFormulario: DadosFormulario) {
 /** Envia a denúncia para o backend e retorna o protocolo gerado */
 export async function enviarDenuncia(
   dadosFormulario: DadosFormulario,
-): Promise<{ protocolo: string }> {
-  const payload = mapFormToBackend(dadosFormulario);
+): Promise<{ protocolo: string } | null> {
+  try {
+    const payload = mapFormToBackend(dadosFormulario);
 
-  const response = await fetch(`${API_BASE_URL}/form/denuncias`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+    const response = await fetch(`${API_BASE_URL}/form/denuncias`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-  if (!response.ok) {
-    throw new Error(`Erro no servidor: Código ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Erro no servidor: Código ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result?.protocolo) {
+      throw new Error("Protocolo não retornado pelo servidor.");
+    }
+
+    return result as { protocolo: string };
+  } catch (error) {
+    console.error("Erro ao enviar denúncia:", error);
+    return null;
   }
-
-  const result = await response.json();
-
-  if (!result?.protocolo) {
-    throw new Error("Protocolo não retornado pelo servidor.");
-  }
-
-  return result as { protocolo: string };
 }
-
 
 export async function postMsg(denuncia: Denuncia, mensagem: string) {
-  return await fetch(`${API_BASE_URL}/form/mensagens/${denuncia.id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({ conteudo: mensagem }),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/form/mensagens/${denuncia.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ conteudo: mensagem }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro no postMsg:", error);
+    return null;
+  }
 }
 
-export async function putStatus(denuncia: Denuncia, status: RequestStatus) {
-  return await fetch(`${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`,{
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    credentials: "include",
-    body: JSON.stringify(status)
-  });
+export async function putStatus(denuncia: Denuncia, status: RequestStatus): Promise<boolean> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(status),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status}`);
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Erro no putStatus:", error);
+    return false;
+  }
 }
-  
+
+export async function getDenunciaFromProtocolo(protocolo: String): Promise<Denuncia | null> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/form/denuncias/protocolo/${protocolo}`, {
+      cache: "no-store",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar denuncia por protocolo:", error);
+    return null;
+  }
+}

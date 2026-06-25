@@ -99,3 +99,7 @@ export type ResponseDenuncia = {
 export type RequestStatus = {
     status: string;
 };
+
+export type RequestProtocolo = {
+    protocolo: string;
+}

@@ -18,21 +18,14 @@ export default function DenunciaMensagem({ denuncia }: props) {
   const handleSendMessage = async () => {
     if (!novaMensagem.trim()) return;
 
-    try {
-      const response = await postMsg(denuncia, novaMensagem);
+    const novaMsg = await postMsg(denuncia, novaMensagem);
 
-      if (response.ok) {
-        const novaMsg = await response.json();
-        // Atualiza a tela imediatamente com a nova mensagem
-        setMensagens([...mensagens, novaMsg]);
-        setNovaMensagem("");
-      } else {
-        alert("Erro ao enviar mensagem. Verifique a aba Network.");
-        console.error("Erro na resposta:", response.status);
-      }
-    } catch (error) {
-      console.error("Erro no fetch:", error);
-      alert("Erro de conexão ao tentar enviar a mensagem.");
+    if (novaMsg) {
+      // Atualiza a tela imediatamente com a nova mensagem
+      setMensagens([...mensagens, novaMsg]);
+      setNovaMensagem("");
+    } else {
+      alert("Erro ao enviar mensagem. Verifique a aba Network.");
     }
   };
 

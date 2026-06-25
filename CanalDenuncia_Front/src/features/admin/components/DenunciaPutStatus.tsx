@@ -13,19 +13,13 @@ export default function DenunciaPutStatus({ denuncia }: props) {
   const router = useRouter();
 
   const handlePutStatus = async (status: string) => {
-    try {
-      const response = await putStatus(denuncia, { status });
+    const sucesso = await putStatus(denuncia, { status });
 
-      if (response.ok) {
-        alert("Status atualizado com sucesso!");
-        router.refresh();
-      } else {
-        alert("Erro ao atualizar status. Verifique a aba Network.");
-        console.error("Erro na resposta:", response.status);
-      }
-    } catch (error) {
-      console.error("Erro no fetch:", error);
-      alert("Erro de conexão ao tentar enviar a mensagem.");
+    if (sucesso) {
+      alert("Status atualizado com sucesso!");
+      router.refresh();
+    } else {
+      alert("Erro ao atualizar status. Verifique a aba Network.");
     }
   };
 

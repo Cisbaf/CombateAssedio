@@ -62,7 +62,7 @@ const textFieldSx = {
   },
 };
 
-export default function StepA({ onAvançar, onVoltar }: StepAProps) {
+export default function StepA({ onAvançar }: StepAProps) {
   const {
     opcaoIdentificacao,
     opcaoAnonimato,
