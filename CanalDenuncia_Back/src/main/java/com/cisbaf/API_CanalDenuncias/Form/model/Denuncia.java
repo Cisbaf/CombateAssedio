@@ -19,13 +19,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "denuncias")
 public class Denuncia {
 
@@ -71,4 +73,18 @@ public class Denuncia {
     @JoinColumn(name = "denuncia_id", nullable = true)
     @jakarta.persistence.OrderBy("dataEnvio ASC")
     private List<Mensagem> mensagens = new java.util.ArrayList<>();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Denuncia)) return false;
+        Denuncia other = (Denuncia) o;
+        return protocolo != null && protocolo.equals(other.protocolo);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+}
 }

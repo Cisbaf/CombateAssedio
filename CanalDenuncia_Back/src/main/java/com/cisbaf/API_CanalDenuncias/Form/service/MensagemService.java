@@ -9,8 +9,11 @@ import com.cisbaf.API_CanalDenuncias.Form.dto.MensagemDto;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.model.Mensagem;
 import com.cisbaf.API_CanalDenuncias.Form.repository.DenunciaRepository;
+import com.cisbaf.API_CanalDenuncias.Form.repository.MensagemRepository;
 
-import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,25 +21,25 @@ import lombok.RequiredArgsConstructor;
 public class MensagemService {
 
     private final DenunciaRepository denunciaRepository;
+    private final MensagemRepository mensagemRepository;
 
+    @Transactional(readOnly = true)
     public List<Mensagem> listarMensagensPorDenuncia(UUID denunciaId) {
         Denuncia denuncia = denunciaRepository.findById(denunciaId)
                 .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
         return denuncia.getMensagens();
     }
 
-    @Transactional
-    public Mensagem enviar(UUID denunciaId, MensagemDto dto){
+    @Transactional(rollbackFor = Exception.class)
+    public Mensagem enviar(UUID denunciaId, MensagemDto dto) {
+
         Denuncia denuncia = denunciaRepository.findById(denunciaId)
-                            .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
 
         Mensagem novaMensagem = new Mensagem();
         novaMensagem.setConteudo(dto.conteudo());
-        
-        denuncia.getMensagens().add(novaMensagem);
-        Denuncia savedDenuncia = denunciaRepository.saveAndFlush(denuncia);
+        novaMensagem.setDenunciaId(denuncia);
 
-        // Pega a mensagem gerenciada pelo JPA, que já contém o ID gerado pelo banco
-        return savedDenuncia.getMensagens().get(savedDenuncia.getMensagens().size() - 1);
+        return mensagemRepository.save(novaMensagem);
     }
 }

@@ -10,15 +10,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Entity
 @Data
 @NoArgsConstructor
@@ -37,5 +38,10 @@ public class Mensagem {
     @CreationTimestamp
     @Column(nullable = false, updatable = false, name = "data_envio")
     private LocalDateTime dataEnvio;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "denuncia_id", nullable = false)
+    private Denuncia denunciaId;
 
 }

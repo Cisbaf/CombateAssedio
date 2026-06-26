@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import java.util.UUID;
 
+import com.cisbaf.API_CanalDenuncias.Form.model.enums.Status;
+
 @Repository
 public interface DenunciaRepository extends JpaRepository<Denuncia, UUID> {
     
     Optional<Denuncia> findByProtocolo(String protocolo);
-    List<Denuncia> findByStatus(String status);
+    List<Denuncia> findByStatus(Status status);
 }

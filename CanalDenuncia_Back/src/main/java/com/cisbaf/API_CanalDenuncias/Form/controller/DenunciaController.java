@@ -68,7 +68,7 @@ public class DenunciaController {
     @PutMapping("/atualizarStatus/{id}")
     @Operation(summary = "Atualiza o status de uma denúncia", description = "Atualiza o status de uma denúncia específica pelo seu ID (requer autenticação).")
     public ResponseEntity<Denuncia> atualizarStatus(@PathVariable("id") UUID denunciaId,
-            @RequestBody StatusRequest status) {
+            @RequestBody @Valid StatusRequest status) {
         Denuncia denuncia = denunciaService.atualizarStatus(denunciaId, status.status());
         return ResponseEntity.ok(denuncia);
     }
