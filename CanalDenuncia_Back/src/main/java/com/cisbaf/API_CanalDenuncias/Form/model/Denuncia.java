@@ -22,6 +22,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,6 +75,8 @@ public class Denuncia {
     @jakarta.persistence.OrderBy("dataEnvio ASC")
     private List<Mensagem> mensagens = new java.util.ArrayList<>();
 
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Anexo> anexos = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

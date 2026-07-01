@@ -42,6 +42,8 @@ services:
           target: /app/src
         - action: rebuild
           path: ./CanalDenuncia_Back/pom.xml
+    volumes:
+      - ./uploads:/uploads
 
   frontend:
     build:
