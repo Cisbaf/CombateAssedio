@@ -1,6 +1,6 @@
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
-import type { DadosFormulario } from "@/shared/types/denuncia";
-import type { RequestStatus } from "@/shared/components/types";
+import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
+import type { RequestStatus } from "@/features/admin/schemas/AdminDenunciaSchema";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -107,14 +107,17 @@ export async function enviarDenuncia(
 
 export async function postMsg(denuncia: Denuncia, mensagem: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/form/mensagens/${denuncia.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${API_BASE_URL}/form/mensagens/${denuncia.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ conteudo: mensagem }),
       },
-      credentials: "include",
-      body: JSON.stringify({ conteudo: mensagem }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Erro na API: ${response.status}`);
@@ -127,16 +130,22 @@ export async function postMsg(denuncia: Denuncia, mensagem: string) {
   }
 }
 
-export async function putStatus(denuncia: Denuncia, status: RequestStatus): Promise<boolean> {
+export async function putStatus(
+  denuncia: Denuncia,
+  status: RequestStatus,
+): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(status),
       },
-      credentials: "include",
-      body: JSON.stringify(status),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Erro na API: ${response.status}`);
@@ -149,20 +158,41 @@ export async function putStatus(denuncia: Denuncia, status: RequestStatus): Prom
   }
 }
 
-export async function getDenunciaFromProtocolo(protocolo: String): Promise<Denuncia | null> {
+export async function getDenunciaFromProtocolo(
+  protocolo: String,
+): Promise<Denuncia | null> {
   try {
-    const response = await fetch(`${API_BASE_URL}/form/denuncias/protocolo/${protocolo}`, {
-      cache: "no-store",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${API_BASE_URL}/form/denuncias/protocolo/${protocolo}`,
+      {
+        cache: "no-store",
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
     return await response.json();
   } catch (error) {
     console.error("Erro ao buscar denuncia por protocolo:", error);
     return null;
+  }
+}
+
+export async function Login(username: string, password: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ username, password }),
+    });
+    if (response.ok) {
+      return await response.json();
+    }
+  } catch (err) {
+    throw new Error("Erro de conexão. Tente novamente mais tarde.");
   }
 }

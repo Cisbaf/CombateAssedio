@@ -12,7 +12,7 @@ interface StepFProps {
 }
 
 const proximosPassos = [
-  { numero: 1, titulo: "Análise Inicial", descricao: "Nossa equipe de compliance avaliará sua denúncia em até 48 horas úteis." },
+  { numero: 1, titulo: "Análise Inicial", descricao: "Nossa equipe de compliance avaliará sua denúncia." },
   { numero: 2, titulo: "Investigação", descricao: "Caso necessário, entraremos em contato pelos meios fornecidos para obter mais detalhes." },
   { numero: 3, titulo: "Acompanhamento", descricao: "Utilize o seu número de protocolo para consultar o status de andamento em nosso canal." },
   { numero: 4, titulo: "Resolução", descricao: "Você receberá uma notificação conclusiva assim que a investigação estiver encerrada." },

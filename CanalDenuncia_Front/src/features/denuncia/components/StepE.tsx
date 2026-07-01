@@ -20,8 +20,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DescriptionIcon from "@mui/icons-material/Description";
 
 import { enviarDenuncia } from "@/api/denunciaApi";
-import type { DadosFormulario } from "@/shared/types/denuncia";
-import StepHeader from "@/shared/StepHeader";
+import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
+import StepHeader from "@/features/denuncia/components/StepHeader";
 
 function formatCPF(cpf?: string) {
   if (!cpf) return "-";
@@ -77,7 +77,7 @@ export default function StepE({
       setErrorMessage("Não foi possível conectar com o servidor da API.");
       setOpenSnack(true);
     }
-    
+
     setLoading(false);
   };
 

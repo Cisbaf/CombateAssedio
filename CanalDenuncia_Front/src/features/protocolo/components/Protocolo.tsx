@@ -11,15 +11,14 @@ import {
 
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 import DenunciaDetalhamento from "@/features/admin/components/DenunciaDetalhamento";
-import { FormatDataHora } from "@/shared/components/formatters";
+import { FormatDataHora } from "@/shared/formatters";
 
 interface props {
   denuncia: Denuncia;
-  onClose: () => void
+  onClose: () => void;
 }
 
-export default function Protocolo({ denuncia,onClose }: props) {
-
+export default function Protocolo({ denuncia, onClose }: props) {
   return (
     <Dialog open={true} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle

@@ -40,3 +40,7 @@ export interface Denuncia {
   mensagens?: Mensagem[];
 }
 
+export type RequestStatus = {
+    status: string;
+};
+

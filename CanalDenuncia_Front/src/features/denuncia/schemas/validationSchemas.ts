@@ -4,20 +4,6 @@ import * as z from "zod";
 // ETAPA A - IDENTIFICAÇÃO INICIAL
 // ==========================================
 
-export type StepAFormData = {
-  name?: string;
-  idade?: string;
-  cpf?: string;
-  email?: string;
-  telefone?: string;
-  vitima_name?: string;
-  vitima_idade?: string;
-  vitima_cpf?: string;
-  vitima_local_trabalho?: string;
-  isAnonimo?: boolean;
-  tipoDenunciante?: string;
-};
-
 export const getStepASchema = (opcaoAnonimato: string, opcaoIdentificacao: string) => {
   return z.object({
     name:

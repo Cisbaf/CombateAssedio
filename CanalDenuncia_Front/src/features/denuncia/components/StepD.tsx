@@ -24,11 +24,11 @@ import ImageIcon from "@mui/icons-material/Image";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
-import { useStepD } from "@/shared/views/denuncia/hooks/useStepD";
-import type { StepDFormData } from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/infoBox";
-import StepHeader from "@/shared/StepHeader";
-import ActionButtons from "@/shared/ActionButtons";
+import { useStepD } from "@/features/denuncia/hooks/useStepD";
+import type { StepDFormData } from "@/features/denuncia/schemas/validationSchemas";
+import InfoBox from "@/shared/infoBox";
+import StepHeader from "@/features/denuncia/components/StepHeader";
+import ActionButtons from "@/features/denuncia/components/ActionButtons";
 
 // ─── Dados de configuração ──────────────────────────────────────────────────
 

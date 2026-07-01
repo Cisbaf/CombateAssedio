@@ -30,4 +30,6 @@ html {
   --gray-700: #374151;
   --gray-800: #1f2937;
   --gray-900: #111827;
+
+  --StepGradientColor: linear-gradient( 95deg,rgb(33,228,242) 0%, rgb(67,64,233) 50%, rgb(7,20,75) 100%);
 }

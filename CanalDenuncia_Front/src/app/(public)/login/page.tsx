@@ -1,5 +1,5 @@
 import React from "react";
-import LoginPage from "@/shared/views/login/LoginPage";
+import LoginPage from "@/features/login/components/LoginPage";
 
 export default function Login() {
   return <LoginPage />;

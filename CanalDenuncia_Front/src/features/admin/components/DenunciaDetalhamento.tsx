@@ -1,10 +1,6 @@
 import { Typography, Box, Chip } from "@mui/material";
 import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
-import {
-  FormatDate,
-  FormatCPF,
-  FormatPhone,
-} from "@/shared/components/formatters";
+import { FormatDate, FormatCPF, FormatPhone } from "@/shared/formatters";
 
 interface props {
   denuncia: Denuncia;

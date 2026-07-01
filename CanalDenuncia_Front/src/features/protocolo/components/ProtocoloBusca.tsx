@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import StepHeader from "@/shared/StepHeader";
+import StepHeader from "@/features/denuncia/components/StepHeader";
 import Protocolo from "./Protocolo";
 import { getDenunciaFromProtocolo } from "@/api/denunciaApi";
 import { useState } from "react";

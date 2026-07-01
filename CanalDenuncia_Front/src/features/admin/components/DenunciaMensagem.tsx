@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
-import { FormatDataHora } from "@/shared/components/formatters";
-import InfoBox from "@/shared/components/infoBox";
+import { FormatDataHora } from "@/shared/formatters";
+import InfoBox from "@/shared/infoBox";
 import { postMsg } from "@/api/denunciaApi";
 
 interface props {
@@ -88,7 +88,7 @@ export default function DenunciaMensagem({ denuncia }: props) {
                 bgcolor: "error.main",
                 borderRadius: 4,
                 opacity: 0.8,
-              }
+              },
             }}
           >
             <Typography
@@ -101,10 +101,10 @@ export default function DenunciaMensagem({ denuncia }: props) {
             <Typography
               variant="body1"
               color="text.primary"
-              sx={{ 
-                fontWeight: "bold", 
-                whiteSpace: "pre-wrap", 
-                wordBreak: "break-word" 
+              sx={{
+                fontWeight: "bold",
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
               }}
             >
               {mensagem.conteudo}

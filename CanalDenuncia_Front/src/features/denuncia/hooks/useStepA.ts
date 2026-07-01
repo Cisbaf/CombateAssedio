@@ -7,7 +7,7 @@ import type { AlertColor } from "@mui/material";
 import {
   getStepASchema,
   type StepAFormData,
-} from "@/shared/schemas/validationSchemas";
+} from "@/features/denuncia/schemas/validationSchemas";
 
 interface UseStepAProps {
   onAvançar: (dados: StepAFormData) => void;

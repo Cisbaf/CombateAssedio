@@ -16,11 +16,11 @@ import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 
-import { useStepB } from "@/shared/views/denuncia/hooks/useStepB";
-import type { StepBFormData } from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/infoBox";
-import StepHeader from "@/shared/StepHeader";
-import ActionButtons from "@/shared/ActionButtons";
+import { useStepB } from "@/features/denuncia/hooks/useStepB";
+import type { StepBFormData } from "@/features/denuncia/schemas/validationSchemas";
+import InfoBox from "@/shared/infoBox";
+import StepHeader from "@/features/denuncia/components/StepHeader";
+import ActionButtons from "@/features/denuncia/components/ActionButtons";
 
 interface StepBProps {
   onAvançar: (dados: StepBFormData) => void;

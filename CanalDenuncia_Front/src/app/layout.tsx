@@ -2,7 +2,8 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
 import "./globals.css";
 import React from "react";
 import { Box } from "@mui/material";
-import { Header, Footer } from "@/shared/components/LayoutShell";
+import Header from "@/shared/Header";
+import Footer from "@/shared/Footer";
 
 export default function RootLayout({
   children,

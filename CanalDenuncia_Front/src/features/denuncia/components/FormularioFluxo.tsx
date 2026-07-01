@@ -2,13 +2,13 @@
 
 import { Box } from "@mui/material";
 import { useState } from "react";
-import StepA from "@/shared/views/denuncia/StepA";
-import StepB from "@/shared/views/denuncia/StepB";
-import StepC from "@/shared/views/denuncia/StepC";
-import StepD from "@/shared/views/denuncia/StepD";
-import StepE from "@/shared/views/denuncia/StepE";
-import StepF from "@/shared/views/denuncia/StepF";
-import type { DadosFormulario } from "@/shared/types/denuncia";
+import StepA from "@/features/denuncia/components/StepA";
+import StepB from "@/features/denuncia/components/StepB";
+import StepC from "@/features/denuncia/components/StepC";
+import StepD from "@/features/denuncia/components/StepD";
+import StepE from "@/features/denuncia/components/StepE";
+import StepF from "@/features/denuncia/components/StepF";
+import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 
 export default function FormularioFluxo({
   StepFormulario,

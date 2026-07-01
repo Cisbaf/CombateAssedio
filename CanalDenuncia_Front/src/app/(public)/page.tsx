@@ -1,6 +1,6 @@
 "use client";
-import FormularioFluxo from "@/shared/views/denuncia/FormularioFluxo";
-import ProgressionBar from "@/shared/views/denuncia/ProgressionBar";
+import FormularioFluxo from "@/features/denuncia/components/FormularioFluxo";
+import ProgressionBar from "@/features/denuncia/components/ProgressionBar";
 import { useState } from "react";
 
 export default function Home() {

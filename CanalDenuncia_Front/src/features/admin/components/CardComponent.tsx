@@ -40,7 +40,7 @@ export default function CardComponent({
           width: 56,
           height: 56,
           borderRadius: "50%",
-          backgroundColor: `${color}1A`, // 10% opacity
+          backgroundColor: `${color}1A`,
           color: color,
           mr: 2,
         }}

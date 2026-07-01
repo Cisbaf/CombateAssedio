@@ -25,12 +25,12 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import WorkIcon from "@mui/icons-material/Work";
 
-import { useStepA } from "@/shared/views/denuncia/hooks/useStepA";
-import type { StepAFormData } from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/infoBox";
-import StepHeader from "@/shared/StepHeader";
-import ActionButtons from "@/shared/ActionButtons";
-import StyledFormCard from "@/shared/StyledFormCard";
+import { useStepA } from "@/features/denuncia/hooks/useStepA";
+import type { StepAFormData } from "@/features/denuncia/schemas/denunciaType";
+import InfoBox from "@/shared/infoBox";
+import StepHeader from "@/features/denuncia/components/StepHeader";
+import ActionButtons from "@/features/denuncia/components/ActionButtons";
+import StyledFormCard from "@/features/denuncia/components/StyledFormCard";
 
 interface StepAProps {
   onAvançar: (dados: StepAFormData) => void;

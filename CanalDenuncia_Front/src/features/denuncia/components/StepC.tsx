@@ -20,10 +20,10 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import {
   stepCSchema,
   type StepCFormData,
-} from "@/shared/schemas/validationSchemas";
-import InfoBox from "@/shared/components/infoBox";
-import StepHeader from "@/shared/StepHeader";
-import ActionButtons from "@/shared/ActionButtons";
+} from "@/features/denuncia/schemas/validationSchemas";
+import InfoBox from "@/shared/infoBox";
+import StepHeader from "@/features/denuncia/components/StepHeader";
+import ActionButtons from "@/features/denuncia/components/ActionButtons";
 
 interface StepCProps {
   onAvançar: (dados: StepCFormData) => void;

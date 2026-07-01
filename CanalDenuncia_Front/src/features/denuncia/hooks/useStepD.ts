@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   stepDSchema,
   type StepDFormData,
-} from "@/shared/schemas/validationSchemas";
+} from "@/features/denuncia/schemas/validationSchemas";
 
 interface UseStepDProps {
   onAvançar: (dados: StepDFormData) => void;

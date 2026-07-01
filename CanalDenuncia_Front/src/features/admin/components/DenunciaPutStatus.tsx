@@ -1,6 +1,6 @@
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
 import { putStatus } from "@/api/denunciaApi";
-import InfoBox from "@/shared/components/infoBox";
+import InfoBox from "@/shared/infoBox";
 import { Box, Button, Typography } from "@mui/material";
 
 interface props {
