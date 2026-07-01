@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -13,7 +13,7 @@ import WorkspacesIcon from '@mui/icons-material/Workspaces';
 import DescriptionIcon from '@mui/icons-material/Description';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
     [`&.${stepConnectorClasses.alternativeLabel}`]: { top: 22 },
@@ -86,12 +86,47 @@ function ColorlibStepIcon(props: StepIconProps) {
 const steps = ['Identificação', 'Ofensor', 'Contexto', 'Descrição', 'Revisão', 'Concluído'];
 
 export default function ProgressionBar({ activeStep = 0 }: { activeStep?: number }) {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
-        <Box sx={{ background: 'white', maxWidth: '900px', margin: '0 auto', boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)', borderRadius: '15px', mb: 3, p: 2, pt: 3 }}>
+        <Box
+            sx={{
+                background: 'white',
+                maxWidth: '900px',
+                margin: '0 auto',
+                boxShadow: '0 5px 8px rgba(0, 0, 0, 0.2)',
+                borderRadius: '15px',
+                mb: 3,
+                p: { xs: 1, sm: 2 },
+                pt: { xs: 2, sm: 3 },
+                // Ícones menores no mobile
+                '& .MuiStepLabel-iconContainer > div': {
+                    width: { xs: 36, sm: 50 },
+                    height: { xs: 36, sm: 50 },
+                    fontSize: { xs: '1rem', sm: '1.25rem' },
+                },
+                // Connector alinhado ao centro dos ícones menores no mobile
+                '& .MuiStepConnector-root': {
+                    top: { xs: 18, sm: 22 },
+                },
+            }}
+        >
             <Stepper activeStep={activeStep} alternativeLabel connector={<ColorlibConnector />}>
-                {steps.map((label) => (
+                {steps.map((label, index) => (
                     <Step key={label}>
-                        <StepLabel slots={{ stepIcon: ColorlibStepIcon }}>{label}</StepLabel>
+                        <StepLabel
+                            slots={{ stepIcon: ColorlibStepIcon }}
+                            slotProps={{
+                                label: {
+                                    style: isMobile && index !== activeStep
+                                        ? { display: 'none' }
+                                        : undefined,
+                                },
+                            }}
+                        >
+                            {label}
+                        </StepLabel>
                     </Step>
                 ))}
             </Stepper>
