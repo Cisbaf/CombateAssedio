@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class Anexo {
 
     @ManyToOne
     @JoinColumn(name = "denuncia_id", nullable = false)
+    @JsonIgnore
     private Denuncia denuncia;
 
     @Column(name = "nome_arquivo", nullable = false)

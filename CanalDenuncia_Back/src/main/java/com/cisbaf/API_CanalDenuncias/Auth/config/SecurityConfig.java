@@ -78,6 +78,10 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PUT, "/form/denuncias/atualizarStatus/{id}").authenticated()
                         
+                        .requestMatchers(HttpMethod.POST, "/form/denuncias/{denunciaId}/anexos").permitAll()
+                        
+                        .requestMatchers(HttpMethod.GET, "/form/denuncias/{denunciaId}/anexos").authenticated()
+
                         
                         // ==========================
 

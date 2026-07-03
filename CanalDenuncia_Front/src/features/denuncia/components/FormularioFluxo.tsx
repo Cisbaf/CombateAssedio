@@ -23,7 +23,6 @@ export default function FormularioFluxo({
     const novoStep = step + 1;
     setDadosFormulario((prev) => {
       const novosDados = { ...prev, [`step${step}`]: dadosEtapa };
-      console.log(`Dados acumulados após Etapa ${step}:`, novosDados);
       return novosDados;
     });
     setStep(novoStep);

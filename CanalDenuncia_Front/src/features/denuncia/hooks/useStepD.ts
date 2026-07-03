@@ -19,8 +19,6 @@ export function useStepD({ onAvançar }: UseStepDProps) {
   const [emocionaisSelecionados, setEmocionaisSelecionados] = useState<
     string[]
   >([]);
-  const [arquivos, setArquivos] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -73,49 +71,6 @@ export function useStepD({ onAvançar }: UseStepDProps) {
     }
   };
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const selectedFiles = Array.from(event.target.files);
-      const validFiles = selectedFiles.filter(
-        (file) => file.size <= 10 * 1024 * 1024,
-      );
-      if (validFiles.length !== selectedFiles.length) {
-        alert(
-          "Alguns arquivos excedem o limite de 10MB e não foram adicionados.",
-        );
-      }
-      setArquivos((prev) => [...prev, ...validFiles].slice(0, 5));
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    if (e.dataTransfer.files) {
-      const selectedFiles = Array.from(e.dataTransfer.files);
-      const validFiles = selectedFiles.filter(
-        (file) => file.size <= 10 * 1024 * 1024,
-      );
-      if (validFiles.length !== selectedFiles.length) {
-        alert(
-          "Alguns arquivos excedem o limite de 10MB e não foram adicionados.",
-        );
-      }
-      setArquivos((prev) => [...prev, ...validFiles].slice(0, 5));
-    }
-  };
-
-  const removerArquivo = (index: number) => {
-    setArquivos((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
   const onSubmit = (data: StepDFormData) => {
     onAvançar(data);
   };
@@ -123,19 +78,12 @@ export function useStepD({ onAvançar }: UseStepDProps) {
   return {
     categoriasSelecionadas,
     emocionaisSelecionados,
-    arquivos,
-    fileInputRef,
     charCount,
     errors,
     register,
     handleSubmit,
     handleCategoriaChange,
     handleEmocionalChange,
-    handleFileChange,
-    handleDragOver,
-    handleDrop,
-    removerArquivo,
-    triggerFileInput,
     onSubmit,
   };
 }

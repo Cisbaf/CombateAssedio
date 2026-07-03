@@ -71,6 +71,14 @@ export type ResponseRelato = {
   tipo_evidencias?: string;
 };
 
+export interface Anexo {
+  id: string;
+  nomeArquivo: string;
+  urlArquivo: string;
+  tipoArquivo: string;
+}
+
+
 // --- DENUNCIA ---
 export type RequestDenuncia = {
   nome: string;

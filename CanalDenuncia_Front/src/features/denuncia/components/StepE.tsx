@@ -11,6 +11,7 @@ import {
   Grid,
   CircularProgress,
   Button,
+  LinearProgress,
 } from "@mui/material";
 
 import RateReviewIcon from "@mui/icons-material/RateReview";
@@ -18,8 +19,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DescriptionIcon from "@mui/icons-material/Description";
+import AttachmentIcon from "@mui/icons-material/Attachment";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-import { enviarDenuncia } from "@/api/denunciaApi";
+import { enviarDenuncia, getDenunciaFromProtocolo, postAnexos } from "@/api/denunciaApi";
 import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 
@@ -56,6 +59,8 @@ export default function StepE({
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [openSnack, setOpenSnack] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadMessage, setUploadMessage] = useState("");
 
   const step0 = dadosFormulario.step0 || {};
   const step1 = dadosFormulario.step1 || {};
@@ -68,10 +73,34 @@ export default function StepE({
   const handleEnviar = async () => {
     setLoading(true);
     setErrorMessage("");
+    setUploadProgress(0);
+    setUploadMessage("Criando denúncia no sistema...");
 
     const result = await enviarDenuncia(dadosFormulario);
 
     if (result && result.protocolo) {
+      const arquivosToUpload = step3.arquivos || [];
+      if (arquivosToUpload.length > 0) {
+        setUploadMessage("Aguardando ID da denúncia...");
+        const denunciaCriada = await getDenunciaFromProtocolo(result.protocolo);
+        
+        if (denunciaCriada && denunciaCriada.id) {
+          const total = arquivosToUpload.length;
+
+          for (let i = 0; i < total; i++) {
+            const arquivo = arquivosToUpload[i];
+            setUploadMessage(`Enviando arquivo ${i + 1} de ${total}: ${arquivo.name}`);
+            setUploadProgress(Math.round((i / total) * 100));
+
+            const formData = new FormData();
+            formData.append("arquivo", arquivo);
+            postAnexos(denunciaCriada.id, formData);
+          }
+          setUploadProgress(100);
+          setUploadMessage("Todos os arquivos enviados!");
+        }
+      }
+
       onAvançar(result.protocolo);
     } else {
       setErrorMessage("Não foi possível conectar com o servidor da API.");
@@ -409,6 +438,42 @@ export default function StepE({
               </Grid>
             </Box>
           </Box>
+          
+          <Divider />
+
+          {/* Anexos */}
+          {step3.arquivos && step3.arquivos.length > 0 && (
+            <Box>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: 700,
+                  color: "#1e3a8a",
+                  mb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
+                <AttachmentIcon sx={{ color: "var(--primary)" }} /> 4.
+                Anexos
+              </Typography>
+              <Box sx={{ pl: 4 }}>
+                <Stack spacing={1}>
+                  {step3.arquivos?.map((arquivo: any, index: any) => (
+                    <Typography
+                      key={index}
+                      variant="body2"
+                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                    >
+                      <CloudUploadIcon sx={{ fontSize: 16, color: "#3b82f6" }} />{" "}
+                      {arquivo.name}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+            </Box>
+          )}
         </Stack>
       </Box>
 
@@ -416,9 +481,7 @@ export default function StepE({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
+          flexDirection: "column",
           maxWidth: 800,
           margin: "0 auto",
           px: 2,
@@ -426,52 +489,70 @@ export default function StepE({
           mb: 4,
         }}
       >
-        <Button
-          variant="contained"
-          disabled={loading}
-          onClick={onVoltar}
-          sx={{
-            backgroundColor: "gray",
-            "&:hover": { backgroundColor: "darkgray" },
-            borderRadius: "8px",
-            textTransform: "none",
-          }}
-        >
-          <Typography
-            variant="subtitle2"
-            sx={{ color: "white", fontWeight: 600 }}
+        {loading && uploadMessage && (
+          <Box sx={{ width: "100%", mb: 3 }}>
+            <Typography variant="body2" sx={{ color: "#475569", mb: 1, textAlign: "center", fontWeight: 500 }}>
+              {uploadMessage}
+            </Typography>
+            <LinearProgress variant="determinate" value={uploadProgress} sx={{ height: 8, borderRadius: 4 }} />
+          </Box>
+        )}
+        
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", width: "100%" }}>
+          <Button
+            variant="contained"
+            disabled={loading}
+            onClick={onVoltar}
+            sx={{
+              backgroundColor: "gray",
+              "&:hover": { backgroundColor: "darkgray" },
+              borderRadius: "8px",
+              textTransform: "none",
+            }}
           >
-            ← Voltar e Editar
-          </Typography>
-        </Button>
-        <Button
-          variant="contained"
-          color="success"
-          disabled={loading}
-          onClick={handleEnviar}
-          sx={{
-            borderRadius: "8px",
-            textTransform: "none",
-            px: 4,
-            backgroundImage:
-              "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            "&:hover": {
-              backgroundImage:
-                "linear-gradient(135deg, #059669 0%, #047857 100%)",
-            },
-          }}
-        >
-          {loading ? (
-            <CircularProgress size={24} sx={{ color: "white" }} />
-          ) : (
             <Typography
               variant="subtitle2"
               sx={{ color: "white", fontWeight: 600 }}
             >
-              ✅ Enviar Denúncia
+              ← Voltar e Editar
             </Typography>
-          )}
-        </Button>
+          </Button>
+          <Button
+            variant="contained"
+            color="success"
+            disabled={loading}
+            onClick={handleEnviar}
+            sx={{
+              borderRadius: "8px",
+              textTransform: "none",
+              px: 4,
+              backgroundImage:
+                "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              "&:hover": {
+                backgroundImage:
+                  "linear-gradient(135deg, #059669 0%, #047857 100%)",
+              },
+            }}
+          >
+            {loading && !uploadMessage ? (
+              <CircularProgress size={24} sx={{ color: "white" }} />
+            ) : loading ? (
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "white", fontWeight: 600 }}
+              >
+                Enviando...
+              </Typography>
+            ) : (
+              <Typography
+                variant="subtitle2"
+                sx={{ color: "white", fontWeight: 600 }}
+              >
+                ✅ Enviar Denúncia
+              </Typography>
+            )}
+          </Button>
+        </Box>
       </Box>
 
       <Snackbar

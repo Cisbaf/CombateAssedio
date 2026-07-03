@@ -196,3 +196,20 @@ export async function Login(username: string, password: string) {
     throw new Error("Erro de conexão. Tente novamente mais tarde.");
   }
 }
+
+export async function postAnexos(denunciaId: string, formData: FormData) {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/form/denuncias/${denunciaId}/anexos`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
+    if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
+    return await response.json();
+  } catch (error) {
+    console.error("Erro no postAnexos:", error);
+    return null;
+  }
+}
