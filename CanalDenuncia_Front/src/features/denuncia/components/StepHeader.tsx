@@ -14,13 +14,13 @@ interface StepHeaderProps {
  * Cabeçalho padrão de cada etapa do formulário.
  * Elimina a repetição do bloco de cabeçalho em StepA–F.
  */
-export default function StepHeader({ Icon, title, subtitle, bgColor = "var(--primary)" }: StepHeaderProps) {
+export default function StepHeader({ Icon, title, subtitle }: StepHeaderProps) {
   return (
     <Box
       sx={{
         padding: "1rem",
         width: "100%",
-        backgroundColor: bgColor,
+        backgroundColor: "var(--primary)",
         borderRadius: "8px 8px 0 0",
         color: "white",
       }}

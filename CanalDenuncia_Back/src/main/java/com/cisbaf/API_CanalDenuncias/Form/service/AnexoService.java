@@ -42,7 +42,8 @@ public class AnexoService {
                 .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
         // 2. Gera um nome único para evitar conflitos (UUID + nome original)
-        String nomeUnico = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
+        //String nomeUnico = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
+        String nomeUnico = arquivo.getOriginalFilename();
 
         // 3. Garante que a pasta de upload existe
         Path pastaUpload = Paths.get(uploadDir);
