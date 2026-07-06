@@ -1,6 +1,7 @@
-import { Typography, Box, Chip } from "@mui/material";
+import { Typography, Box, Chip, Button } from "@mui/material";
 import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
 import { FormatDate, FormatCPF, FormatPhone } from "@/shared/formatters";
+import { AttachFile } from "@mui/icons-material";
 
 interface props {
   denuncia: Denuncia;
@@ -35,6 +36,12 @@ const getStatusLabel = (status: StatusDenuncia) => {
 };
 
 export default function DenunciaModal({ denuncia }: props) {
+
+  function handleDownload(urlArquivo: string): void {
+    // TODO: implementar download do arquivo
+    console.log(urlArquivo);
+  }
+
   return (
     <Box>
       <Box
@@ -271,12 +278,64 @@ export default function DenunciaModal({ denuncia }: props) {
             </Box>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Descrição
+                Estado Emocional
               </Typography>
               <Typography variant="body1">
+                {denuncia.relato?.estadoEmocional}
+              </Typography>
+            </Box>
+            <Box>
+              <Typography variant="body2" color="text.secondary">
+                Descrição
+              </Typography>
+              <Typography variant="body1" sx={{ wordBreak: "break-word" }}>
                 {denuncia.relato?.descricao}
               </Typography>
             </Box>
+
+            {/* INFORMAÇÕES DO ANEXO */}
+            {denuncia.anexos && denuncia.anexos.length > 0 && (
+              <Box>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  Anexos
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {denuncia.anexos?.map((anexo, index) => {
+                    const isImage = anexo.tipoArquivo?.startsWith("image/") || 
+                                    anexo.nomeArquivo?.match(/\.(jpeg|jpg|gif|png|webp)$/i) != null;
+                    return isImage ? (
+                      <Box key={index} sx={{ mt: 1 }}>
+                        <Typography variant="caption" color="text.secondary" gutterBottom sx={{ display: 'block' }}>
+                          {anexo.nomeArquivo}
+                        </Typography>
+                        <Box
+                          component="img"
+                          src={anexo.urlArquivo}
+                          alt={anexo.nomeArquivo}
+                          sx={{
+                            maxWidth: "100%",
+                            maxHeight: 400,
+                            borderRadius: 1,
+                            border: "1px solid",
+                            borderColor: "divider"
+                          }}
+                        />
+                      </Box>
+                    ) : (
+                      <Button
+                        key={index}
+                        variant="text"
+                        startIcon={<AttachFile />}
+                        onClick={() => handleDownload(anexo.urlArquivo)}
+                        sx={{ alignSelf: "flex-start" }}
+                      >
+                        {anexo.nomeArquivo}
+                      </Button>
+                    );
+                  })}
+                </Box>
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>

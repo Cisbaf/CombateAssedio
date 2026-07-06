@@ -26,6 +26,14 @@ export interface Mensagem {
   dataEnvio: string;
 }
 
+export interface Anexo {
+  id: string;
+  nomeArquivo: string;
+  urlArquivo: string;
+  tipoArquivo: string;
+  dataUpload: string;
+}
+
 export interface Denuncia {
   id: string;
   protocolo: string;
@@ -38,6 +46,7 @@ export interface Denuncia {
   ofensor?: Pessoa;
   relato?: Relato;
   mensagens?: Mensagem[];
+  anexos?: Anexo[];
 }
 
 export type RequestStatus = {

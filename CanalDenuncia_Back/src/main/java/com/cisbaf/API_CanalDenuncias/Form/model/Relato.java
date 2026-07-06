@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.util.UUID;
 
@@ -24,7 +25,8 @@ public class Relato {
     @Column(nullable = false)
     private String categoria;
 
-    @Column(nullable = true)
+    @Size(max = 500)
+    @Column(nullable = true, length = 500)
     private String descricao;
 
     @Column(nullable = false, name = "estado_emocional")

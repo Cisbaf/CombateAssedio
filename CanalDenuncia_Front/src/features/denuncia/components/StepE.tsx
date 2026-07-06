@@ -429,7 +429,7 @@ export default function StepE({
                     </Typography>
                     <Typography
                       variant="body2"
-                      sx={{ whiteSpace: "pre-line", mt: 1, color: "#334155" }}
+                      sx={{ whiteSpace: "pre-line", mt: 1, color: "#334155", wordBreak: "break-word" }}
                     >
                       {step3.descricao || "-"}
                     </Typography>

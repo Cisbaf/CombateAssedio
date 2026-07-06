@@ -82,6 +82,8 @@ public class SecurityConfig {
                         
                         .requestMatchers(HttpMethod.GET, "/form/denuncias/{denunciaId}/anexos").authenticated()
 
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").authenticated()
+
                         
                         // ==========================
 
