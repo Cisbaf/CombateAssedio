@@ -71,10 +71,6 @@ export function useStepD({ onAvançar }: UseStepDProps) {
     }
   };
 
-  const onSubmit = (data: StepDFormData) => {
-    onAvançar(data);
-  };
-
   return {
     categoriasSelecionadas,
     emocionaisSelecionados,
@@ -84,6 +80,5 @@ export function useStepD({ onAvançar }: UseStepDProps) {
     handleSubmit,
     handleCategoriaChange,
     handleEmocionalChange,
-    onSubmit,
   };
 }

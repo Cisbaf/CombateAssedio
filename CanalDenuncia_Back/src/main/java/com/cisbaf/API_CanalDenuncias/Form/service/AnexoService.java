@@ -27,37 +27,29 @@ public class AnexoService {
     private final DenunciaRepository denunciaRepository;
 
 
-    // Vem do application.properties — pasta onde os arquivos ficam no container
-    @Value("${upload.dir:/uploads}")
+    @Value("${upload.dir}")
     private String uploadDir;
 
-    // URL base para acessar os arquivos (ex: http://localhost:8080)
-    @Value("${app.base-url:http://localhost:8080}")
+    @Value("${app.base-url}")
     private String baseUrl; 
 
     public Anexo salvarAnexo(UUID denunciaId, MultipartFile arquivo) throws IOException {
 
-        // 1. Busca a denúncia
         Denuncia denuncia = denunciaRepository.findById(denunciaId)
                 .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-        // 2. Gera um nome único para evitar conflitos (UUID + nome original)
-        //String nomeUnico = UUID.randomUUID() + "_" + arquivo.getOriginalFilename();
         String nomeUnico = arquivo.getOriginalFilename();
 
-        // 3. Garante que a pasta de upload existe
         Path pastaUpload = Paths.get(uploadDir);
         Files.createDirectories(pastaUpload);
         
-        // 4. Salva o arquivo físico na pasta
         Path caminhoFinal = pastaUpload.resolve(nomeUnico);
         Files.copy(arquivo.getInputStream(), caminhoFinal);
         
-        // 5. Cria o registro no banco — só salva o NOME, não o caminho absoluto
         Anexo anexo = new Anexo();
         
         anexo.setNomeArquivo(nomeUnico);
-        anexo.setUrlArquivo(baseUrl + "/uploads/" + nomeUnico); // URL pública
+        anexo.setUrlArquivo(baseUrl + "/uploads/" + nomeUnico);
         anexo.setTipoArquivo(arquivo.getContentType());
         anexo.setDenuncia(denuncia);
 

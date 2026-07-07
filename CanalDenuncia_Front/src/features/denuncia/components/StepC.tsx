@@ -113,6 +113,9 @@ export default function StepC({ onAvançar, onVoltar }: StepCProps) {
                   type="date"
                   slotProps={{
                     inputLabel: { shrink: true },
+                    htmlInput: {
+                      max: new Date().toISOString().split("T")[0],
+                    },
                     input: {
                       startAdornment: (
                         <InputAdornment position="start">

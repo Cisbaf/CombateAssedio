@@ -38,77 +38,77 @@ import type { Anexo } from "@/features/denuncia/schemas/denunciaType";
 
 const categoriasOptions = [
   {
-    value: "Assedio_Moral",
+    value: " Assédio Moral",
     title: "Assédio Moral",
     desc: "Humilhação, intimidação, perseguição ou constrangimento",
   },
   {
-    value: "Assedio_Sexual",
+    value: " Assédio Sexual",
     title: "Assédio Sexual",
     desc: "Comportamento sexual indesejado, comentários ou toques inapropriados",
   },
   {
-    value: "Discriminacao_Genero",
+    value: " Discriminação por Gênero",
     title: "Discriminação por Gênero",
     desc: "Tratamento desigual baseado em gênero ou identidade de gênero",
   },
   {
-    value: "Discriminacao_Racial",
+    value: " Discriminação por Raça",
     title: "Discriminação Racial",
     desc: "Racismo, preconceito ou tratamento desigual por etnia/cor",
   },
   {
-    value: "Discriminacao_Orientacao_Sexual",
+    value: " Discriminação por Orientação Sexual",
     title: "Discriminação por Orientação Sexual",
     desc: "Homofobia, transfobia ou preconceito relacionado",
   },
   {
-    value: "Discriminacao_Idade",
+    value: " Discriminação por Idade",
     title: "Discriminação por Idade",
     desc: "Etarismo ou tratamento desigual baseado na idade",
   },
   {
-    value: "Discriminaçao_Religiosa",
+    value: " Discriminação Religiosa",
     title: "Discriminação Religiosa",
     desc: "Intolerância ou preconceito baseado em crenças religiosas",
   },
   {
     value: "Outro",
     title: "Outro",
-    desc: "Caso sua denúncia não se enquadre nas categorias acima, descreva abaixo.",
+    desc: "Caso sua denúncia se enquadre em outra categoria não listada acima, selecione esta opção e escreva na descrição.",
   },
 ];
 
 const estadoEmocionalOptions = [
   {
-    value: "Nenhum_Impacto",
-    title: "Nenhum impacto aparente",
-    desc: "O incidente não gerou impacto perceptível até o momento.",
-  },
-  {
-    value: "Incomodo_Desconforto",
+    value: " Incomodo Desconforto",
     title: "Incômodo/Desconforto",
     desc: "Gerou incômodo ou sentimentos de desconforto.",
   },
   {
-    value: "Ansiedade_Preocupacao",
+    value: " Ansiedade Preocupação",
     title: "Ansiedade/Preocupação",
     desc: "Causou episódios de ansiedade ou preocupação constante.",
   },
   {
-    value: "Medo_Inseguranca",
+    value: " Medo Insegurança",
     title: "Medo/Insegurança",
     desc: "Gerou insegurança ou receio no ambiente de trabalho.",
   },
   {
-    value: "Depressao_Angustia",
+    value: " Depressão Angústia",
     title: "Depressão/Angústia",
     desc: "Desencadeou sentimentos de profunda tristeza ou angústia.",
   },
   {
-    value: "Trauma_Severo",
-    title: "Trauma severo",
+    value: " Trauma Severo",
+    title: "Trauma Severo",
     desc: "Gerou abalo psicológico gravíssimo ou estresse pós-traumático.",
+  },
+  {
+    value: "Nenhum Impacto",
+    title: "Nenhum Impacto",
+    desc: "O incidente não gerou impacto perceptível até o momento.",
   },
 ];
 
@@ -156,11 +156,9 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
     handleSubmit,
     handleCategoriaChange,
     handleEmocionalChange,
-    onSubmit,
   } = useStepD({ onAvançar });
 
   const [arquivos, setArquivos] = useState<File[]>([]);
-  const [anexosEnviados, setAnexosEnviados] = useState<Anexo[]>([]);
   const [isDragActive, setIsDragActive] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -402,21 +400,48 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                 onChange={handleSelecionarArquivos}
                 style={{ display: "none" }}
               />
-              <CloudUploadIcon sx={{ fontSize: 48, color: isDragActive ? "#3b82f6" : "#94a3b8", mb: 2 }} />
-              <Typography variant="h6" sx={{ color: "#334155", fontWeight: 600, mb: 1, textAlign: "center" }}>
-                {isDragActive ? "Solte os arquivos aqui" : "Arraste e solte seus arquivos aqui"}
+              <CloudUploadIcon
+                sx={{
+                  fontSize: 48,
+                  color: isDragActive ? "#3b82f6" : "#94a3b8",
+                  mb: 2,
+                }}
+              />
+              <Typography
+                variant="h6"
+                sx={{
+                  color: "#334155",
+                  fontWeight: 600,
+                  mb: 1,
+                  textAlign: "center",
+                }}
+              >
+                {isDragActive
+                  ? "Solte os arquivos aqui"
+                  : "Arraste e solte seus arquivos aqui"}
               </Typography>
-              <Typography variant="body2" sx={{ color: "#64748b", mb: 2, textAlign: "center" }}>
+              <Typography
+                variant="body2"
+                sx={{ color: "#64748b", mb: 2, textAlign: "center" }}
+              >
                 ou clique para selecionar do seu computador
               </Typography>
-              <Typography variant="caption" sx={{ color: "#94a3b8", textAlign: "center" }}>
+              <Typography
+                variant="caption"
+                sx={{ color: "#94a3b8", textAlign: "center" }}
+              >
                 Aceita apenas imagens e PDF (Máx. 10MB por arquivo)
               </Typography>
             </Box>
 
             {arquivos.length > 0 && (
-              <Box sx={{ width: "100%", maxWidth: 800, margin: "0 auto", mt: 3 }}>
-                <Typography variant="subtitle2" sx={{ color: "#475569", fontWeight: 600, mb: 2 }}>
+              <Box
+                sx={{ width: "100%", maxWidth: 800, margin: "0 auto", mt: 3 }}
+              >
+                <Typography
+                  variant="subtitle2"
+                  sx={{ color: "#475569", fontWeight: 600, mb: 2 }}
+                >
                   Arquivos Selecionados ({arquivos.length})
                 </Typography>
                 <Stack spacing={1.5}>
@@ -433,18 +458,33 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                         borderRadius: "8px",
                       }}
                     >
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
+                      >
                         <InsertDriveFileIcon sx={{ color: "#3b82f6" }} />
                         <Box>
-                          <Typography variant="body2" sx={{ fontWeight: 500, color: "#334155" }}>
+                          <Typography
+                            variant="body2"
+                            sx={{ fontWeight: 500, color: "#334155" }}
+                          >
                             {f.name}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: "#64748b" }}>
+                          <Typography
+                            variant="caption"
+                            sx={{ color: "#64748b" }}
+                          >
                             {(f.size / 1024 / 1024).toFixed(2)} MB
                           </Typography>
                         </Box>
                       </Box>
-                      <IconButton onClick={(e) => { e.preventDefault(); removerArquivo(i); }} size="small" sx={{ color: "#ef4444" }}>
+                      <IconButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          removerArquivo(i);
+                        }}
+                        size="small"
+                        sx={{ color: "#ef4444" }}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </Box>
@@ -505,6 +545,10 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
                           checked={emocionaisSelecionados.includes(opt.value)}
                           onChange={handleEmocionalChange}
                           value={opt.value}
+                          disabled={
+                            emocionaisSelecionados.includes("Nenhum Impacto") &&
+                            opt.value !== "Nenhum Impacto"
+                          }
                           sx={{ "&.Mui-checked": { color: "#3b82f6" } }}
                         />
                       }
