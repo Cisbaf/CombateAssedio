@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class DenunciaService {
 
     private final DenunciaRepository denunciaRepository;
+    private final EmailService emailService;
 
     @Transactional(rollbackFor = Exception.class)
     public Denuncia criarDenuncia(DenunciaRequest denunciaRequest) {
@@ -32,7 +33,12 @@ public class DenunciaService {
             denuncia.setOfensor(denunciaRequest.ofensor());
             denuncia.setRelato(denunciaRequest.relato());
             denuncia.setProtocolo("PROT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-            return denunciaRepository.save(denuncia);
+            
+            denunciaRepository.save(denuncia);
+
+            emailService.enviarEmailNovaDenuncia(denuncia);
+
+            return denuncia;
         }catch(Exception e){
             throw new IllegalArgumentException("Erro ao criar denúncia: " + e.getMessage());
         }
