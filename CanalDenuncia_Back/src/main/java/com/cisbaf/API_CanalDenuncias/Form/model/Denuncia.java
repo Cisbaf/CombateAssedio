@@ -12,6 +12,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,13 +53,13 @@ public class Denuncia {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PENDENTE;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vitima", nullable = true)
     private Vitima vitima;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ofensor", nullable = false)
     private Ofensor ofensor;
 
@@ -66,16 +67,16 @@ public class Denuncia {
     @JoinColumn(name = "id_relato", nullable = false)
     private Relato relato;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "denuncia_id", nullable = true)
     @jakarta.persistence.OrderBy("dataEnvio ASC")
     private List<Mensagem> mensagens = new java.util.ArrayList<>();
 
-    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Anexo> anexos = new ArrayList<>();
 
     @Override

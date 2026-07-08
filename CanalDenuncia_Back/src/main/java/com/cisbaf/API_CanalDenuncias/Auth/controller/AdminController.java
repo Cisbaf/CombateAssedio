@@ -1,5 +1,7 @@
 package com.cisbaf.API_CanalDenuncias.Auth.controller;
 
+import com.cisbaf.API_CanalDenuncias.Auth.dto.LoginRequest;
+import com.cisbaf.API_CanalDenuncias.Auth.dto.LoginResponse;
 import com.cisbaf.API_CanalDenuncias.Auth.model.Admin;
 import com.cisbaf.API_CanalDenuncias.Auth.service.AdminService;
 import com.cisbaf.API_CanalDenuncias.Auth.service.jwt.JwtRequestFilter;
@@ -25,23 +27,16 @@ public class AdminController {
     private final JwtRequestFilter jwtRequestFilter;
     private final PasswordEncoder passwordEncoder;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<Admin> buscarAdmin(@PathVariable String username) {
-        Admin admin = adminService.buscarAdminPorUsername(username);
-        admin.setPassword(null);
-        return ResponseEntity.ok(admin);
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody @Valid Admin loginRequest, HttpServletResponse response) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletResponse response) {
         try {
-            Admin admin = adminService.buscarAdminPorUsername(loginRequest.getUsername());
-            if (passwordEncoder.matches(loginRequest.getPassword(), admin.getPassword())) {
+            Admin admin = adminService.buscarAdminPorUsername(loginRequest.username());
+            if (passwordEncoder.matches(loginRequest.password(), admin.getPassword())) {
                 String token = jwtTokenUtil.generateToken(admin.getUsername(), "admin");
                 jwtRequestFilter.setCookie(response, JwtRequestFilter.JWT_AUTH_COOKIE_NAME, token);
 
-                admin.setPassword(null);
-                return ResponseEntity.ok(admin);
+                LoginResponse loginResponse = new LoginResponse(admin.getId().toString(), admin.getUsername());
+                return ResponseEntity.ok(loginResponse);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos.");
             }
@@ -51,11 +46,11 @@ public class AdminController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Admin> me(Authentication authentication) {
+    public ResponseEntity<LoginResponse> me(Authentication authentication) {
         try {
             Admin admin = adminService.buscarAdminPorUsername(authentication.getName());
-            admin.setPassword(null);
-            return ResponseEntity.ok(admin);
+            LoginResponse loginResponse = new LoginResponse(admin.getId().toString(), admin.getUsername());
+            return ResponseEntity.ok(loginResponse);
         } catch (UsernameNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

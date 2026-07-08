@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cisbaf.API_CanalDenuncias.Form.dto.DenunciaRequest;
+import com.cisbaf.API_CanalDenuncias.Form.dto.DenunciaResponse;
 import com.cisbaf.API_CanalDenuncias.Form.dto.StatusRequest;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.service.DenunciaService;
@@ -33,13 +35,14 @@ public class DenunciaController {
 
     @PostMapping
     @Operation(summary = "Cria uma nova denúncia", description = "Registra uma denúncia no sistema e gera um protocolo.")
-    public ResponseEntity<Denuncia> criarDenuncia(@RequestBody @Valid Denuncia denuncia) {
-        Denuncia savedDenuncia = denunciaService.criarDenuncia(denuncia);
+    public ResponseEntity<DenunciaResponse> criarDenuncia(@RequestBody @Valid DenunciaRequest denunciaRequest) {
+        Denuncia savedDenuncia = denunciaService.criarDenuncia(denunciaRequest);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedDenuncia.getId())
                 .toUri();
-        return ResponseEntity.created(uri).body(savedDenuncia);
+        DenunciaResponse response = new DenunciaResponse(savedDenuncia.getProtocolo());
+        return ResponseEntity.created(uri).body(response);
     }
 
     @GetMapping
