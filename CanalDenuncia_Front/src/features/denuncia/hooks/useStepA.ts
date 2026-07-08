@@ -6,16 +6,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { AlertColor } from "@mui/material";
 import {
   getStepASchema,
-  type StepAFormData,
 } from "@/features/denuncia/schemas/validationSchemas";
+import type { StepAFormData } from "@/features/denuncia/schemas/denunciaType";
 
 interface UseStepAProps {
+  initialData?: any;
   onAvançar: (dados: StepAFormData) => void;
 }
 
-export function useStepA({ onAvançar }: UseStepAProps) {
-  const [opcaoIdentificacao, setOpcaoIdentificacao] = useState("");
-  const [opcaoAnonimato, setOpcaoAnonimato] = useState("");
+export function useStepA({ initialData, onAvançar }: UseStepAProps) {
+  const [opcaoIdentificacao, setOpcaoIdentificacao] = useState(
+    initialData ? (initialData.tipoDenunciante === "VITIMA" ? "vitima" : "terceiro") : ""
+  );
+  const [opcaoAnonimato, setOpcaoAnonimato] = useState(
+    initialData ? (initialData.isAnonimo ? "true" : "false") : ""
+  );
   const [openSnack, setOpenSnack] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<AlertColor>("success");
@@ -28,6 +33,7 @@ export function useStepA({ onAvançar }: UseStepAProps) {
     formState: { errors },
   } = useForm<StepAFormData>({
     resolver: zodResolver(dynamicSchema as any),
+    defaultValues: initialData,
   });
 
   const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {

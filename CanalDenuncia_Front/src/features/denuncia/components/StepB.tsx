@@ -23,6 +23,7 @@ import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
 
 interface StepBProps {
+  initialData?: any;
   onAvançar: (dados: StepBFormData) => void;
   onVoltar: () => void;
 }
@@ -37,7 +38,7 @@ const textFieldSx = {
   },
 };
 
-export default function StepB({ onAvançar, onVoltar }: StepBProps) {
+export default function StepB({ initialData, onAvançar, onVoltar }: StepBProps) {
   const {
     openSnack,
     alertMessage,
@@ -47,7 +48,7 @@ export default function StepB({ onAvançar, onVoltar }: StepBProps) {
     handleSubmit,
     handleCloseSnack,
     onSubmit,
-  } = useStepB({ onAvançar });
+  } = useStepB({ initialData, onAvançar });
 
   return (
     <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>

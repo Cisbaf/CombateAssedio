@@ -26,6 +26,7 @@ import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
 
 interface StepCProps {
+  initialData?: any;
   onAvançar: (dados: StepCFormData) => void;
   onVoltar: () => void;
 }
@@ -40,12 +41,15 @@ const textFieldSx = {
   },
 };
 
-export default function StepC({ onAvançar, onVoltar }: StepCProps) {
+export default function StepC({ initialData, onAvançar, onVoltar }: StepCProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<StepCFormData>({ resolver: zodResolver(stepCSchema) });
+  } = useForm<StepCFormData>({ 
+    resolver: zodResolver(stepCSchema),
+    defaultValues: initialData,
+  });
 
   const onSubmit = (data: StepCFormData) => {
     onAvançar(data);

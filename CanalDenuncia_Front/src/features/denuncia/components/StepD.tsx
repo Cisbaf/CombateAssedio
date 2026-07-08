@@ -142,11 +142,12 @@ const consentCardSx = {
 };
 
 interface StepDProps {
+  initialData?: any;
   onAvançar: (dados: StepDFormData) => void;
   onVoltar: () => void;
 }
 
-export default function StepD({ onAvançar, onVoltar }: StepDProps) {
+export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps) {
   const {
     categoriasSelecionadas,
     emocionaisSelecionados,
@@ -156,9 +157,9 @@ export default function StepD({ onAvançar, onVoltar }: StepDProps) {
     handleSubmit,
     handleCategoriaChange,
     handleEmocionalChange,
-  } = useStepD({ onAvançar });
+  } = useStepD({ initialData, onAvançar });
 
-  const [arquivos, setArquivos] = useState<File[]>([]);
+  const [arquivos, setArquivos] = useState<File[]>(initialData?.arquivos || []);
   const [isDragActive, setIsDragActive] = useState(false);
 
   const handleDragOver = (e: React.DragEvent) => {

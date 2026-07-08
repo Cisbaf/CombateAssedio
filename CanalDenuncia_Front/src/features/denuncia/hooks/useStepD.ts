@@ -9,16 +9,17 @@ import {
 } from "@/features/denuncia/schemas/validationSchemas";
 
 interface UseStepDProps {
+  initialData?: any;
   onAvançar: (dados: StepDFormData) => void;
 }
 
-export function useStepD({ onAvançar }: UseStepDProps) {
+export function useStepD({ initialData, onAvançar }: UseStepDProps) {
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<
     string[]
-  >([]);
+  >(initialData?.categorias ? initialData.categorias.split(",") : []);
   const [emocionaisSelecionados, setEmocionaisSelecionados] = useState<
     string[]
-  >([]);
+  >(initialData?.estado_emocional ? initialData.estado_emocional.split(",") : []);
 
   const {
     register,
@@ -28,7 +29,7 @@ export function useStepD({ onAvançar }: UseStepDProps) {
     formState: { errors },
   } = useForm<StepDFormData>({
     resolver: zodResolver(stepDSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       categorias: "",
       descricao: "",
       estado_emocional: "",

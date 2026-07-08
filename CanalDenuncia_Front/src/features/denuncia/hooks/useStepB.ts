@@ -10,10 +10,11 @@ import {
 } from "@/features/denuncia/schemas/validationSchemas";
 
 interface UseStepBProps {
+  initialData?: any;
   onAvançar: (dados: StepBFormData) => void;
 }
 
-export function useStepB({ onAvançar }: UseStepBProps) {
+export function useStepB({ initialData, onAvançar }: UseStepBProps) {
   const [openSnack, setOpenSnack] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState<AlertColor>("success");
@@ -24,6 +25,7 @@ export function useStepB({ onAvançar }: UseStepBProps) {
     formState: { errors },
   } = useForm<StepBFormData>({
     resolver: zodResolver(stepBSchema),
+    defaultValues: initialData,
   });
 
   const handleCloseSnack = () => {

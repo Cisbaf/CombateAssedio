@@ -55,16 +55,16 @@ export default function FormularioFluxo({
     >
       <Box>
         {step === 0 && (
-          <StepA onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+          <StepA initialData={dadosFormulario.step0} onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
         )}
         {step === 1 && (
-          <StepB onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+          <StepB initialData={dadosFormulario.step1} onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
         )}
         {step === 2 && (
-          <StepC onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+          <StepC initialData={dadosFormulario.step2} onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
         )}
         {step === 3 && (
-          <StepD onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
+          <StepD initialData={dadosFormulario.step3} onAvançar={proximaEtapa} onVoltar={etapaAnterior} />
         )}
         {step === 4 && (
           <StepE

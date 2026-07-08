@@ -33,6 +33,7 @@ import ActionButtons from "@/features/denuncia/components/ActionButtons";
 import StyledFormCard from "@/features/denuncia/components/StyledFormCard";
 
 interface StepAProps {
+  initialData?: any;
   onAvançar: (dados: StepAFormData) => void;
   onVoltar: () => void;
 }
@@ -62,7 +63,7 @@ const textFieldSx = {
   },
 };
 
-export default function StepA({ onAvançar }: StepAProps) {
+export default function StepA({ initialData, onAvançar }: StepAProps) {
   const {
     opcaoIdentificacao,
     opcaoAnonimato,
@@ -76,7 +77,7 @@ export default function StepA({ onAvançar }: StepAProps) {
     handleAnonimatoChange,
     handleCloseSnack,
     onSubmit,
-  } = useStepA({ onAvançar });
+  } = useStepA({ initialData, onAvançar });
 
   return (
     <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>
@@ -134,6 +135,7 @@ export default function StepA({ onAvançar }: StepAProps) {
             </FormLabel>
             <RadioGroup
               name="identificacao-grupo"
+              value={opcaoIdentificacao}
               onChange={handleIdentificacaoChange}
             >
               <Stack spacing={2}>
@@ -193,7 +195,7 @@ export default function StepA({ onAvançar }: StepAProps) {
               Deseja manter anonimato?{" "}
               <InfoBox texto="Ao opta por permanecer anonimo, seus dados não serão informados na denuncia." />
             </FormLabel>
-            <RadioGroup name="anonimato-grupo" onChange={handleAnonimatoChange}>
+            <RadioGroup name="anonimato-grupo" value={opcaoAnonimato} onChange={handleAnonimatoChange}>
               <Stack spacing={2}>
                 <FormControlLabel
                   value="true"
