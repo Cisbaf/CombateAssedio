@@ -34,7 +34,8 @@ export default function ActionButtons({
           px: 4,
           backgroundImage: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
           "&:hover": {
-            backgroundImage: "linear-gradient(135deg, #059669 0%, #047857 100%)",
+            backgroundImage:
+              "linear-gradient(135deg, #059669 0%, #047857 100%)",
           },
         }
       : {
@@ -68,7 +69,10 @@ export default function ActionButtons({
             textTransform: "none",
           }}
         >
-          <Typography variant="subtitle2" sx={{ color: "white", fontWeight: 600 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: "white", fontWeight: 600 }}
+          >
             {labelVoltar}
           </Typography>
         </Button>
@@ -84,7 +88,10 @@ export default function ActionButtons({
         {loading ? (
           <CircularProgress size={24} sx={{ color: "white" }} />
         ) : (
-          <Typography variant="subtitle2" sx={{ color: "white", fontWeight: 600 }}>
+          <Typography
+            variant="subtitle2"
+            sx={{ color: "white", fontWeight: 600 }}
+          >
             {labelProsseguir}
           </Typography>
         )}

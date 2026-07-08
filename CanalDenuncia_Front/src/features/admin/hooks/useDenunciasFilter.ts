@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 
-export type FiltroStatusType = "TODAS" | "ATIVAS" | "ARQUIVADAS";
+export type FiltroStatusType = "TODAS" | "ATIVAS" | "RESOLVIDAS";
 
 export function useDenunciasFilter(initialData: Denuncia[]) {
   const [filtroStatus, setFiltroStatus] = useState<FiltroStatusType>("TODAS");
@@ -13,7 +13,7 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
       const matchesStatus =
         filtroStatus === "TODAS" ||
         (filtroStatus === "ATIVAS" && ["PENDENTE", "EM_INVESTIGACAO"].includes(denuncia.status)) ||
-        (filtroStatus === "ARQUIVADAS" && denuncia.status === "RESOLVIDA");
+        (filtroStatus === "RESOLVIDAS" && denuncia.status === "RESOLVIDA");
 
       const matchText = busca.toLowerCase();
       const matchesBusca =
