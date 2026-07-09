@@ -25,7 +25,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { enviarDenuncia, getDenunciaFromProtocolo, postAnexos } from "@/api/denunciaApi";
 import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 import StepHeader from "@/features/denuncia/components/StepHeader";
-
+import { FormatCPF, FormatPhone } from "@/shared/formatters";
+/*
 function formatCPF(cpf?: string) {
   if (!cpf) return "-";
   if (cpf.length === 11)
@@ -39,6 +40,7 @@ function formatTelefone(tel?: string) {
     return tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
   return tel;
 }
+*/
 
 function formatEnumLabel(text?: string) {
   if (!text) return "-";
@@ -192,7 +194,7 @@ export default function StepE({
                         CPF
                       </Typography>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        {formatCPF(step0.cpf)}
+                        {FormatCPF(step0.cpf)}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12, sm: 6 }}>
@@ -208,7 +210,7 @@ export default function StepE({
                         Telefone
                       </Typography>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                        {formatTelefone(step0.telefone)}
+                        {FormatPhone(step0.telefone)}
                       </Typography>
                     </Grid>
                     <Grid size={{ xs: 12 }}>
@@ -264,7 +266,7 @@ export default function StepE({
                           CPF da Vítima
                         </Typography>
                         <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                          {formatCPF(step0.vitima_cpf)}
+                          {FormatCPF(step0.vitima_cpf)}
                         </Typography>
                       </Grid>
                     )}
