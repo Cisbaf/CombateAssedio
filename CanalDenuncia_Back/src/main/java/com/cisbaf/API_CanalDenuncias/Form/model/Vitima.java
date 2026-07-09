@@ -1,6 +1,8 @@
 package com.cisbaf.API_CanalDenuncias.Form.model;
 
+import com.cisbaf.API_CanalDenuncias.Form.config.CpfCryptoConverter;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class Vitima {
     private Integer idade;
 
     @Column(nullable = true)
+    @Convert(converter = CpfCryptoConverter.class)
     private String cpf;
 
     @Column(nullable = true)
