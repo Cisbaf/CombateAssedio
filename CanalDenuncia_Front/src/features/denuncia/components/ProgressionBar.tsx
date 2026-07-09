@@ -100,6 +100,7 @@ export default function ProgressionBar({ activeStep = 0 }: { activeStep?: number
                 mb: 3,
                 p: { xs: 1, sm: 2 },
                 pt: { xs: 2, sm: 3 },
+                '@media print': { display: 'none' },
                 // Ícones menores no mobile
                 '& .MuiStepLabel-iconContainer > div': {
                     width: { xs: 36, sm: 50 },

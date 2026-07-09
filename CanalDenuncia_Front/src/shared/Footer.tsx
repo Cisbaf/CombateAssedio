@@ -16,6 +16,7 @@ export default function Footer() {
           alignItems: "center",
           padding: "12px 24px",
           mt: 'auto',
+          '@media print': { display: 'none' },
         }}
       >
         

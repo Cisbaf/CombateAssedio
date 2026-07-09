@@ -73,7 +73,7 @@ export default function FormularioFluxo({
             onVoltar={etapaAnterior}
           />
         )}
-        {step === 5 && <StepF protocolo={protocolo} />}
+        {step === 5 && <StepF protocolo={protocolo} dadosFormulario={dadosFormulario} />}
       </Box>
     </Box>
   );

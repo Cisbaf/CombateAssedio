@@ -19,6 +19,7 @@ export default function Header() {
         borderBottom: "1px solid #eaeaea",
         width: "100%",
         boxSizing: "border-box",
+        '@media print': { display: 'none' },
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
