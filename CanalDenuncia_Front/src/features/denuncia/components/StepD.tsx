@@ -25,14 +25,14 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import { useStepD } from "@/features/denuncia/hooks/useStepD";
-import type { StepDFormData } from "@/features/denuncia/schemas/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { ChangeEvent } from "react";
+import { stepDSchema, type StepDFormData } from "@/features/denuncia/schemas/validationSchemas";
 import InfoBox from "@/shared/infoBox";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
-import { useState } from "react";
-import type { Anexo } from "@/features/denuncia/schemas/denunciaType";
+import { useState, useEffect } from "react";
 
 // ─── Dados de configuração ──────────────────────────────────────────────────
 
@@ -148,16 +148,63 @@ interface StepDProps {
 }
 
 export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps) {
-  const {
-    categoriasSelecionadas,
-    emocionaisSelecionados,
-    charCount,
-    errors,
-    register,
-    handleSubmit,
-    handleCategoriaChange,
-    handleEmocionalChange,
-  } = useStepD({ initialData, onAvançar });
+  const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<
+      string[]
+    >(initialData?.categorias ? initialData.categorias.split(",") : []);
+    const [emocionaisSelecionados, setEmocionaisSelecionados] = useState<
+      string[]
+    >(initialData?.estado_emocional ? initialData.estado_emocional.split(",") : []);
+  
+    const {
+      register,
+      handleSubmit,
+      setValue,
+      watch,
+      formState: { errors },
+    } = useForm<StepDFormData>({
+      resolver: zodResolver(stepDSchema),
+      defaultValues: initialData || {
+        categorias: "",
+        descricao: "",
+        estado_emocional: "",
+        aceitoPrivacidade: false,
+        autorizoLgpd: false,
+        entendoSigilo: false,
+      },
+    });
+  
+    const descricaoValue = watch("descricao", "") || "";
+    const charCount = descricaoValue.length;
+  
+    useEffect(() => {
+      setValue("categorias", categoriasSelecionadas.join(","), {
+        shouldValidate: categoriasSelecionadas.length > 0,
+      });
+    }, [categoriasSelecionadas, setValue]);
+  
+    useEffect(() => {
+      setValue("estado_emocional", emocionaisSelecionados.join(","), {
+        shouldValidate: emocionaisSelecionados.length > 0,
+      });
+    }, [emocionaisSelecionados, setValue]);
+  
+    const handleCategoriaChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      if (event.target.checked) {
+        setCategoriasSelecionadas((prev) => [...prev, value]);
+      } else {
+        setCategoriasSelecionadas((prev) => prev.filter((c) => c !== value));
+      }
+    };
+  
+    const handleEmocionalChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      if (event.target.checked) {
+        setEmocionaisSelecionados((prev) => [...prev, value]);
+      } else {
+        setEmocionaisSelecionados((prev) => prev.filter((c) => c !== value));
+      }
+    };
 
   const [arquivos, setArquivos] = useState<File[]>(initialData?.arquivos || []);
   const [isDragActive, setIsDragActive] = useState(false);

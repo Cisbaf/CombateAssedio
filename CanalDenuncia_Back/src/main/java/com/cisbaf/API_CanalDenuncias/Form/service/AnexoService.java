@@ -38,7 +38,7 @@ public class AnexoService {
         Denuncia denuncia = denunciaRepository.findById(denunciaId)
                 .orElseThrow(() -> new RuntimeException("Denúncia não encontrada"));
 
-        String nomeUnico = arquivo.getOriginalFilename();
+        String nomeUnico = UUID.randomUUID().toString() + "_" + arquivo.getOriginalFilename();
 
         Path pastaUpload = Paths.get(uploadDir);
         Files.createDirectories(pastaUpload);

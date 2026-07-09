@@ -15,6 +15,7 @@ import {
   Divider,
   Snackbar,
   InputAdornment,
+  AlertColor,
 } from "@mui/material";
 
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -25,12 +26,15 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import WorkIcon from "@mui/icons-material/Work";
 
-import { useStepA } from "@/features/denuncia/hooks/useStepA";
 import type { StepAFormData } from "@/features/denuncia/schemas/denunciaType";
 import InfoBox from "@/shared/infoBox";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
 import StyledFormCard from "@/features/denuncia/components/StyledFormCard";
+import { ChangeEvent, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { getStepASchema } from "../schemas/validationSchemas";
 
 interface StepAProps {
   initialData?: any;
@@ -64,20 +68,74 @@ const textFieldSx = {
 };
 
 export default function StepA({ initialData, onAvançar }: StepAProps) {
+  const [opcaoIdentificacao, setOpcaoIdentificacao] = useState(
+    initialData
+      ? initialData.tipoDenunciante === "VITIMA"
+        ? "vitima"
+        : "terceiro"
+      : "",
+  );
+  const [opcaoAnonimato, setOpcaoAnonimato] = useState(
+    initialData ? (initialData.isAnonimo ? "true" : "false") : "",
+  );
+  const [openSnack, setOpenSnack] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<AlertColor>("success");
+
+  const dynamicSchema = getStepASchema(opcaoAnonimato, opcaoIdentificacao);
+
   const {
-    opcaoIdentificacao,
-    opcaoAnonimato,
-    openSnack,
-    alertMessage,
-    alertType,
-    errors,
     register,
     handleSubmit,
-    handleIdentificacaoChange,
-    handleAnonimatoChange,
-    handleCloseSnack,
-    onSubmit,
-  } = useStepA({ initialData, onAvançar });
+    formState: { errors },
+  } = useForm<StepAFormData>({
+    resolver: zodResolver(dynamicSchema as any),
+    defaultValues: initialData,
+  });
+
+  const handleIdentificacaoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setOpcaoIdentificacao(event.target.value);
+  };
+
+  const handleAnonimatoChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setOpcaoAnonimato(event.target.value);
+  };
+
+  const handleCloseSnack = () => {
+    setOpenSnack(false);
+  };
+
+  const onSubmit = (data: StepAFormData) => {
+    if (opcaoIdentificacao === "" || opcaoAnonimato === "") {
+      setOpenSnack(true);
+      setAlertMessage(
+        "Por favor, os campos de identificação e anonimato são obrigatórios.",
+      );
+      setAlertType("error");
+      return;
+    }
+
+    const dataFinal: StepAFormData = {
+      isAnonimo: opcaoAnonimato === "true",
+      tipoDenunciante: opcaoIdentificacao === "vitima" ? "VITIMA" : "TERCEIRO",
+    };
+
+    if (opcaoAnonimato === "false") {
+      dataFinal.name = data.name;
+      dataFinal.idade = data.idade;
+      dataFinal.cpf = data.cpf;
+      dataFinal.email = data.email;
+      dataFinal.telefone = data.telefone;
+    }
+    if (opcaoIdentificacao === "terceiro") {
+      dataFinal.vitima_name = data.vitima_name;
+      dataFinal.vitima_idade = data.vitima_idade;
+      dataFinal.vitima_cpf = data.vitima_cpf;
+      dataFinal.vitima_local_trabalho = data.vitima_local_trabalho;
+    }
+
+    onAvançar(dataFinal);
+  };
 
   return (
     <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>
@@ -195,7 +253,11 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
               Deseja manter anonimato?{" "}
               <InfoBox texto="Ao opta por permanecer anonimo, seus dados não serão informados na denuncia." />
             </FormLabel>
-            <RadioGroup name="anonimato-grupo" value={opcaoAnonimato} onChange={handleAnonimatoChange}>
+            <RadioGroup
+              name="anonimato-grupo"
+              value={opcaoAnonimato}
+              onChange={handleAnonimatoChange}
+            >
               <Stack spacing={2}>
                 <FormControlLabel
                   value="true"

@@ -10,17 +10,21 @@ import {
   TextField,
   Snackbar,
   InputAdornment,
+  AlertColor,
 } from "@mui/material";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 
-import { useStepB } from "@/features/denuncia/hooks/useStepB";
 import type { StepBFormData } from "@/features/denuncia/schemas/validationSchemas";
 import InfoBox from "@/shared/infoBox";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
+import { stepBSchema } from "@/features/denuncia/schemas/validationSchemas";
+import { useState } from "react";
 
 interface StepBProps {
   initialData?: any;
@@ -39,16 +43,29 @@ const textFieldSx = {
 };
 
 export default function StepB({ initialData, onAvançar, onVoltar }: StepBProps) {
-  const {
-    openSnack,
-    alertMessage,
-    alertType,
-    errors,
-    register,
-    handleSubmit,
-    handleCloseSnack,
-    onSubmit,
-  } = useStepB({ initialData, onAvançar });
+  const [openSnack, setOpenSnack] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
+    const [alertType, setAlertType] = useState<AlertColor>("success");
+  
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm<StepBFormData>({
+      resolver: zodResolver(stepBSchema),
+      defaultValues: initialData,
+    });
+  
+    const handleCloseSnack = () => {
+      setOpenSnack(false);
+    };
+  
+    const onSubmit = (data: StepBFormData) => {
+      setOpenSnack(true);
+      setAlertMessage("Dados validados com sucesso.");
+      setAlertType("success");
+      onAvançar(data);
+    };
 
   return (
     <Box sx={{ width: "auto", height: "auto", margin: "0 auto" }}>
