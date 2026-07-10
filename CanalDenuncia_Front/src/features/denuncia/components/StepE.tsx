@@ -15,38 +15,12 @@ import {
 } from "@mui/material";
 
 import RateReviewIcon from "@mui/icons-material/RateReview";
-import PersonIcon from "@mui/icons-material/Person";
-import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import DescriptionIcon from "@mui/icons-material/Description";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 import { enviarDenuncia, getDenunciaFromProtocolo, postAnexos } from "@/api/denunciaApi";
 import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ResumoDenuncia from "./ResumoDenuncia";
-import { FormatCPF, FormatPhone } from "@/shared/formatters";
-/*
-function formatCPF(cpf?: string) {
-  if (!cpf) return "-";
-  if (cpf.length === 11)
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-  return cpf;
-}
 
-function formatTelefone(tel?: string) {
-  if (!tel) return "-";
-  if (tel.length === 11)
-    return tel.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-  return tel;
-}
-*/
-
-function formatEnumLabel(text?: string) {
-  if (!text) return "-";
-  return text.replace(/_/g, " ");
-}
 
 interface StepEProps {
   dadosFormulario: DadosFormulario;
@@ -65,13 +39,7 @@ export default function StepE({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadMessage, setUploadMessage] = useState("");
 
-  const step0 = dadosFormulario.step0 || {};
-  const step1 = dadosFormulario.step1 || {};
-  const step2 = dadosFormulario.step2 || {};
   const step3 = dadosFormulario.step3 || {};
-
-  const isAnonimo: boolean = step0.isAnonimo;
-  const tipoDenunciante: string = step0.tipoDenunciante;
 
   const handleEnviar = async () => {
     setLoading(true);

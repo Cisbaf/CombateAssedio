@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   Divider,
-  Button,
   FormGroup,
   Checkbox,
   FormHelperText,
@@ -25,16 +24,15 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
+
 import { stepDSchema, type StepDFormData } from "@/features/denuncia/schemas/validationSchemas";
 import InfoBox from "@/shared/infoBox";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
-import { useState, useEffect } from "react";
-
-// ─── Dados de configuração ──────────────────────────────────────────────────
 
 const categoriasOptions = [
   {
@@ -653,40 +651,6 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
               <Stack spacing={2}>
                 {[
                   {
-                    field: "aceitoPrivacidade" as const,
-                    label: (
-                      <>
-                        Li e concordo com a{" "}
-                        <span
-                          style={{
-                            color: "#3b82f6",
-                            fontWeight: 600,
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Política de Privacidade
-                        </span>{" "}
-                        e os{" "}
-                        <span
-                          style={{
-                            color: "#3b82f6",
-                            fontWeight: 600,
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                          }}
-                        >
-                          Termos de Uso
-                        </span>
-                      </>
-                    ),
-                  },
-                  {
-                    field: "autorizoLgpd" as const,
-                    label:
-                      "Autorizo o tratamento de meus dados conforme a LGPD",
-                  },
-                  {
                     field: "entendoSigilo" as const,
                     label:
                       "Entendo que minha denúncia será investigada de forma sigilosa",
@@ -712,9 +676,7 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
                   />
                 ))}
               </Stack>
-              {(errors.aceitoPrivacidade ||
-                errors.autorizoLgpd ||
-                errors.entendoSigilo) && (
+              {(errors.entendoSigilo) && (
                 <FormHelperText
                   error
                   sx={{
@@ -724,7 +686,7 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
                     fontWeight: 600,
                   }}
                 >
-                  Você precisa aceitar todos os termos e consentimentos para
+                  Você precisa aceitar o consentimento para
                   prosseguir.
                 </FormHelperText>
               )}
@@ -736,7 +698,6 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
       <ActionButtons
         onVoltar={onVoltar}
         onProsseguir={handleSubmit((dados) => {
-          // Passamos os dados de texto + os arquivos armazenados no estado
           onAvançar({ ...dados, arquivos } as any);
         })}
       />

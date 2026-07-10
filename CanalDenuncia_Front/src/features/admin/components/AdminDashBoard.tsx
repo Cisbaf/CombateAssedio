@@ -43,7 +43,7 @@ export default function AdminDashBoard({ initialData }: props) {
         setBusca={setBusca}
       />
 
-      {/* Tabela de exibição (Componente Burro) */}
+      {/* Tabela de exibição */}
       <DenunciasTable
         data={filteredDenuncias}
         onViewDetails={(denuncia) => setSelectedDenunciaId(denuncia.id)}

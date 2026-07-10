@@ -169,8 +169,9 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
           >
             <strong>Sua segurança é nossa prioridade</strong>
             <br />
-            Todas as informações são protegidas por criptografia e tratadas
-            conforme a LGPD.
+            Ouvidoria especializada e sigiliosa para acolhimento de denuncias sobre assédio e discriminação
+            <br />
+            As informações prestadas neste formulário serão sigilosas.
           </Alert>
 
           {/* Tipo de Identificação */}
@@ -402,7 +403,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                     Telefone *
                   </FormLabel>
                   <TextField
-                    placeholder="DDD + Número (ex: 11999999999)"
+                    placeholder="DDD + Número (ex: 21999999999)"
                     variant="outlined"
                     size="small"
                     slotProps={{
