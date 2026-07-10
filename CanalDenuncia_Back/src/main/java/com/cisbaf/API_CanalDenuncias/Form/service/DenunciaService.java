@@ -20,11 +20,10 @@ import lombok.RequiredArgsConstructor;
 public class DenunciaService {
 
     private final DenunciaRepository denunciaRepository;
-    private final EmailService emailService;
 
     @Transactional(rollbackFor = Exception.class)
     public Denuncia criarDenuncia(DenunciaRequest denunciaRequest) {
-        try{
+        try {
             Denuncia denuncia = new Denuncia();
             denuncia.setTipoDenunciante(denunciaRequest.tipoDenunciante());
             denuncia.setIsAnonimo(denunciaRequest.isAnonimo());
@@ -33,13 +32,9 @@ public class DenunciaService {
             denuncia.setOfensor(denunciaRequest.ofensor());
             denuncia.setRelato(denunciaRequest.relato());
             denuncia.setProtocolo("PROT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-            
-            denunciaRepository.save(denuncia);
 
-            emailService.enviarEmailNovaDenuncia(denuncia);
-
-            return denuncia;
-        }catch(Exception e){
+            return denunciaRepository.save(denuncia);
+        } catch (Exception e) {
             throw new IllegalArgumentException("Erro ao criar denúncia: " + e.getMessage());
         }
     }
@@ -53,16 +48,16 @@ public class DenunciaService {
     public Optional<Denuncia> getDenunciaByCodigo(UUID id) {
         return denunciaRepository.findById(id);
     }
-    
+
     @Transactional(readOnly = true)
     public Optional<Denuncia> getDenunciaByProtocolo(String protocolo) {
         return denunciaRepository.findByProtocolo(protocolo);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Denuncia atualizarStatus(UUID denunciaId, String newStatus){
+    public Denuncia atualizarStatus(UUID denunciaId, String newStatus) {
         Denuncia denuncia = getDenunciaByCodigo(denunciaId)
-            .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
         denuncia.setStatus(Status.valueOf(newStatus));
         return denunciaRepository.save(denuncia);
     }

@@ -19,6 +19,7 @@ import com.cisbaf.API_CanalDenuncias.Form.dto.DenunciaResponse;
 import com.cisbaf.API_CanalDenuncias.Form.dto.StatusRequest;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.service.DenunciaService;
+import com.cisbaf.API_CanalDenuncias.Form.service.EmailService;
 import com.cisbaf.API_CanalDenuncias.Form.service.MensagemService;
 import com.cisbaf.API_CanalDenuncias.Form.utils.Utils;
 
@@ -32,10 +33,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "Denúncias", description = "Endpoints para gerenciamento de denúncias")
 public class DenunciaController {
-    
+
     private final DenunciaService denunciaService;
     private final MensagemService mensagemService;
     private final Utils utils;
+    private final EmailService emailService;
 
     @PostMapping
     @Operation(summary = "Cria uma nova denúncia", description = "Registra uma denúncia no sistema e gera um protocolo.")
@@ -46,6 +48,9 @@ public class DenunciaController {
                 .buildAndExpand(savedDenuncia.getId())
                 .toUri();
         DenunciaResponse response = new DenunciaResponse(savedDenuncia.getProtocolo());
+
+        //emailService.enviarEmailNovaDenuncia(savedDenuncia.getProtocolo());
+
         return ResponseEntity.created(uri).body(response);
     }
 
@@ -81,7 +86,7 @@ public class DenunciaController {
         mensagemService.statusUpdate(denunciaId, utils.StringStatus(status.status()));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}") 
+                .path("/{id}")
                 .buildAndExpand(denuncia.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(denuncia);

@@ -9,8 +9,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
-
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,11 +59,9 @@ public class EmailService {
 
     //Inicia o envio do email
     @Async
-    public void enviarEmailNovaDenuncia(Denuncia denuncia) {
-        log.info("Enviando email de nova Denuncia: {}", denuncia.getId());
-
+    public void enviarEmailNovaDenuncia(String protocolo) {
         enviarEmail(
-            montarEmailDeNovaDenuncia(denuncia.getProtocolo())
+            montarEmailDeNovaDenuncia(protocolo)
         );
     }
 
