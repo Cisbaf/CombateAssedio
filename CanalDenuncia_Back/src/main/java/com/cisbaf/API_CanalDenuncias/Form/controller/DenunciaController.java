@@ -19,6 +19,8 @@ import com.cisbaf.API_CanalDenuncias.Form.dto.DenunciaResponse;
 import com.cisbaf.API_CanalDenuncias.Form.dto.StatusRequest;
 import com.cisbaf.API_CanalDenuncias.Form.model.Denuncia;
 import com.cisbaf.API_CanalDenuncias.Form.service.DenunciaService;
+import com.cisbaf.API_CanalDenuncias.Form.service.MensagemService;
+import com.cisbaf.API_CanalDenuncias.Form.utils.Utils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,8 +32,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "Denúncias", description = "Endpoints para gerenciamento de denúncias")
 public class DenunciaController {
-
+    
     private final DenunciaService denunciaService;
+    private final MensagemService mensagemService;
+    private final Utils utils;
 
     @PostMapping
     @Operation(summary = "Cria uma nova denúncia", description = "Registra uma denúncia no sistema e gera um protocolo.")
@@ -70,10 +74,17 @@ public class DenunciaController {
 
     @PutMapping("/atualizarStatus/{id}")
     @Operation(summary = "Atualiza o status de uma denúncia", description = "Atualiza o status de uma denúncia específica pelo seu ID (requer autenticação).")
-    public ResponseEntity<Denuncia> atualizarStatus(@PathVariable("id") UUID denunciaId,
+    public ResponseEntity<Denuncia> statusUpdate(@PathVariable("id") UUID denunciaId,
             @RequestBody @Valid StatusRequest status) {
         Denuncia denuncia = denunciaService.atualizarStatus(denunciaId, status.status());
-        return ResponseEntity.ok(denuncia);
+
+        mensagemService.statusUpdate(denunciaId, utils.StringStatus(status.status()));
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}") 
+                .buildAndExpand(denuncia.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(denuncia);
     }
 
 }

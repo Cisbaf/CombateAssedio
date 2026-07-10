@@ -42,4 +42,17 @@ public class MensagemService {
 
         return mensagemRepository.save(novaMensagem);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Mensagem statusUpdate(UUID denunciaId, String status) {
+        Denuncia denuncia = denunciaRepository.findById(denunciaId)
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
+
+        Mensagem novaMensagem = new Mensagem();
+
+        novaMensagem.setConteudo("Status atualizado para: " + status);
+        novaMensagem.setDenunciaId(denuncia);
+
+        return mensagemRepository.save(novaMensagem);
+    }
 }
