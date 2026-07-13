@@ -117,7 +117,7 @@ export default function DenunciaAnexo({ denuncia, onUpdate }: props) {
         <input
           type="file"
           multiple
-          accept="image/*,.pdf"
+          accept="image/*,video/*,.pdf,.xlsx,.xls,.doc,.docx"
           onChange={handleSelecionarArquivos}
           style={{ display: "none" }}
         />
@@ -151,7 +151,7 @@ export default function DenunciaAnexo({ denuncia, onUpdate }: props) {
           variant="caption"
           sx={{ color: "#94a3b8", textAlign: "center" }}
         >
-          Aceita apenas imagens e PDF (Máx. 10MB por arquivo)
+          Aceita imagens, vídeos, PDF, Excel e Word (Máx. 10MB por arquivo)
         </Typography>
       </Box>
 

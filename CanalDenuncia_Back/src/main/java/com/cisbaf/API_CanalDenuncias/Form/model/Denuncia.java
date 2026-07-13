@@ -2,6 +2,7 @@ package com.cisbaf.API_CanalDenuncias.Form.model;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.cisbaf.API_CanalDenuncias.Form.model.enums.TipoDenunciante;
@@ -71,6 +72,7 @@ public class Denuncia {
     @JoinColumn(name = "id_terceiro", nullable = true)
     private Terceiro terceiro;
 
+    @BatchSize(size = 50)
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "denuncia_id", nullable = true)
     @jakarta.persistence.OrderBy("dataEnvio ASC")
