@@ -45,7 +45,7 @@ export default function DenunciasCards({ stats }: props) {
         title={"Arquivadas"} 
         value={stats.arquivadas} 
         icon={<WarningIcon fontSize="large" />} 
-        color="#757575" 
+        color="#d32f2f" 
       />
     </Box>
   );

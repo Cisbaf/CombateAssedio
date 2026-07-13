@@ -29,7 +29,7 @@ const getStatusColor = (status: StatusDenuncia) => {
     case "RESOLVIDA":
       return "success";
     case "ARQUIVADA":
-      return "default";
+      return "error";
     default:
       return "default";
   }

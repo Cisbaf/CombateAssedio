@@ -58,7 +58,7 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         </Button>
         <Button
           variant="contained"
-          color="inherit"
+          color="error"
           onClick={() => {
             handlePutStatus("ARQUIVADA");
           }}
