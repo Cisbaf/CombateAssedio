@@ -37,6 +37,7 @@ export async function enviarDenuncia(
   }
 }
 
+/* Envia mensagem */
 export async function postMsg(denuncia: Denuncia, mensagem: string) {
   try {
     const response = await fetch(
@@ -62,10 +63,11 @@ export async function postMsg(denuncia: Denuncia, mensagem: string) {
   }
 }
 
+// Atualiza o status da denúncia
 export async function putStatus(
   denuncia: Denuncia,
   status: RequestStatus,
-): Promise<boolean> {
+): Promise<Denuncia | null> {
   try {
     const response = await fetch(
       `${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`,
@@ -82,13 +84,14 @@ export async function putStatus(
     if (!response.ok) {
       throw new Error(`Erro na API: ${response.status}`);
     }
-    return true;
+    return await response.json();
   } catch (error) {
     console.error("Erro no putStatus:", error);
-    return false;
+    return null;
   }
 }
 
+// Busca a denúncia pelo protocolo
 export async function getDenunciaFromProtocolo(
   protocolo: String,
 ): Promise<Denuncia | null> {
@@ -112,6 +115,7 @@ export async function getDenunciaFromProtocolo(
   }
 }
 
+// faz login
 export async function Login(username: string, password: string) {
   try {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
@@ -128,6 +132,7 @@ export async function Login(username: string, password: string) {
   }
 }
 
+// faz upload de anexos
 export async function postAnexos(denunciaId: string, formData: FormData) {
   try {
     const response = await fetch(
@@ -135,6 +140,7 @@ export async function postAnexos(denunciaId: string, formData: FormData) {
       {
         method: "POST",
         body: formData,
+        credentials: "include",
       },
     );
     if (!response.ok) throw new Error(`Erro na API: ${response.status}`);

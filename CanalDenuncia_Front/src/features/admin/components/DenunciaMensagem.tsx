@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
 import { FormatDataHora } from "@/shared/formatters";
@@ -9,11 +9,16 @@ import { postMsg } from "@/api/denunciaApi";
 
 interface props {
   denuncia: Denuncia;
+  onUpdate?: () => void;
 }
 
-export default function DenunciaMensagem({ denuncia }: props) {
+export default function DenunciaMensagem({ denuncia, onUpdate }: props) {
   const [novaMensagem, setNovaMensagem] = useState("");
   const [mensagens, setMensagens] = useState(denuncia.mensagens || []);
+
+  useEffect(() => {
+    setMensagens(denuncia.mensagens || []);
+  }, [denuncia.mensagens]);
 
   const handleSendMessage = async () => {
     if (!novaMensagem.trim()) return;
@@ -22,8 +27,10 @@ export default function DenunciaMensagem({ denuncia }: props) {
 
     if (novaMsg) {
       // Atualiza a tela imediatamente com a nova mensagem
-      setMensagens([...mensagens, novaMsg]);
+      const novasMensagens = [...mensagens, novaMsg];
+      setMensagens(novasMensagens);
       setNovaMensagem("");
+      if (onUpdate) onUpdate();
     } else {
       alert("Erro ao enviar mensagem. Verifique a aba Network.");
     }

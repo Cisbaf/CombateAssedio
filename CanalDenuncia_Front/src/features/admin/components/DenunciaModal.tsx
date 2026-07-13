@@ -11,18 +11,29 @@ import {
 } from "@mui/material";
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
 import CloseIcon from "@mui/icons-material/Close";
+import { useState } from "react";
+import { getDenunciaFromProtocolo } from "@/api/denunciaApi";
 
 import DenunciaMensagem from "./DenunciaMensagem";
 import DenunciaPutStatus from "./DenunciaPutStatus";
 import DenunciaDetalhamento from "./DenunciaDetalhamento";
+import DenunciaAnexo from "./DenunciaAnexo";
 
 interface props {
   denuncia: Denuncia;
   onClose: () => void;
 }
 
-
 export default function DenunciaModal({ denuncia, onClose }: props) {
+  const [currentDenuncia, setCurrentDenuncia] = useState<Denuncia>(denuncia);
+
+  const fetchDenuncia = async () => {
+    if (currentDenuncia.protocolo) {
+      const data = await getDenunciaFromProtocolo(currentDenuncia.protocolo);
+      if (data) setCurrentDenuncia(data);
+    }
+  };
+
   return (
     <Dialog open={true} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle
@@ -58,14 +69,16 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
             gap: 2,
           }}
         >
-        <DenunciaDetalhamento denuncia={denuncia} />
+          <DenunciaDetalhamento denuncia={currentDenuncia} />
 
           {/* Chat de conversa */}
-          <DenunciaMensagem denuncia={denuncia}  />
+          <DenunciaMensagem denuncia={currentDenuncia} onUpdate={fetchDenuncia} />
+
+          {/* Anexos */}
+          <DenunciaAnexo denuncia={currentDenuncia} onUpdate={fetchDenuncia} />
 
           {/* Botões de ação - status da denuncia */}
-          <DenunciaPutStatus denuncia={denuncia}/>
-
+          <DenunciaPutStatus denuncia={currentDenuncia} onUpdate={fetchDenuncia} />
         </Box>
       </DialogContent>
 
@@ -74,7 +87,7 @@ export default function DenunciaModal({ denuncia, onClose }: props) {
           Fechar
         </Button>
       </DialogActions>
-
+      
     </Dialog>
   );
 }

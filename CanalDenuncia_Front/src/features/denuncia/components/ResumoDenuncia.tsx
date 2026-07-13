@@ -3,8 +3,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import DescriptionIcon from "@mui/icons-material/Description";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 import { FormatCPF, FormatPhone } from "@/shared/formatters";
@@ -324,41 +322,6 @@ export default function ResumoDenuncia({ dadosFormulario }: ResumoDenunciaProps)
           </Grid>
         </Box>
       </Box>
-
-      <Divider />
-
-      {/* Anexos */}
-      {step3.arquivos && step3.arquivos.length > 0 && (
-        <Box>
-          <Typography
-            variant="subtitle1"
-            sx={{
-              fontWeight: 700,
-              color: "#1e3a8a",
-              mb: 2,
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            <AttachmentIcon sx={{ color: "var(--primary)" }} /> 4. Anexos
-          </Typography>
-          <Box sx={{ pl: 4 }}>
-            <Stack spacing={1}>
-              {step3.arquivos?.map((arquivo: any, index: any) => (
-                <Typography
-                  key={index}
-                  variant="body2"
-                  sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                >
-                  <CloudUploadIcon sx={{ fontSize: 16, color: "#3b82f6" }} />{" "}
-                  {arquivo.name}
-                </Typography>
-              ))}
-            </Stack>
-          </Box>
-        </Box>
-      )}
     </Stack>
   );
 }

@@ -12,7 +12,6 @@ import {
   FormGroup,
   Checkbox,
   FormHelperText,
-  IconButton,
 } from "@mui/material";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -20,16 +19,15 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import LabelIcon from "@mui/icons-material/Label";
 import DescriptionIcon from "@mui/icons-material/Description";
 import ShieldIcon from "@mui/icons-material/Shield";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ChangeEvent, useState, useEffect } from "react";
 
-import { stepDSchema, type StepDFormData } from "@/features/denuncia/schemas/validationSchemas";
+import {
+  stepDSchema,
+  type StepDFormData,
+} from "@/features/denuncia/schemas/validationSchemas";
 import InfoBox from "@/shared/infoBox";
 import StepHeader from "@/features/denuncia/components/StepHeader";
 import ActionButtons from "@/features/denuncia/components/ActionButtons";
@@ -145,96 +143,71 @@ interface StepDProps {
   onVoltar: () => void;
 }
 
-export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps) {
+export default function StepD({
+  initialData,
+  onAvançar,
+  onVoltar,
+}: StepDProps) {
   const [categoriasSelecionadas, setCategoriasSelecionadas] = useState<
-      string[]
-    >(initialData?.categorias ? initialData.categorias.split(",") : []);
-    const [emocionaisSelecionados, setEmocionaisSelecionados] = useState<
-      string[]
-    >(initialData?.estado_emocional ? initialData.estado_emocional.split(",") : []);
-  
-    const {
-      register,
-      handleSubmit,
-      setValue,
-      watch,
-      formState: { errors },
-    } = useForm<StepDFormData>({
-      resolver: zodResolver(stepDSchema),
-      defaultValues: initialData || {
-        categorias: "",
-        descricao: "",
-        estado_emocional: "",
-        aceitoPrivacidade: false,
-        autorizoLgpd: false,
-        entendoSigilo: false,
-      },
+    string[]
+  >(initialData?.categorias ? initialData.categorias.split(",") : []);
+  const [emocionaisSelecionados, setEmocionaisSelecionados] = useState<
+    string[]
+  >(
+    initialData?.estado_emocional
+      ? initialData.estado_emocional.split(",")
+      : [],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<StepDFormData>({
+    resolver: zodResolver(stepDSchema),
+    defaultValues: initialData || {
+      categorias: "",
+      descricao: "",
+      estado_emocional: "",
+      aceitoPrivacidade: false,
+      autorizoLgpd: false,
+      entendoSigilo: false,
+    },
+  });
+
+  const descricaoValue = watch("descricao", "") || "";
+  const charCount = descricaoValue.length;
+
+  useEffect(() => {
+    setValue("categorias", categoriasSelecionadas.join(","), {
+      shouldValidate: categoriasSelecionadas.length > 0,
     });
-  
-    const descricaoValue = watch("descricao", "") || "";
-    const charCount = descricaoValue.length;
-  
-    useEffect(() => {
-      setValue("categorias", categoriasSelecionadas.join(","), {
-        shouldValidate: categoriasSelecionadas.length > 0,
-      });
-    }, [categoriasSelecionadas, setValue]);
-  
-    useEffect(() => {
-      setValue("estado_emocional", emocionaisSelecionados.join(","), {
-        shouldValidate: emocionaisSelecionados.length > 0,
-      });
-    }, [emocionaisSelecionados, setValue]);
-  
-    const handleCategoriaChange = (event: ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-      if (event.target.checked) {
-        setCategoriasSelecionadas((prev) => [...prev, value]);
-      } else {
-        setCategoriasSelecionadas((prev) => prev.filter((c) => c !== value));
-      }
-    };
-  
-    const handleEmocionalChange = (event: ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-      if (event.target.checked) {
-        setEmocionaisSelecionados((prev) => [...prev, value]);
-      } else {
-        setEmocionaisSelecionados((prev) => prev.filter((c) => c !== value));
-      }
-    };
+  }, [categoriasSelecionadas, setValue]);
 
-  const [arquivos, setArquivos] = useState<File[]>(initialData?.arquivos || []);
-  const [isDragActive, setIsDragActive] = useState(false);
+  useEffect(() => {
+    setValue("estado_emocional", emocionaisSelecionados.join(","), {
+      shouldValidate: emocionaisSelecionados.length > 0,
+    });
+  }, [emocionaisSelecionados, setValue]);
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragActive(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragActive(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragActive(false);
-    const files = e.dataTransfer.files;
-    if (files && files.length > 0) {
-      setArquivos((prev) => [...prev, ...Array.from(files)]);
+  const handleCategoriaChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (event.target.checked) {
+      setCategoriasSelecionadas((prev) => [...prev, value]);
+    } else {
+      setCategoriasSelecionadas((prev) => prev.filter((c) => c !== value));
     }
   };
 
-  function handleSelecionarArquivos(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      setArquivos((prev) => [...prev, ...Array.from(files)]);
+  const handleEmocionalChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (event.target.checked) {
+      setEmocionaisSelecionados((prev) => [...prev, value]);
+    } else {
+      setEmocionaisSelecionados((prev) => prev.filter((c) => c !== value));
     }
-  }
-
-  const removerArquivo = (indexToRemove: number) => {
-    setArquivos((prev) => prev.filter((_, index) => index !== indexToRemove));
   };
 
   return (
@@ -395,151 +368,6 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
             </Stack>
           </Box>
 
-          {/* Upload de arquivos */}
-          <Box sx={{ pt: "2rem" }}>
-            <Divider sx={{ color: "var(--primary)", fontWeight: 600, mb: 3 }} />
-            <Typography
-              variant="body1"
-              sx={{
-                fontWeight: 700,
-                marginBottom: "8px",
-                color: "#374151",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
-              <UploadFileIcon sx={{ color: "var(--primary)" }} /> Upload de
-              Arquivos
-              <InfoBox texto="Carregue arquivos relevantes para a denúncia." />
-            </Typography>
-            <Box
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-              sx={{
-                width: "100%",
-                maxWidth: 800,
-                margin: "0 auto",
-                padding: "2rem",
-                border: "2px dashed",
-                borderColor: isDragActive ? "#3b82f6" : "#cbd5e1",
-                borderRadius: "15px",
-                backgroundColor: isDragActive ? "#eff6ff" : "#f8fafc",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                transition: "all 0.2s ease",
-                cursor: "pointer",
-                "&:hover": {
-                  borderColor: "#3b82f6",
-                  backgroundColor: "#eff6ff",
-                },
-              }}
-              component="label"
-            >
-              <input
-                type="file"
-                multiple
-                accept="image/*,.pdf"
-                onChange={handleSelecionarArquivos}
-                style={{ display: "none" }}
-              />
-              <CloudUploadIcon
-                sx={{
-                  fontSize: 48,
-                  color: isDragActive ? "#3b82f6" : "#94a3b8",
-                  mb: 2,
-                }}
-              />
-              <Typography
-                variant="h6"
-                sx={{
-                  color: "#334155",
-                  fontWeight: 600,
-                  mb: 1,
-                  textAlign: "center",
-                }}
-              >
-                {isDragActive
-                  ? "Solte os arquivos aqui"
-                  : "Arraste e solte seus arquivos aqui"}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "#64748b", mb: 2, textAlign: "center" }}
-              >
-                ou clique para selecionar do seu computador
-              </Typography>
-              <Typography
-                variant="caption"
-                sx={{ color: "#94a3b8", textAlign: "center" }}
-              >
-                Aceita apenas imagens e PDF (Máx. 10MB por arquivo)
-              </Typography>
-            </Box>
-
-            {arquivos.length > 0 && (
-              <Box
-                sx={{ width: "100%", maxWidth: 800, margin: "0 auto", mt: 3 }}
-              >
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: "#475569", fontWeight: 600, mb: 2 }}
-                >
-                  Arquivos Selecionados ({arquivos.length})
-                </Typography>
-                <Stack spacing={1.5}>
-                  {arquivos.map((f, i) => (
-                    <Box
-                      key={i}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        padding: "12px 16px",
-                        backgroundColor: "white",
-                        border: "1px solid #e2e8f0",
-                        borderRadius: "8px",
-                      }}
-                    >
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 2 }}
-                      >
-                        <InsertDriveFileIcon sx={{ color: "#3b82f6" }} />
-                        <Box>
-                          <Typography
-                            variant="body2"
-                            sx={{ fontWeight: 500, color: "#334155" }}
-                          >
-                            {f.name}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            sx={{ color: "#64748b" }}
-                          >
-                            {(f.size / 1024 / 1024).toFixed(2)} MB
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <IconButton
-                        onClick={(e) => {
-                          e.preventDefault();
-                          removerArquivo(i);
-                        }}
-                        size="small"
-                        sx={{ color: "#ef4444" }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </Box>
-                  ))}
-                </Stack>
-              </Box>
-            )}
-          </Box>
-
           {/* Estado Emocional */}
           <Box sx={{ pt: "2rem" }}>
             <Divider sx={{ color: "var(--primary)", fontWeight: 600, mb: 3 }} />
@@ -676,7 +504,7 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
                   />
                 ))}
               </Stack>
-              {(errors.entendoSigilo) && (
+              {errors.entendoSigilo && (
                 <FormHelperText
                   error
                   sx={{
@@ -686,8 +514,7 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
                     fontWeight: 600,
                   }}
                 >
-                  Você precisa aceitar o consentimento para
-                  prosseguir.
+                  Você precisa aceitar o consentimento para prosseguir.
                 </FormHelperText>
               )}
             </Box>
@@ -698,7 +525,7 @@ export default function StepD({ initialData, onAvançar, onVoltar }: StepDProps)
       <ActionButtons
         onVoltar={onVoltar}
         onProsseguir={handleSubmit((dados) => {
-          onAvançar({ ...dados, arquivos } as any);
+          onAvançar({ ...dados } as any);
         })}
       />
     </Box>

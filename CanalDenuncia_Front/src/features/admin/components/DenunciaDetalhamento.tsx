@@ -37,10 +37,6 @@ const getStatusLabel = (status: StatusDenuncia) => {
 
 export default function DenunciaModal({ denuncia }: props) {
 
-  function handleDownload(urlArquivo: string): void {
-    // TODO: implementar download do arquivo
-    console.log(urlArquivo);
-  }
 
   return (
     <Box>
@@ -295,47 +291,31 @@ export default function DenunciaModal({ denuncia }: props) {
 
             {/* INFORMAÇÕES DO ANEXO */}
             {denuncia.anexos && denuncia.anexos.length > 0 && (
-              <Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              <Box sx={{ border: 1, borderRadius: 1, p: 2, borderColor: "divider" }}>
+                <Typography variant="h6" gutterBottom color="primary.main" sx={{ fontWeight: "bold", mb: 1 }}>
                   Anexos
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                  {denuncia.anexos?.map((anexo, index) => {
-                    const isImage = anexo.tipoArquivo?.startsWith("image/") || 
-                                    anexo.nomeArquivo?.match(/\.(jpeg|jpg|gif|png|webp)$/i) != null;
-                    return isImage ? (
-                      <Box key={index} sx={{ mt: 1 }}>
-                        <Typography variant="caption" color="text.secondary" gutterBottom sx={{ display: 'block' }}>
-                          {anexo.nomeArquivo}
-                        </Typography>
-                        <Box
-                          component="img"
-                          src={anexo.urlArquivo}
-                          alt={anexo.nomeArquivo}
-                          sx={{
-                            maxWidth: "100%",
-                            maxHeight: 400,
-                            borderRadius: 1,
-                            border: "1px solid",
-                            borderColor: "divider"
-                          }}
-                        />
-                      </Box>
-                    ) : (
-                      <Button
-                        key={index}
-                        variant="text"
-                        startIcon={<AttachFile />}
-                        onClick={() => handleDownload(anexo.urlArquivo)}
-                        sx={{ alignSelf: "flex-start" }}
-                      >
-                        {anexo.nomeArquivo}
-                      </Button>
-                    );
-                  })}
+                  {denuncia.anexos?.map((anexo, index) => (
+                    <Button
+                      key={index}
+                      component="a"
+                      href={anexo.urlArquivo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download={anexo.nomeArquivo}
+                      variant="text"
+                      startIcon={<AttachFile />}
+                      sx={{ alignSelf: "flex-start", textTransform: "none" }}
+                    >
+                      {anexo.nomeArquivo}
+                    </Button>
+                  ))}
                 </Box>
               </Box>
             )}
+
+            
           </Box>
         </Box>
       </Box>

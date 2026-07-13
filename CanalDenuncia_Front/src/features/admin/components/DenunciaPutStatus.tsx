@@ -5,11 +5,12 @@ import { Box, Button, Typography } from "@mui/material";
 
 interface props {
   denuncia: Denuncia;
+  onUpdate?: () => void;
 }
 
 import { useRouter } from "next/navigation";
 
-export default function DenunciaPutStatus({ denuncia }: props) {
+export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
   const router = useRouter();
 
   const handlePutStatus = async (status: string) => {
@@ -20,9 +21,10 @@ export default function DenunciaPutStatus({ denuncia }: props) {
 
     const aceitou = confirm("Deseja prosseguir com esta ação?");
     if (aceitou) {
-      const sucesso = await putStatus(denuncia, { status });
-      if (sucesso) {
+      const updatedDenuncia = await putStatus(denuncia, { status });
+      if (updatedDenuncia) {
         alert("Status atualizado com sucesso!");
+        if (onUpdate) onUpdate();
         router.refresh();
       } else {
         alert("Erro ao atualizar status. Verifique a aba Network.");

@@ -48,7 +48,7 @@ public class AnexoService {
         
         Anexo anexo = new Anexo();
         
-        anexo.setNomeArquivo(nomeUnico);
+        anexo.setNomeArquivo(arquivo.getOriginalFilename() != null ? arquivo.getOriginalFilename() : "arquivo");
         anexo.setUrlArquivo(baseUrl + "/uploads/" + nomeUnico);
         anexo.setTipoArquivo(arquivo.getContentType());
         anexo.setDenuncia(denuncia);
