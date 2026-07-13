@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 
-export type FiltroStatusType = "TODAS" | "ATIVAS" | "RESOLVIDAS";
+export type FiltroStatusType = "TODAS" | "PENDENTES" | "RESOLVIDAS" | "ARQUIVADAS";
 
 export function useDenunciasFilter(initialData: Denuncia[]) {
   const [filtroStatus, setFiltroStatus] = useState<FiltroStatusType>("TODAS");
@@ -12,8 +12,9 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
     return initialData.filter((denuncia) => {
       const matchesStatus =
         filtroStatus === "TODAS" ||
-        (filtroStatus === "ATIVAS" && ["PENDENTE", "EM_INVESTIGACAO"].includes(denuncia.status)) ||
-        (filtroStatus === "RESOLVIDAS" && denuncia.status === "RESOLVIDA");
+        (filtroStatus === "PENDENTES" && denuncia.status === "PENDENTE") ||
+        (filtroStatus === "RESOLVIDAS" && denuncia.status === "RESOLVIDA") ||
+        (filtroStatus === "ARQUIVADAS" && denuncia.status === "ARQUIVADA");
 
       const matchText = busca.toLowerCase();
       const matchesBusca =
@@ -28,9 +29,9 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
 
   const stats = useMemo(() => ({
     total: initialData.length,
-    ativas: initialData.filter(d => ["PENDENTE", "EM_INVESTIGACAO"].includes(d.status)).length,
-    resolvidas: initialData.filter(d => d.status === "RESOLVIDA").length,
     pendentes: initialData.filter(d => d.status === "PENDENTE").length,
+    resolvidas: initialData.filter(d => d.status === "RESOLVIDA").length,
+    arquivadas: initialData.filter(d => d.status === "ARQUIVADA").length,
   }), [initialData]);
 
   return {

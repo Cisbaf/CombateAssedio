@@ -8,9 +8,9 @@ import WarningIcon from "@mui/icons-material/Warning";
 interface props {
   stats: {
     total: number;
-    ativas: number;
-    resolvidas: number;
     pendentes: number;
+    resolvidas: number;
+    arquivadas: number;
   };
 }
 
@@ -30,10 +30,10 @@ export default function DenunciasCards({ stats }: props) {
         color="#1976d2" 
       />
       <CardComponent 
-        title={"Ativas"} 
-        value={stats.ativas} 
-        icon={<WarningIcon fontSize="large" />} 
-        color="#d32f2f" 
+        title={"Pendentes"} 
+        value={stats.pendentes} 
+        icon={<PendingActionsIcon fontSize="large" />} 
+        color="#ed6c02" 
       />
       <CardComponent 
         title={"Resolvidas"} 
@@ -42,10 +42,10 @@ export default function DenunciasCards({ stats }: props) {
         color="#2e7d32" 
       />
       <CardComponent 
-        title={"Pendente"} 
-        value={stats.pendentes} 
-        icon={<PendingActionsIcon fontSize="large" />} 
-        color="#ed6c02" 
+        title={"Arquivadas"} 
+        value={stats.arquivadas} 
+        icon={<WarningIcon fontSize="large" />} 
+        color="#757575" 
       />
     </Box>
   );

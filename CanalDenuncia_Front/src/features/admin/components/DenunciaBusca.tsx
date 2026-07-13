@@ -38,8 +38,8 @@ export default function DenunciaBusca({ filtroStatus, setFiltroStatus, busca, se
           sx={{ minHeight: 48 }}
         >
           <Tab label="Todas" value="TODAS" />
-          <Tab label="Ativas" value="ATIVAS" />
           <Tab label="Resolvidas" value="RESOLVIDAS" />
+          <Tab label="Arquivadas" value="ARQUIVADAS" />
         </Tabs>
 
         <TextField

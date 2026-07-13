@@ -8,8 +8,8 @@ public class Utils {
     public String StringStatus(String status){
         if(status.equals("PENDENTE")){
             return "Pendente";
-        }else if(status.equals("EM_INVESTIGACAO")){
-            return "Em Investigação";
+        }else if(status.equals("ARQUIVADA")){
+            return "Arquivada";
         }else if(status.equals("RESOLVIDA")){
             return "Resolvida";
         }else{

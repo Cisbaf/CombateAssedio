@@ -1,4 +1,4 @@
-export type StatusDenuncia = "PENDENTE" | "EM_INVESTIGACAO" | "RESOLVIDA" | "ARQUIVADA";
+export type StatusDenuncia = "PENDENTE" | "ARQUIVADA" | "RESOLVIDA";
 
 export type TipoDenunciante = "VITIMA" | "TERCEIRO";
 

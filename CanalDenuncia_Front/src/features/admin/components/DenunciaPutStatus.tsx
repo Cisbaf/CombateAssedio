@@ -43,9 +43,7 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         >
           Atualizar Status{" "}
           <InfoBox
-            texto="Ao iniciar a investigação, 
-          o status pode ser alterado para 'Em investigação' 
-          ou diretamente para 'Resolvida' (caso já existam informações suficientes). 
+            texto="O status da denúncia pode ser alterado conforme o andamento do processo. 
           Essa ação pode ser revertida a qualquer momento."
           />
         </Typography>
@@ -60,12 +58,12 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         </Button>
         <Button
           variant="contained"
-          color="info"
+          color="inherit"
           onClick={() => {
-            handlePutStatus("EM_INVESTIGACAO");
+            handlePutStatus("ARQUIVADA");
           }}
         >
-          Em Investigação
+          Arquivada
         </Button>
         <Button
           variant="contained"
