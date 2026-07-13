@@ -204,7 +204,11 @@ export default function StepD({
   const handleEmocionalChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     if (event.target.checked) {
-      setEmocionaisSelecionados((prev) => [...prev, value]);
+      if (value === "Nenhum Impacto") {
+        setEmocionaisSelecionados(["Nenhum Impacto"]);
+      } else {
+        setEmocionaisSelecionados((prev) => [...prev, value]);
+      }
     } else {
       setEmocionaisSelecionados((prev) => prev.filter((c) => c !== value));
     }

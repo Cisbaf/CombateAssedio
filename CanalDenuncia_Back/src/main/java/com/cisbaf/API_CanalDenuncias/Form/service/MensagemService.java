@@ -55,4 +55,17 @@ public class MensagemService {
 
         return mensagemRepository.save(novaMensagem);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Mensagem anexoEnviado(UUID denunciaId, String nomeArquivo) {
+
+        Denuncia denuncia = denunciaRepository.findById(denunciaId)
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
+
+        Mensagem novaMensagem = new Mensagem();
+        novaMensagem.setConteudo("Arquivo anexado: " + nomeArquivo);
+        novaMensagem.setDenunciaId(denuncia);
+
+        return mensagemRepository.save(novaMensagem);
+    }
 }

@@ -169,7 +169,8 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
           >
             <strong>Sua segurança é nossa prioridade</strong>
             <br />
-            Ouvidoria especializada e sigiliosa para acolhimento de denuncias sobre assédio e discriminação
+            Ouvidoria especializada e sigiliosa para acolhimento de denuncias
+            sobre assédio e discriminação
             <br />
             As informações prestadas neste formulário serão sigilosas.
           </Alert>
@@ -353,6 +354,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                   <TextField
                     placeholder="Digite sua idade"
                     variant="outlined"
+                    type="number"
                     size="small"
                     slotProps={{
                       input: {
@@ -379,6 +381,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                   <TextField
                     placeholder="Apenas números (11 dígitos)"
                     variant="outlined"
+                    type="number"
                     size="small"
                     slotProps={{
                       input: {
@@ -405,6 +408,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                   <TextField
                     placeholder="DDD + Número (ex: 21999999999)"
                     variant="outlined"
+                    type="number"
                     size="small"
                     slotProps={{
                       input: {
@@ -535,6 +539,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                     placeholder="Digite o CPF da vítima"
                     variant="outlined"
                     size="small"
+                    type="number"
                     slotProps={{
                       input: {
                         startAdornment: (
@@ -560,6 +565,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                     placeholder="Idade aproximada"
                     variant="outlined"
                     size="small"
+                    type="number"
                     slotProps={{
                       input: {
                         startAdornment: (
