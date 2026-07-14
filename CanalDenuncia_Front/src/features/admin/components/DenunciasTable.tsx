@@ -10,6 +10,8 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
 import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
 import Paper from "@mui/material/Paper";
@@ -26,10 +28,10 @@ const getStatusColor = (status: StatusDenuncia) => {
   switch (status) {
     case "PENDENTE":
       return "warning";
+    case "EM_ANDAMENTO":
+      return "info";
     case "RESOLVIDA":
       return "success";
-    case "ARQUIVADA":
-      return "error";
     default:
       return "default";
   }
@@ -39,18 +41,26 @@ const getStatusLabel = (status: StatusDenuncia) => {
   switch (status) {
     case "PENDENTE":
       return "Pendente";
+    case "EM_ANDAMENTO":
+      return "Em andamento";
     case "RESOLVIDA":
       return "Resolvida";
-    case "ARQUIVADA":
-      return "Arquivada";
     default:
       return status;
   }
 };
 
+const getStatusWeight = (status: StatusDenuncia) => {
+  if (status === "RESOLVIDA") {
+    return 1;
+  }
+  return 0;
+};
+
 export default function DenunciasTable({ data, onViewDetails }: props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [showArchived, setShowArchived] = useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -63,7 +73,20 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
     setPage(0);
   };
 
-  const currentData = data.slice(
+  const filteredData = showArchived 
+    ? data 
+    : data.filter((denuncia) => !denuncia.isArquivada);
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    const weightA = getStatusWeight(a.status);
+    const weightB = getStatusWeight(b.status);
+    if (weightA !== weightB) {
+      return weightA - weightB;
+    }
+    return new Date(b.dataRegistro).getTime() - new Date(a.dataRegistro).getTime();
+  });
+
+  const currentData = sortedData.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
   );
@@ -79,6 +102,21 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
         overflow: "hidden",
       }}
     >
+      <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end", borderBottom: "1px solid", borderColor: "divider" }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={showArchived}
+              onChange={(e) => {
+                setShowArchived(e.target.checked);
+                setPage(0);
+              }}
+              color="primary"
+            />
+          }
+          label="Mostrar denúncias arquivadas"
+        />
+      </Box>
       <Box sx={{ overflowX: "auto" }}>
         <Table sx={{ minWidth: 650 }} aria-label="tabela de denúncias">
           <TableHead sx={{ bgcolor: "background.default" }}>
@@ -97,13 +135,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
           </TableHead>
           <TableBody>
             {currentData.length > 0 ? (
-              [...currentData]
-                .sort(
-                  (a, b) =>
-                    new Date(b.dataRegistro).getTime() -
-                    new Date(a.dataRegistro).getTime(),
-                )
-                .map((denuncia) => (
+              currentData.map((denuncia) => (
                   <TableRow
                     key={denuncia.id}
                     hover
@@ -182,7 +214,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
       <TablePagination
         rowsPerPageOptions={[20, 40, 60]}
         component="div"
-        count={data.length}
+        count={filteredData.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

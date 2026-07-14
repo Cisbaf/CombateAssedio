@@ -1,4 +1,4 @@
-export type StatusDenuncia = "PENDENTE" | "ARQUIVADA" | "RESOLVIDA";
+export type StatusDenuncia = "PENDENTE" | "EM_ANDAMENTO" | "ARQUIVADA" | "RESOLVIDA";
 
 export type TipoDenunciante = "VITIMA" | "TERCEIRO";
 
@@ -39,6 +39,7 @@ export interface Denuncia {
   protocolo: string;
   dataRegistro: string;
   status: StatusDenuncia;
+  isArquivada: boolean;
   isAnonimo: boolean;
   tipoDenunciante: TipoDenunciante;
   vitima?: Pessoa;

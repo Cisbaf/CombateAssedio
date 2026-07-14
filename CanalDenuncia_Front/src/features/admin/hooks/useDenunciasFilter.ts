@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 
-export type FiltroStatusType = "TODAS" | "PENDENTES" | "RESOLVIDAS" | "ARQUIVADAS";
+export type FiltroStatusType = "TODAS" | "PENDENTES" | "RESOLVIDAS" ;
 
 export function useDenunciasFilter(initialData: Denuncia[]) {
   const [filtroStatus, setFiltroStatus] = useState<FiltroStatusType>("TODAS");
@@ -13,8 +13,7 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
       const matchesStatus =
         filtroStatus === "TODAS" ||
         (filtroStatus === "PENDENTES" && denuncia.status === "PENDENTE") ||
-        (filtroStatus === "RESOLVIDAS" && denuncia.status === "RESOLVIDA") ||
-        (filtroStatus === "ARQUIVADAS" && denuncia.status === "ARQUIVADA");
+        (filtroStatus === "RESOLVIDAS" && denuncia.status === "RESOLVIDA");
 
       const matchText = busca.toLowerCase();
       const matchesBusca =
@@ -31,7 +30,7 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
     total: initialData.length,
     pendentes: initialData.filter(d => d.status === "PENDENTE").length,
     resolvidas: initialData.filter(d => d.status === "RESOLVIDA").length,
-    arquivadas: initialData.filter(d => d.status === "ARQUIVADA").length,
+    arquivadas: initialData.filter(d => d.isArquivada).length,
   }), [initialData]);
 
   return {

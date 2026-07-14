@@ -61,4 +61,20 @@ public class DenunciaService {
         denuncia.setStatus(Status.valueOf(newStatus));
         return denunciaRepository.save(denuncia);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Denuncia arquivarDenuncia(UUID denunciaId) {
+        Denuncia denuncia = getDenunciaByCodigo(denunciaId)
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
+        denuncia.setIsArquivada(true);
+        return denunciaRepository.save(denuncia);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Denuncia desarquivarDenuncia(UUID denunciaId) {
+        Denuncia denuncia = getDenunciaByCodigo(denunciaId)
+                .orElseThrow(() -> new EntityNotFoundException("Denúncia não encontrada: " + denunciaId));
+        denuncia.setIsArquivada(false);
+        return denunciaRepository.save(denuncia);
+    }
 }

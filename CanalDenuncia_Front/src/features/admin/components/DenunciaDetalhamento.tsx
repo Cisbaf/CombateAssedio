@@ -11,10 +11,10 @@ const getStatusColor = (status: StatusDenuncia) => {
   switch (status) {
     case "PENDENTE":
       return "warning";
+    case "EM_ANDAMENTO":
+      return "info";
     case "RESOLVIDA":
       return "success";
-    case "ARQUIVADA":
-      return "error";
     default:
       return "default";
   }
@@ -24,6 +24,8 @@ const getStatusLabel = (status: StatusDenuncia) => {
   switch (status) {
     case "PENDENTE":
       return "Pendente";
+    case "EM_ANDAMENTO":
+      return "Em andamento";
     case "RESOLVIDA":
       return "Resolvida";
     default:

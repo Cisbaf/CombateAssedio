@@ -151,7 +151,7 @@ export default function DenunciaAnexo({ denuncia, onUpdate }: props) {
           variant="caption"
           sx={{ color: "#94a3b8", textAlign: "center" }}
         >
-          Aceita imagens, vídeos, PDF, Excel e Word (Máx. 10MB por arquivo)
+          Aceita imagens, vídeos e PDF (Máx. 10MB por arquivo)
         </Typography>
       </Box>
 

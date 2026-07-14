@@ -92,4 +92,18 @@ public class DenunciaController {
         return ResponseEntity.created(uri).body(denuncia);
     }
 
+    @PutMapping("/arquivar/{id}")
+    @Operation(summary = "Arquiva uma denúncia", description = "Oculta a denúncia da visão principal dos administradores.")
+    public ResponseEntity<Denuncia> arquivarDenuncia(@PathVariable("id") UUID denunciaId) {
+        Denuncia denuncia = denunciaService.arquivarDenuncia(denunciaId);
+        return ResponseEntity.ok(denuncia);
+    }
+
+    @PutMapping("/desarquivar/{id}")
+    @Operation(summary = "Desarquiva uma denúncia", description = "Restaura a denúncia para a visão principal dos administradores.")
+    public ResponseEntity<Denuncia> desarquivarDenuncia(@PathVariable("id") UUID denunciaId) {
+        Denuncia denuncia = denunciaService.desarquivarDenuncia(denunciaId);
+        return ResponseEntity.ok(denuncia);
+    }
+
 }

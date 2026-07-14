@@ -45,6 +45,9 @@ public class Denuncia {
     @Enumerated(EnumType.STRING)
     private TipoDenunciante tipoDenunciante;
 
+    @Column(name = "is_arquivada", nullable = false)
+    private Boolean isArquivada = false;
+
     @Column(nullable = false, name = "is_anonimo")
     private Boolean isAnonimo;
 

@@ -1,5 +1,5 @@
 import { Denuncia } from "../schemas/AdminDenunciaSchema";
-import { putStatus } from "@/api/denunciaApi";
+import { putStatus, putArquivada, putDesarquivada } from "@/api/denunciaApi";
 import InfoBox from "@/shared/infoBox";
 import { Box, Button, Typography } from "@mui/material";
 
@@ -32,6 +32,44 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
     }
   };
 
+  const handlePutArquivada = async () => {
+    if (denuncia.isArquivada) {
+      alert("Denúncia já arquivada!");
+      return;
+    }
+
+    const aceitou = confirm("Deseja arquivar esta denúncia?");
+    if (aceitou) {
+      const updatedDenuncia = await putArquivada(denuncia);
+      if (updatedDenuncia) {
+        alert("Denúncia arquivada com sucesso!");
+        if (onUpdate) onUpdate();
+        router.refresh();
+      } else {
+        alert("Erro ao arquivar denúncia. Verifique a aba Network.");
+      }
+    }
+  };
+
+  const handlePutDesarquivada = async () => {
+    if (!denuncia.isArquivada) {
+      alert("Denúncia não está arquivada!");
+      return;
+    }
+
+    const aceitou = confirm("Deseja desarquivar esta denúncia?");
+    if (aceitou) {
+      const updatedDenuncia = await putDesarquivada(denuncia);
+      if (updatedDenuncia) {
+        alert("Denúncia desarquivada com sucesso!");
+        if (onUpdate) onUpdate();
+        router.refresh();
+      } else {
+        alert("Erro ao desarquivar denúncia. Verifique a aba Network.");
+      }
+    }
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box>
@@ -43,8 +81,12 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         >
           Atualizar Status{" "}
           <InfoBox
-            texto="O status da denúncia pode ser alterado conforme o andamento do processo. 
-          Essa ação pode ser revertida a qualquer momento."
+            texto={
+              `O status da denúncia pode ser alterado conforme o andamento do processo.
+          Essa ação pode ser revertida a qualquer momento.
+          A mudança de status {Pendente, Em andamento ou Resolvida} será notificada ao denunciante.
+          Não será notificado ao denunciante se for arquivada ou desarquivada.`
+            }
           />
         </Typography>
       </Box>
@@ -58,13 +100,12 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         </Button>
         <Button
           variant="contained"
-          color="error"
-          onClick={() => {
-            handlePutStatus("ARQUIVADA");
-          }}
+          color="info"
+          onClick={() => handlePutStatus("EM_ANDAMENTO")}
         >
-          Arquivada
+          Em andamento
         </Button>
+
         <Button
           variant="contained"
           color="success"
@@ -72,6 +113,25 @@ export default function DenunciaPutStatus({ denuncia, onUpdate }: props) {
         >
           Resolvida
         </Button>
+
+        {denuncia.isArquivada ? (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handlePutDesarquivada}
+          >
+            Desarquivar
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handlePutArquivada}
+          >
+            Arquivar
+          </Button>
+        )}
+        
       </Box>
     </Box>
   );

@@ -91,6 +91,53 @@ export async function putStatus(
   }
 }
 
+export async function putArquivada(denuncia: Denuncia): Promise<Denuncia | null> {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/form/denuncias/arquivar/${denuncia.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erro no putArquivada:", error);
+    return null;
+  }
+}
+
+export async function putDesarquivada(denuncia: Denuncia): Promise<Denuncia | null> {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/form/denuncias/desarquivar/${denuncia.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erro no putDesarquivada:", error);
+    return null;
+  }
+}
+
+
 // Busca a denúncia pelo protocolo
 export async function getDenunciaFromProtocolo(
   protocolo: String,
