@@ -493,6 +493,7 @@ export default function StepD({
                     control={
                       <Checkbox
                         {...register(field)}
+                        checked={!!watch(field)}
                         sx={{ "&.Mui-checked": { color: "#10b981" } }}
                       />
                     }

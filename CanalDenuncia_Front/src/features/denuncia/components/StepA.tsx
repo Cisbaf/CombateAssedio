@@ -328,6 +328,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                   <TextField
                     placeholder="Seu nome completo"
                     variant="outlined"
+                    type="text"
                     size="small"
                     slotProps={{
                       input: {
@@ -488,6 +489,7 @@ export default function StepA({ initialData, onAvançar }: StepAProps) {
                   <TextField
                     placeholder="Nome completo ou primeiro nome"
                     variant="outlined"
+                    type="text"
                     size="small"
                     slotProps={{
                       input: {

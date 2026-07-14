@@ -127,6 +127,7 @@ export default function StepB({ initialData, onAvançar, onVoltar }: StepBProps)
                 <TextField
                   placeholder="Nome completo ou primeiro nome"
                   variant="outlined"
+                  type="text"
                   size="small"
                   slotProps={{
                     input: {

@@ -8,12 +8,12 @@ export const getStepASchema = (opcaoAnonimato: string, opcaoIdentificacao: strin
   return z.object({
     name:
       opcaoAnonimato === "false"
-        ? z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres")
+        ? z.string().min(3, "Nome completo deve ter pelo menos 3 caracteres").regex(/^[^0-9]*$/, "Nome não pode conter números")
         : z.string().optional(),
 
     idade:
       opcaoAnonimato === "false"
-        ? z.string().min(1, "Idade é obrigatória")
+        ? z.string().min(1, "Idade é obrigatória").max(3, "Idade inválida")
         : z.string().optional(),
 
     cpf:
@@ -33,7 +33,7 @@ export const getStepASchema = (opcaoAnonimato: string, opcaoIdentificacao: strin
 
     vitima_name:
       opcaoIdentificacao === "terceiro"
-        ? z.string().min(3, "Nome da vítima deve ter pelo menos 3 caracteres")
+        ? z.string().min(3, "Nome da vítima deve ter pelo menos 3 caracteres").regex(/^[^0-9]*$/, "Nome não pode conter números")
         : z.string().optional(),
 
     vitima_idade: z.string().optional(),
@@ -52,7 +52,7 @@ export const getStepASchema = (opcaoAnonimato: string, opcaoIdentificacao: strin
 // ==========================================
 
 export const stepBSchema = z.object({
-  name: z.string().min(3, "O nome do ofensor deve ter pelo menos 3 caracteres"),
+  name: z.string().min(3, "O nome do ofensor deve ter pelo menos 3 caracteres").regex(/^[^0-9]*$/, "Nome não pode conter números"),
   local_trabalho: z.string().min(3, "O local de trabalho do ofensor deve ter pelo menos 3 caracteres"),
 });
 
