@@ -13,12 +13,12 @@ export function FormatPhone(phone: string){
 
 export function FormatDate(date: string){
 
-    const hasZ = date.toUpperCase().endsWith('Z');
-    const data = new Date(hasZ ? date : date + 'Z');
+    const data = new Date(date);
     return data.toLocaleDateString('pt-BR', {
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric'
+        year: 'numeric',
+        timeZone: 'UTC'
     });
 }
 
