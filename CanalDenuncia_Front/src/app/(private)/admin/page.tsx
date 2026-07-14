@@ -1,6 +1,7 @@
 import AdminDashBoard from "@/features/admin/components/AdminDashBoard";
 import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const API_URL = "http://canal-denuncias-backend:8080";
 
@@ -15,7 +16,12 @@ async function getDenuncias(): Promise<Denuncia[]> {
     },
   });
 
-  if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new Error("UNAUTHORIZED");
+    }
+    throw new Error(`Erro na API: ${response.status}`);
+  }
   return await response.json();
 }
 
@@ -23,7 +29,10 @@ export default async function AdminPage() {
   try {
     const initialDenuncias = await getDenuncias();
     return <AdminDashBoard initialData={initialDenuncias} />;
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === "UNAUTHORIZED") {
+      redirect("/api/auth/logout");
+    }
     console.log(error);
     return (
       <div className="flex justify-center p-8 text-red-500">
