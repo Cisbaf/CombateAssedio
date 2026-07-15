@@ -26,6 +26,9 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String emailRemetente;
 
+    @Value("${FRONT_URL}")
+    private String frontUrl;
+
     //Monta e envia o email
     public void enviarEmail(String formularioHtml) {
         try {
@@ -69,7 +72,7 @@ public class EmailService {
     private String montarEmailDeNovaDenuncia(String protocolo) {
         LocalDate dataRegistro = LocalDate.now();
         String dataFormatada = dataRegistro != null ? dataRegistro.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "Não informada";
-        
+    
         return "<!DOCTYPE html>\n" +
                "<html lang=\"pt-BR\">\n" +
                "<head>\n" +
@@ -108,7 +111,7 @@ public class EmailService {
                "                </div>\n" +
                "                <div class=\"info-item\">\n" +
                "                    <span class=\"info-label\">URL para Acompanhamento:</span>\n" +
-               "                    <span class=\"info-value\">" + "<a href=\"http://localhost:3000/admin\">Acessar o sistema administrativo</a>" + "</span>\n" +
+               "                    <span class=\"info-value\">" + "<a href=\"" + frontUrl + "/admin\">Acessar o sistema administrativo</a>" + "</span>\n" +
                "                </div>\n" +
                "            </div>\n" +
                "            <p>Acesse o sistema administrativo para visualizar os detalhes desta denúncia.</p>\n" +

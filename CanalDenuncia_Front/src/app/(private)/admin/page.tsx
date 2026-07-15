@@ -3,7 +3,7 @@ import { Denuncia } from "@/features/admin/schemas/AdminDenunciaSchema";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const API_URL = "http://canal-denuncias-backend:8080";
+const API_URL = process.env.API_URL;
 
 async function getDenuncias(): Promise<Denuncia[]> {
   const cookieStore = await cookies();

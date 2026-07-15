@@ -3,7 +3,7 @@ import CardComponent from "@/features/admin/components/CardComponent";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import WarningIcon from "@mui/icons-material/Warning";
+import LockIcon from '@mui/icons-material/Lock';
 
 interface props {
   stats: {
@@ -44,9 +44,10 @@ export default function DenunciasCards({ stats }: props) {
       <CardComponent 
         title={"Arquivadas"} 
         value={stats.arquivadas} 
-        icon={<WarningIcon fontSize="large" />} 
+        icon={<LockIcon fontSize="large" />} 
         color="#d32f2f" 
       />
     </Box>
   );
+  
 }
