@@ -1,0 +1,64 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: canal-denuncias-db-prod
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_HOST=%
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - canalDenuncia-network-prod
+    volumes:
+      - canal-denuncias-db-data-prod:/var/lib/mysql
+    restart: always
+
+  backend:
+    build:
+      context: ./CanalDenuncia_Back
+      dockerfile: Dockerfile.prod
+    container_name: canal-denuncias-backend-prod
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DB_URL=jdbc:mysql://mysql:3306/canal_denuncias
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - canalDenuncia-network-prod
+    volumes:
+      - ./uploads:/uploads
+    restart: always
+
+  frontend:
+    build:
+      context: ./CanalDenuncia_Front
+      dockerfile: Dockerfile.prod
+    container_name: canal-denuncias-frontend-prod
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    networks:
+      - canalDenuncia-network-prod
+    restart: always
+
+volumes:
+  canal-denuncias-db-data-prod:
+
+networks:
+  canalDenuncia-network-prod:
+    driver: bridge

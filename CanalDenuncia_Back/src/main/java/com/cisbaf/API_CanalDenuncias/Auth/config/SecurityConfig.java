@@ -25,7 +25,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    
+
     private final JwtRequestFilter jwtRequestFilter;
 
     @Value("${FRONT_URL}")
@@ -50,7 +50,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
 
-
                         // ==========================
 
                         // ADMIN CONTROLLER
@@ -61,7 +60,6 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
-
 
                         // ==========================
 
@@ -78,20 +76,17 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/form/denuncias").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/form/mensagens/{denunciaId}").authenticated()
-                        
+
                         .requestMatchers(HttpMethod.POST, "/form/mensagens/{denunciaId}").authenticated()
 
                         .requestMatchers(HttpMethod.PUT, "/form/denuncias/atualizarStatus/{id}").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/form/denuncias/arquivar/{id}").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/form/denuncias/desarquivar/{id}").authenticated()
-                        
+
                         .requestMatchers(HttpMethod.POST, "/form/denuncias/{denunciaId}/anexos").authenticated()
-                        
-                        //.requestMatchers(HttpMethod.GET, "/form/denuncias/{denunciaId}/anexos").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
-                        
                         // ==========================
 
                         // SWAGGER UI
@@ -101,8 +96,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
-                        ).permitAll()
+                                "/swagger-ui.html")
+                        .permitAll()
 
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

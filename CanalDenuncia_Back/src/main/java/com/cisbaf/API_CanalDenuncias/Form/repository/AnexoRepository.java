@@ -10,4 +10,6 @@ import com.cisbaf.API_CanalDenuncias.Form.model.Anexo;
 
 public interface AnexoRepository extends JpaRepository<Anexo, UUID> {
     List<Anexo> findByDenunciaId(UUID denunciaId);
+    
+    java.util.Optional<Anexo> findByUrlArquivoContaining(String nomeArquivo);
 }

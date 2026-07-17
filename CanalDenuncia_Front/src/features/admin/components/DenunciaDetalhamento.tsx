@@ -298,7 +298,7 @@ export default function DenunciaModal({ denuncia }: props) {
                     <Button
                       key={index}
                       component="a"
-                      href={anexo.urlArquivo}
+                      href={`${anexo.urlArquivo}${!anexo.urlArquivo.includes("protocolo=") && denuncia.protocolo ? `?protocolo=${denuncia.protocolo}` : ""}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       download={anexo.nomeArquivo}
