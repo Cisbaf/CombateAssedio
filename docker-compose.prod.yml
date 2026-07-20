@@ -2,14 +2,12 @@ services:
   mysql:
     image: mysql:8.0
     container_name: canal-denuncias-db-prod
-    ports:
-      - "3306:3306"
     env_file:
       - .env
     environment:
       - MYSQL_ROOT_HOST=%
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
       interval: 5s
       timeout: 5s
       retries: 20

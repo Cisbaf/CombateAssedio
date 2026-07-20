@@ -51,9 +51,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // ==========================
-
                         // ADMIN CONTROLLER
-
                         // ==========================
 
                         .requestMatchers(HttpMethod.GET, "/auth/{username}").authenticated()
@@ -62,9 +60,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/logout").permitAll()
 
                         // ==========================
-
                         // FORM CONTROLLER
-
                         // ==========================
 
                         .requestMatchers(HttpMethod.GET, "/form/denuncias").authenticated()
@@ -85,12 +81,10 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/form/denuncias/{denunciaId}/anexos").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").authenticated()
 
                         // ==========================
-
                         // SWAGGER UI
-
                         // ==========================
 
                         .requestMatchers(
