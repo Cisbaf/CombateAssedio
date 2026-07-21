@@ -1,0 +1,99 @@
+package com.cisbaf.API_CanalDenuncias.Form.model;
+
+import java.time.LocalDate;
+
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.cisbaf.API_CanalDenuncias.Form.model.enums.TipoDenunciante;
+
+import com.cisbaf.API_CanalDenuncias.Form.model.enums.Status;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@Table(name = "denuncias")
+public class Denuncia {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private String protocolo;
+
+    @Column(nullable = false, name = "tipo_denunciante")
+    @Enumerated(EnumType.STRING)
+    private TipoDenunciante tipoDenunciante;
+
+    @Column(name = "is_arquivada", nullable = false)
+    private Boolean isArquivada = false;
+
+    @Column(nullable = false, name = "is_anonimo")
+    private Boolean isAnonimo;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false, name = "data_registro")
+    private LocalDate dataRegistro;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDENTE;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vitima", nullable = true)
+    private Vitima vitima;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_ofensor", nullable = false)
+    private Ofensor ofensor;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "id_relato", nullable = false)
+    private Relato relato;
+
+    @OneToOne(cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_terceiro", nullable = true)
+    private Terceiro terceiro;
+
+    @BatchSize(size = 50)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "denuncia_id", nullable = true)
+    @jakarta.persistence.OrderBy("dataEnvio ASC")
+    private List<Mensagem> mensagens = new java.util.ArrayList<>();
+
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Anexo> anexos = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Denuncia)) return false;
+        Denuncia other = (Denuncia) o;
+        return protocolo != null && protocolo.equals(other.protocolo);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+}
+}

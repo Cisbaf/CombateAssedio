@@ -1,0 +1,128 @@
+// --- OFENSOR ---
+export type RequestOfensor = {
+  nome: string;
+  email: string;
+  setor: string;
+  cargo: string;
+};
+
+export type ResponseOfensor = {
+  id: string;
+  nome: string;
+  local_trabalho: string;
+};
+
+// --- VITIMA ---
+export type RequestVitima = {
+  nome: string;
+  idade: number;
+  cpf: string;
+  telefone: string;
+  email: string;
+};
+
+export type ResponseVitima = {
+  id: string;
+  nome: string;
+  idade: number;
+  cpf: string;
+  telefone: string;
+  email: string;
+  local_Trabalho: string;
+};
+
+// --- TERCEIRO ---
+export type RequestTerceiro = {
+  nome: string;
+  idade: number;
+  cpf: string;
+  telefone: string;
+  email: string;
+};
+
+export type ResponseTerceiro = {
+  id: string;
+  nome: string;
+  idade: number;
+  cpf: string;
+  telefone: string;
+  email: string;
+};
+
+// --- RELATO ---
+export type RequestRelato = {
+  categoriaAssedio: string;
+  tipoRelato: string;
+  relato: string;
+  data: string;
+};
+
+export type ResponseRelato = {
+  id: string;
+  categoria: string;
+  descricao: string;
+  estado_emocional: string;
+  testemunhas: boolean;
+  numero_testemunhas?: number;
+  nomes_testemunha?: string;
+  data_ocorrido: string;
+  ocorrencia_local: string;
+  evidencias: boolean;
+  tipo_evidencias?: string;
+};
+
+export interface Anexo {
+  id: string;
+  nomeArquivo: string;
+  urlArquivo: string;
+  tipoArquivo: string;
+}
+
+
+// --- DENUNCIA ---
+export type RequestDenuncia = {
+  nome: string;
+  telefone: string;
+  email: string;
+  tipoRelato: string;
+  categoriaAssedio: string;
+  relato: string;
+  data: string;
+};
+
+export type ResponseDenuncia = {
+  id: string;
+  protocolo: string;
+  tipo_Denunciante: string;
+  isAnonimo: boolean;
+  data_Registro: string;
+  status: string;
+  vitima?: ResponseVitima;
+  ofensor: ResponseOfensor;
+  relato: ResponseRelato;
+  terceiro?: ResponseTerceiro;
+};
+
+// --- PAYLOAD DO FORMULÁRIO MULTI-STEP ---
+export type DadosFormulario = {
+  step0?: any;
+  step1?: any;
+  step2?: any;
+  step3?: any;
+};
+
+
+// --- StepA ---
+export type StepAFormData = {
+  name?: string;
+  idade?: string;
+  cpf?: string;
+  email?: string;
+  telefone?: string;
+  vitima_name?: string;
+  vitima_idade?: string;
+  vitima_cpf?: string;
+  vitima_local_trabalho?: string;
+  isAnonimo?: boolean;
+  tipoDenunciante?: string;
+};

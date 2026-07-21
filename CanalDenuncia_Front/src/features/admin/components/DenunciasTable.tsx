@@ -1,0 +1,229 @@
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TablePagination,
+  Box,
+  Chip,
+  Typography,
+  IconButton,
+  Tooltip,
+  Switch,
+  FormControlLabel,
+} from "@mui/material";
+import { Denuncia, StatusDenuncia } from "../schemas/AdminDenunciaSchema";
+import Paper from "@mui/material/Paper";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useState } from "react";
+import { FormatDate } from "@/shared/formatters";
+
+interface props {
+  data: Denuncia[];
+  onViewDetails: (denuncia: Denuncia) => void;
+}
+
+const getStatusColor = (status: StatusDenuncia) => {
+  switch (status) {
+    case "PENDENTE":
+      return "warning";
+    case "EM_ANDAMENTO":
+      return "info";
+    case "RESOLVIDA":
+      return "success";
+    default:
+      return "default";
+  }
+};
+
+const getStatusLabel = (status: StatusDenuncia) => {
+  switch (status) {
+    case "PENDENTE":
+      return "Pendente";
+    case "EM_ANDAMENTO":
+      return "Em andamento";
+    case "RESOLVIDA":
+      return "Resolvida";
+    default:
+      return status;
+  }
+};
+
+const getStatusWeight = (status: StatusDenuncia) => {
+  if (status === "RESOLVIDA") {
+    return 1;
+  }
+  return 0;
+};
+
+export default function DenunciasTable({ data, onViewDetails }: props) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [showArchived, setShowArchived] = useState(false);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const filteredData = showArchived 
+    ? data 
+    : data.filter((denuncia) => !denuncia.isArquivada);
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    const weightA = getStatusWeight(a.status);
+    const weightB = getStatusWeight(b.status);
+    if (weightA !== weightB) {
+      return weightA - weightB;
+    }
+    return new Date(b.dataRegistro).getTime() - new Date(a.dataRegistro).getTime();
+  });
+
+  const currentData = sortedData.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
+
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        width: "100%",
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 3,
+        overflow: "hidden",
+      }}
+    >
+      <Box sx={{ p: 2, display: "flex", justifyContent: "flex-end", borderBottom: "1px solid", borderColor: "divider" }}>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={showArchived}
+              onChange={(e) => {
+                setShowArchived(e.target.checked);
+                setPage(0);
+              }}
+              color="primary"
+            />
+          }
+          label="Mostrar denúncias arquivadas"
+        />
+      </Box>
+      <Box sx={{ overflowX: "auto" }}>
+        <Table sx={{ minWidth: 650 }} aria-label="tabela de denúncias">
+          <TableHead sx={{ bgcolor: "background.default" }}>
+            <TableRow>
+              <TableCell sx={{ fontWeight: "bold" }}>Protocolo</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Data</TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>
+                Tipo Denunciante
+              </TableCell>
+              <TableCell sx={{ fontWeight: "bold" }}>Anonimato</TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Detalhes
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentData.length > 0 ? (
+              currentData.map((denuncia) => (
+                  <TableRow
+                    key={denuncia.id}
+                    hover
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell>
+                      <Typography variant="body2" sx={{ fontWeight: "medium" }}>
+                        {denuncia.protocolo}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={getStatusLabel(denuncia.status)}
+                        color={getStatusColor(denuncia.status) as any}
+                        size="small"
+                        sx={{ fontWeight: "medium" }}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        suppressHydrationWarning
+                      >
+                        {FormatDate(denuncia.dataRegistro)}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={
+                          denuncia.tipoDenunciante == "VITIMA"
+                            ? "VITIMA"
+                            : "TERCEIRO"
+                        }
+                        variant="outlined"
+                        size="small"
+                        color={
+                          denuncia.tipoDenunciante == "VITIMA"
+                            ? "error"
+                            : "secondary"
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Chip
+                        label={denuncia.isAnonimo ? "Anônimo" : "Identificado"}
+                        variant="outlined"
+                        size="small"
+                        color={denuncia.isAnonimo ? "default" : "primary"}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Tooltip title="Visualizar Detalhes">
+                        <IconButton
+                          color="primary"
+                          onClick={() => onViewDetails(denuncia)}
+                        >
+                          <VisibilityIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} align="center" sx={{ py: 5 }}>
+                  <Typography variant="body1" color="text.secondary">
+                    Nenhuma denúncia encontrada para os filtros aplicados.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </Box>
+      <TablePagination
+        rowsPerPageOptions={[20, 40, 60]}
+        component="div"
+        count={filteredData.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Linhas por página:"
+        labelDisplayedRows={({ from, to, count }) =>
+          `${from}-${to} de ${count !== -1 ? count : `mais de ${to}`}`
+        }
+      />
+    </Paper>
+  );
+}
