@@ -17,6 +17,7 @@ COPY . .
 
 # Desativa a telemetria do Next para acelerar o build
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_API_URL=/api
 
 RUN npm run build
 
@@ -35,9 +36,6 @@ COPY --from=builder /app/public ./public
 # O modo standalone cria um servidor minimalista na pasta .next/standalone
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-# Caso você tenha arquivos .env.production, você pode copiá-los também:
-COPY --from=builder /app/.env.production ./.env.production
 
 USER nextjs
 

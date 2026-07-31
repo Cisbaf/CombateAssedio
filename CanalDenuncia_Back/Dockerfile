@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.9.9-eclipse-temurin-21 AS builder
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 
 # Copy pom.xml and download dependencies (cache layer)
@@ -19,4 +19,9 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java",\
+    "-Xms128m",\
+    "-Xmx384m",\
+    "-XX:+UseSerialGC",\
+    "-jar",\
+    "app.jar"]
