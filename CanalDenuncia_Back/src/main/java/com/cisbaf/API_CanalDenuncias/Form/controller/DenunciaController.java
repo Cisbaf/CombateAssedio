@@ -49,7 +49,7 @@ public class DenunciaController {
                 .toUri();
         DenunciaResponse response = new DenunciaResponse(savedDenuncia.getProtocolo());
 
-        //emailService.enviarEmailNovaDenuncia(savedDenuncia);
+        emailService.enviarEmailNovaDenuncia(savedDenuncia);
 
         return ResponseEntity.created(uri).body(response);
     }

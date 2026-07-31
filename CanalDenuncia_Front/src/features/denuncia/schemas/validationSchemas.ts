@@ -64,7 +64,7 @@ export type StepBFormData = z.infer<typeof stepBSchema>;
 
 export const stepCSchema = z.object({
   data_ocorrido: z.string().length(10, "Insira uma data válida"),
-  horario_ocorrido: z.string().min(5, "Horário inválido"),
+  horario_ocorrido: z.string().optional(),
   local_ocorrido: z.string().min(1, "Local do ocorrido é obrigatório"),
 });
 

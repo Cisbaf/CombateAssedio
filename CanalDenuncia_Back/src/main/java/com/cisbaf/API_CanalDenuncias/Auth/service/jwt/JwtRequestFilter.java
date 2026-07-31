@@ -33,7 +33,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private boolean secure;
 
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String jwt = null;
         String username = null;
@@ -53,14 +54,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            try{
+            try {
                 var user = userDetailsService.loadUserByUsername(username);
                 if (jwtTokenUtil.validateToken(jwt)) {
-                    var authenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    var authenticationToken = new UsernamePasswordAuthenticationToken(user, null,
+                            user.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 SecurityContextHolder.clearContext();
                 logger.error("Erro ao carregar usuários: " + e.getMessage());
             }
