@@ -54,9 +54,9 @@ export default function DenunciaMensagem({ denuncia, onUpdate }: props) {
         color="primary.main"
         sx={{ fontWeight: "bold" }}
       >
-        Chat de conversa{" "}
+        Atualização da denúncia{" "}
         <InfoBox
-          texto="Nesta área, o administrador pode enviar mensagens para o denunciante. 
+          texto="Nesta área, ficará registrado o histórico de informações sobre a denúncia. 
         Todas as mensagens são registradas e arquivadas junto com a denúncia para garantir transparência e controle.
         O denunciante poderá visualizar as mensagens a partir do protocolo."
         />
@@ -103,7 +103,7 @@ export default function DenunciaMensagem({ denuncia, onUpdate }: props) {
               color="error.main"
               sx={{ fontWeight: "medium", opacity: 0.9 }}
             >
-              Comentário adicionado às {FormatDataHora(mensagem.dataEnvio)}
+              Atualização adicionada em {FormatDataHora(mensagem.dataEnvio)}
             </Typography>
             <Typography
               variant="body1"

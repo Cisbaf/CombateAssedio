@@ -1,29 +1,49 @@
-# Stage 1: Build dependencies and build the app
-FROM node:20-alpine AS builder
+FROM node:20-alpine AS base
+
+# 1. Instalar dependências apenas quando necessário
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Aproveita o cache do Docker para dependências
 COPY package.json package-lock.json* ./
 RUN npm ci
 
-# Copy the rest of the code and build the application
+# 2. Reconstruir o código-fonte
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Desativa a telemetria do Next para acelerar o build
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN npm run build
 
-# Stage 2: Production environment
-FROM node:20-alpine AS runner
+# 3. Imagem final de produção (Leve e Rápida)
+FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
-# Copy necessary files from builder
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/package-lock.json ./package-lock.json
-COPY --from=builder /app/.env.production ./.env.production
-COPY --from=builder /app/.next ./.next
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
+
+# O modo standalone cria um servidor minimalista na pasta .next/standalone
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Caso você tenha arquivos .env.production, você pode copiá-los também:
+COPY --from=builder /app/.env.production ./.env.production
+
+USER nextjs
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]

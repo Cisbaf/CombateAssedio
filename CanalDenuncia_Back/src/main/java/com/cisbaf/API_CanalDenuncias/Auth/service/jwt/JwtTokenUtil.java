@@ -24,7 +24,14 @@ public class JwtTokenUtil {
 
     @PostConstruct
     private void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes;
+        try {
+            // Tenta decodificar como Base64
+            keyBytes = Decoders.BASE64.decode(secretKey);
+        } catch (Exception e) {
+            // Se falhar (ex: contém hifens por ser um UUID ou texto simples), pega os bytes diretamente
+            keyBytes = secretKey.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        }
         this.signingKey = Keys.hmacShaKeyFor(keyBytes);
     }
 

@@ -30,6 +30,7 @@ export function useDenunciasFilter(initialData: Denuncia[]) {
   const stats = useMemo(() => ({
     total: initialData.length,
     pendentes: initialData.filter(d => d.status === "PENDENTE").length,
+    em_andamento: initialData.filter(d => d.status === "EM_ANDAMENTO").length,
     resolvidas: initialData.filter(d => d.status === "RESOLVIDA").length,
     arquivadas: initialData.filter(d => d.isArquivada).length,
   }), [initialData]);

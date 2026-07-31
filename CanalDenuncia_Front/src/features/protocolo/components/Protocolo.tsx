@@ -109,7 +109,7 @@ export default function Protocolo({ denuncia, onClose }: props) {
                     color="error.main"
                     sx={{ fontWeight: "medium", opacity: 0.9 }}
                   >
-                    Comentário adicionado às{" "}
+                    Atualização adicionada em{" "}
                     {FormatDataHora(mensagem.dataEnvio)}
                   </Typography>
                   <Typography

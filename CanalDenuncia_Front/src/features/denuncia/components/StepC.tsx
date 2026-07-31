@@ -147,11 +147,10 @@ export default function StepC({ initialData, onAvançar, onVoltar }: StepCProps)
                     alignItems: "center",
                   }}
                 >
-                  Horário Aproximado *{" "}
+                  Horário Aproximado {" "}
                   <InfoBox texto="Digite o horário aproximado em que o incidente ocorreu." />
                 </FormLabel>
                 <TextField
-                  required
                   size="small"
                   type="time"
                   slotProps={{
