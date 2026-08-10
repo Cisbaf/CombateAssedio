@@ -74,7 +74,7 @@ export default function DenunciasTable({ data, onViewDetails }: props) {
   };
 
   const filteredData = showArchived 
-    ? data 
+    ? data.filter((denuncia) => denuncia.isArquivada)
     : data.filter((denuncia) => !denuncia.isArquivada);
 
   const sortedData = [...filteredData].sort((a, b) => {

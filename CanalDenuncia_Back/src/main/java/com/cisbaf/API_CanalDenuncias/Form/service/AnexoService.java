@@ -30,7 +30,7 @@ public class AnexoService {
     @Value("${upload.dir}")
     private String uploadDir;
 
-    @Value("${app.base-url}")
+    @Value("${app.public-url}")
     private String baseUrl; 
 
     public Anexo salvarAnexo(UUID denunciaId, MultipartFile arquivo) throws IOException {
@@ -49,7 +49,7 @@ public class AnexoService {
         Anexo anexo = new Anexo();
         
         anexo.setNomeArquivo(arquivo.getOriginalFilename() != null ? arquivo.getOriginalFilename() : "arquivo");
-        anexo.setUrlArquivo(baseUrl + "/uploads/" + nomeUnico);
+        anexo.setUrlArquivo(baseUrl + "/api/uploads/" + nomeUnico);
         anexo.setTipoArquivo(arquivo.getContentType());
         anexo.setDenuncia(denuncia);
 

@@ -5,10 +5,11 @@ services:
       dockerfile: Dockerfile
     container_name: canal-denuncias-backend-prod
     ports:
-      - "8080:8080"
+      - "${COMBATEASSEDIO_BACK_PORT}:8080"
     env_file:
       - .env
     environment:
+      - JWT_SECURE=true
       - SPRING_PROFILES_ACTIVE=prod
     networks:
       - canalDenuncia-network-prod
@@ -21,9 +22,11 @@ services:
       dockerfile: Dockerfile
     container_name: canal-denuncias-frontend-prod
     ports:
-      - "3000:3000"
+      - "${COMBATEASSEDIO_FRONT_PORT}:3000"
     env_file:
       - .env
+    environment:
+      - API_URL=http://backend:8080
     depends_on:
       - backend
     networks:

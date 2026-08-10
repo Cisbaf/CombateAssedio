@@ -75,7 +75,7 @@ export default function DenunciaModal({ denuncia }: props) {
         }}
       >
         {/* INFORMAÇÕES DO TERCEIRO */}
-        {!denuncia.isAnonimo && denuncia.tipoDenunciante === "TERCEIRO" && (
+        {denuncia.terceiro && (
           <Box>
             <Typography
               variant="h6"
@@ -135,7 +135,7 @@ export default function DenunciaModal({ denuncia }: props) {
         )}
 
         {/* INFORMAÇÕES DO VÍTIMA */}
-        {!denuncia.isAnonimo && denuncia.tipoDenunciante === "VITIMA" && (
+        {denuncia.vitima && (
           <Box>
             <Typography
               variant="h6"
@@ -191,7 +191,7 @@ export default function DenunciaModal({ denuncia }: props) {
                   Local de Trabalho
                 </Typography>
                 <Typography variant="body1">
-                  {denuncia.vitima?.localTrabalho}
+                  {denuncia.vitima?.localTrabalho || "Não informado"}
                 </Typography>
               </Box>
             </Box>
@@ -216,7 +216,7 @@ export default function DenunciaModal({ denuncia }: props) {
             </Box>
             <Box>
               <Typography variant="body2" color="text.secondary">
-                Idade
+                Local de Trabalho
               </Typography>
               <Typography variant="body1">
                 {denuncia.ofensor?.localTrabalho}
@@ -241,9 +241,11 @@ export default function DenunciaModal({ denuncia }: props) {
                 Data do Ocorrido
               </Typography>
               <Typography variant="body1">
-                {denuncia.relato?.dataOcorrido
-                  ? FormatDate(denuncia.relato.dataOcorrido)
-                  : "--"}
+                {denuncia.relato?.dataOcorrido === "1900-01-01"
+                  ? "Não informado"
+                  : denuncia.relato?.dataOcorrido
+                    ? FormatDate(denuncia.relato.dataOcorrido)
+                    : "--"}
               </Typography>
             </Box>
             <Box>
@@ -251,7 +253,9 @@ export default function DenunciaModal({ denuncia }: props) {
                 Horário
               </Typography>
               <Typography variant="body1">
-                {denuncia.relato?.horarioOcorrido}
+                {denuncia.relato?.horarioOcorrido === "00:00:00"
+                  ? "Não informado"
+                  : denuncia.relato?.horarioOcorrido}
               </Typography>
             </Box>
             <Box>

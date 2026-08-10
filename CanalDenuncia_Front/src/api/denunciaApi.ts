@@ -3,8 +3,6 @@ import type { DadosFormulario } from "@/features/denuncia/schemas/denunciaType";
 import type { RequestStatus } from "@/features/admin/schemas/AdminDenunciaSchema";
 import mapFormToBackend from "@/features/denuncia/schemas/mapFormToBackend";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
 
 
 /** Envia a denúncia para o backend e retorna o protocolo gerado */
@@ -14,7 +12,7 @@ export async function enviarDenuncia(
   try {
     const payload = mapFormToBackend(dadosFormulario);
 
-    const response = await fetch(`${API_BASE_URL}/form/denuncias`, {
+    const response = await fetch(`/api/form/denuncias`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -41,7 +39,7 @@ export async function enviarDenuncia(
 export async function postMsg(denuncia: Denuncia, mensagem: string) {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/mensagens/${denuncia.id}`,
+      `/api/form/mensagens/${denuncia.id}`,
       {
         method: "POST",
         headers: {
@@ -70,7 +68,7 @@ export async function putStatus(
 ): Promise<Denuncia | null> {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/denuncias/atualizarStatus/${denuncia.id}`,
+      `/api/form/denuncias/atualizarStatus/${denuncia.id}`,
       {
         method: "PUT",
         headers: {
@@ -94,7 +92,7 @@ export async function putStatus(
 export async function putArquivada(denuncia: Denuncia): Promise<Denuncia | null> {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/denuncias/arquivar/${denuncia.id}`,
+      `/api/form/denuncias/arquivar/${denuncia.id}`,
       {
         method: "PUT",
         headers: {
@@ -117,7 +115,7 @@ export async function putArquivada(denuncia: Denuncia): Promise<Denuncia | null>
 export async function putDesarquivada(denuncia: Denuncia): Promise<Denuncia | null> {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/denuncias/desarquivar/${denuncia.id}`,
+      `/api/form/denuncias/desarquivar/${denuncia.id}`,
       {
         method: "PUT",
         headers: {
@@ -144,7 +142,7 @@ export async function getDenunciaFromProtocolo(
 ): Promise<Denuncia | null> {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/denuncias/protocolo/${protocolo}`,
+      `/api/form/denuncias/protocolo/${protocolo}`,
       {
         cache: "no-store",
         method: "GET",
@@ -165,7 +163,9 @@ export async function getDenunciaFromProtocolo(
 // faz login
 export async function Login(username: string, password: string) {
   try {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+    // Usa a rota interna do Next.js (/api/auth/login), que atua como proxy
+    // server-side para o backend. Evita CORS e Mixed Content no navegador.
+    const response = await fetch(`/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
@@ -183,7 +183,7 @@ export async function Login(username: string, password: string) {
 export async function postAnexos(denunciaId: string, formData: FormData) {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/form/denuncias/${denunciaId}/anexos`,
+      `/api/form/denuncias/${denunciaId}/anexos`,
       {
         method: "POST",
         body: formData,

@@ -17,7 +17,6 @@ COPY . .
 
 # Desativa a telemetria do Next para acelerar o build
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV NEXT_PUBLIC_API_URL=/api
 
 RUN npm run build
 
@@ -25,7 +24,6 @@ RUN npm run build
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs

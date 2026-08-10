@@ -81,7 +81,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.POST, "/form/denuncias/{denunciaId}/anexos").authenticated()
 
-                        .requestMatchers(HttpMethod.GET, "/uploads/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll()
 
                         // ==========================
                         // SWAGGER UI
